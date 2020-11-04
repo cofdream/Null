@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.devilangel.daprototool": {
+      "version": "https://github.com/cofdream/DAProtoBufer.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "109a635db22723bab0aa1fddda808d7ca362affb"
+    },
     "com.devilangel.datools": {
       "version": "https://github.com/cofdream/DATools.git#upm",
       "depth": 0,
