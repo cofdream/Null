@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.devilangel.datools": "https://github.com/cofdream/DATools.git#upm",
     "com.unity.textmeshpro": "2.1.1",
     "com.unity.timeline": "1.2.17",
     "com.unity.ugui": "1.0.0",

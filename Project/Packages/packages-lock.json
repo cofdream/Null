@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.devilangel.datools": {
+      "version": "https://github.com/cofdream/DATools.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cffbb658f642e2331dd0f8658c76bcaa2b6710ba"
+    },
     "com.unity.textmeshpro": {
       "version": "2.1.1",
       "depth": 0,
