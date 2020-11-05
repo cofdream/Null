@@ -8,44 +8,32 @@ using UnityEditor.ProjectWindowCallback;
 
 namespace NullNamespace
 {
-	public class CreateUIWindowTemplate :EditorWindow
-	{
-        // todo 创建一个文件夹
+    public class CreateUIWindowTemplate : EditorWindow
+    {
         private const string DEFINE_Window_NAME = "Window";
-        private const string DEFINE_SCRIPT_TEMPLATE =
-            "using UnityEngine;" +
-            "\nusing UnityEngine.UI;" +
-            "\n" +
-            "\nnamespace DA.UI" +
-            "\n{" +
-            "\n\tpublic class #ScriptName# : UIWindow" +
-            "\n\t{" +
-            "\n\t\tObject bind;" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t\t" +
-            "\n\t}" +
-            "\n}";
+        private static string DEFINE_SCRIPT_TEMPLATE_PATH = Application.dataPath + @"\Scripts\Editor\CreateUIWindowTemplate\UIWindowTemplate.txt";
 
-        [MenuItem("Assets/Create/UIWindowTemplate", false, 82)]
+        [MenuItem("Assets/Create/UIWindow/WindowTemplate", false, 82)]
         private static void OpenCreateUIWindowTemplate()
         {
+            if (File.Exists(DEFINE_SCRIPT_TEMPLATE_PATH) == false) return;
+
             string pathName = Utils.GetSelectionPath()[0] + "/" + DEFINE_Window_NAME;
             Texture2D icon = EditorGUIUtility.IconContent("cs Script Icon").image as Texture2D;
 
             var action = ScriptableObjectExpand.CreateInstanceOnly<CreateCSarpScriptAction>();
-            action.ScriptTemplate = DEFINE_SCRIPT_TEMPLATE;
+            action.ScriptTemplate = File.ReadAllText(DEFINE_SCRIPT_TEMPLATE_PATH);
 
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, action, pathName, icon, string.Empty);
         }
 
+        private static bool isCreateFolder = false;
+        [MenuItem("Assets/Create/UIWindow/WindowTemplateFolder", false, 82)]
+        private static void OpenCreateUIWindonFolder()
+        {
+            isCreateFolder = true;
+            OpenCreateUIWindowTemplate();
+        }
 
         private class CreateCSarpScriptAction : EndNameEditAction
         {
@@ -55,14 +43,14 @@ namespace NullNamespace
                 var scriptName = Path.GetFileName(pathName);
                 if (scriptName.Equals(DEFINE_Window_NAME)) return;
 
-                pathName = pathName + ".cs";
-
                 var encoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: true);
                 string script = GetScript(scriptName);
 
-                script = IsClassOrInterface(script, scriptName);
-
                 script = SetLineEndings(script, LineEndingsMode.OSNative);
+
+                pathName = CreateFolder(pathName, scriptName);
+
+                pathName = pathName + ".cs";
 
                 File.WriteAllText(pathName, script, encoding);
 
@@ -78,20 +66,16 @@ namespace NullNamespace
                 return ScriptTemplate.Replace("#ScriptName#", scriptName);
             }
 
-            private string IsClassOrInterface(string script, string scriptName)
+            private string CreateFolder(string path, string scriptName)
             {
-                if (scriptName.StartsWith("I"))
+                if (isCreateFolder)
                 {
-                    if (scriptName.Length > 2)
-                    {
-                        var name = scriptName[1];
-                        if (name > 'A' && name < 'Z')
-                        {
-                            script = script.Replace("class", "interface");
-                        }
-                    }
+                    isCreateFolder = false;
+                    string rootPath = path + "/Window/";
+                    Directory.CreateDirectory(rootPath);
+                    return rootPath + scriptName;
                 }
-                return script;
+                return path;
             }
 
             private string SetLineEndings(string content, LineEndingsMode lineEndingsMode)

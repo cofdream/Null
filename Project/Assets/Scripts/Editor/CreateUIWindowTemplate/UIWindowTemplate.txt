@@ -1,0 +1,41 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+namespace DA.UI
+{
+   public class #ScriptName# : UIWindow
+    {
+        #region MyRegion
+        Object bind;
+
+        public override void Awake()
+        {
+            
+            #region AddListener
+
+            #endregion
+        }
+        public override void OnDestory()
+        {
+            
+            #region RemoveListener
+
+            #endregion
+        }
+        public override void OnEnable()
+        {
+
+        }
+        public override void OnDisable()
+        {
+
+        }
+        public override void SetContext(Object context)
+        {
+            bind = context as Object;
+        }
+        #endregion
+
+
+    }
+}
