@@ -5,7 +5,7 @@ namespace DA.UI
 {
    public class #ScriptName# : UIWindow
     {
-        #region MyRegion
+        #region Lift
         Object bind;
 
         public override void Awake()

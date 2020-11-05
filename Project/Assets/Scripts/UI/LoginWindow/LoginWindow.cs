@@ -5,6 +5,7 @@ namespace DA.UI
 {
     public class LoginWindow : UIWindow
     {
+        #region Lift
         public LoginWindowBind bind;
 
         public override void Awake()
@@ -13,7 +14,6 @@ namespace DA.UI
             bind.Btn_Login.onClick.AddListener(Login);
             #endregion
         }
-
         public override void OnDestory()
         {
             #region RemoveListener
@@ -29,8 +29,8 @@ namespace DA.UI
         public override void SetContext(Object context)
         {
             bind = context as LoginWindowBind;
-        }
-
+        } 
+        #endregion
 
         public void Login()
         {
