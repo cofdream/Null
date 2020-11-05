@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "109a635db22723bab0aa1fddda808d7ca362affb"
+      "hash": "5860824a2432d2937532d9d7f12b0e5b9cab67f1"
     },
     "com.devilangel.datools": {
       "version": "https://github.com/cofdream/DATools.git#upm",

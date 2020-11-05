@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DAProto</name>
+    </assembly>
+    <members>
+        <member name="T:DAProto.TackConfigReflection">
+            <summary>Holder for reflection information generated from Tack_Config.proto</summary>
+        </member>
+        <member name="P:DAProto.TackConfigReflection.Descriptor">
+            <summary>File descriptor for Tack_Config.proto</summary>
+        </member>
+        <member name="F:DAProto.Tack_Config.IdFieldNumber">
+            <summary>Field number for the "id" field.</summary>
+        </member>
+        <member name="F:DAProto.Tack_Config.ContentFieldNumber">
+            <summary>Field number for the "content" field.</summary>
+        </member>
+        <member name="F:DAProto.Tack_Config.RoleIdFieldNumber">
+            <summary>Field number for the "roleId" field.</summary>
+        </member>
+        <member name="F:DAProto.Tack_Config.SelectFieldNumber">
+            <summary>Field number for the "select" field.</summary>
+        </member>
+        <member name="F:DAProto.Excel_Tack_Config.DataFieldNumber">
+            <summary>Field number for the "Data" field.</summary>
+        </member>
+    </members>
+</doc>

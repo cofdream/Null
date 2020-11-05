@@ -1,0 +1,26 @@
+// Auto generated 
+
+syntax = "proto3";
+package packageName;
+
+// [START java_declaration]
+option java_package = "com.DAProtobuf.DAProtobuf";
+option java_outer_classname = "Tack_Config";
+// [END java_declaration]
+
+// [START csharp_declaration]
+option csharp_namespace = "DAProto"; 
+// [END csharp_declaration]
+
+message Tack_Config
+{
+    int32 id = 1;
+    string content = 2;
+    int32 roleId = 3;
+    repeated int32 select = 4;
+}
+
+message Excel_Tack_Config
+{
+    map<int32,Tack_Config> Data = 1;
+}

@@ -19,17 +19,16 @@ namespace NullNamespace
             Debug.Log("Init Done.");
         }
 
-        private void Update()
+        private void Start()
         {
             StartGame();
         }
 
         private void StartGame()
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
-            {
-                print("Enter");
-            }
+            print("Enter");
+
+            CreateRole createRole = new CreateRole();
         }
 
     }
