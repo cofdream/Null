@@ -6,19 +6,24 @@ using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
-    private Transform Windows = null;
+    private Transform windowsTran = null;
 
     private BattlePanel battlePanel = null;
 
-    Dictionary<string, IUIWindow> windows = null;
+    Dictionary<string, UIWindow> windows = null;
 
-    UIManager() { }
-
+    #region Life
     protected override void SingletonInit()
     {
-        Windows = GameObject.Find("Windos").transform;
-        windows = new Dictionary<string, IUIWindow>();
+        windowsTran = GameObject.Find("Windos").transform;
+        windows = new Dictionary<string, UIWindow>();
     }
+    public override void Free()
+    {
+
+    } 
+    #endregion
+
     public void Init()
     {
         Debug.Log("UIManager Init Done.");
@@ -27,7 +32,7 @@ public class UIManager : Singleton<UIManager>
     public void CreateBattlePanel()
     {
         GameObject game = Resources.Load<GameObject>("Prefabs/BattlePanel/BattlePanel");
-        game = GameObject.Instantiate(game, Windows);
+        game = GameObject.Instantiate(game, windowsTran);
         battlePanel = new BattlePanel()
         {
             bind = game.GetComponent<BattlePanelBind>(),
@@ -36,7 +41,7 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void OpenWindow<T>() where T : IUIWindow, new()
+    public void OpenWindow<T>() where T : UIWindow, new()
     {
         string windowName = typeof(T).Name;
         GameObject gameObject = CreateWindow(windowName);
@@ -45,10 +50,10 @@ public class UIManager : Singleton<UIManager>
             Debug.LogError($"{windowName} not find.");
             return;
         }
-        gameObject = GameObject.Instantiate(gameObject, Windows);
+        gameObject = GameObject.Instantiate(gameObject, windowsTran);
 
-        IUIWindow window = new T();
-        window.SetBind(gameObject);
+        UIWindow window = new T();
+        window.SetContext(gameObject);
         windows.Add(windowName, window);
     }
     public void OpenWindow(string windowName)
@@ -59,11 +64,11 @@ public class UIManager : Singleton<UIManager>
             Debug.LogError($"{windowName} not find.");
             return;
         }
-        gameObject = GameObject.Instantiate(gameObject, Windows);
+        gameObject = GameObject.Instantiate(gameObject, windowsTran);
 
         var type = Type.GetType(windowName);
-        IUIWindow window = Activator.CreateInstance(type) as IUIWindow;
-        window.SetBind(gameObject);
+        var window = Activator.CreateInstance(type) as UIWindow;
+        window.SetContext(gameObject);
         windows.Add(windowName, window);
     }
 
@@ -74,12 +79,12 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public static void OpenWindow<T>(string path) where T : IUIWindow, new()
+    public static void OpenWindow<T>(string path) where T : UIWindow, new()
     {
         GameObject gameObject = Resources.Load<GameObject>("Prefabs/UI/" + path);
-        gameObject = GameObject.Instantiate(gameObject, instance.Windows.GetChild(0));
+        gameObject = GameObject.Instantiate(gameObject, instance.windowsTran.GetChild(0));
         T t = new T();
-        t.SetBind(gameObject);
+        t.SetContext(gameObject);
         t.Awake();
         t.OnEnable();
     }

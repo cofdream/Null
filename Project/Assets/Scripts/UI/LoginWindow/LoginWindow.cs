@@ -9,55 +9,32 @@ namespace DA.UI
 
         public override void Awake()
         {
+            #region AddListener
             bind.Btn_Login.onClick.AddListener(Login);
+            #endregion
         }
 
         public override void OnDestory()
         {
+            #region RemoveListener
             bind.Btn_Login.onClick.RemoveListener(Login);
+            #endregion
         }
-
-
-
         public override void OnEnable()
         {
         }
         public override void OnDisable()
         {
         }
-
         public override void SetContext(Object context)
         {
             bind = context as LoginWindowBind;
         }
 
 
-
         public void Login()
         {
-        }
-    }
-    public class LoginWindow2 : UIWindow
-    {
-        Object bind;
-
-        #region MyRegion
-        public override void Awake()
-        {
-        }
-        public override void OnDestory()
-        {
-        }
-        public override void OnEnable()
-        {
-        }
-        public override void OnDisable()
-        {
-        }
-        #endregion
-        public override void SetContext(Object context)
-        {
-            bind = context as Object;
+            // 开始读取
         }
     }
 }

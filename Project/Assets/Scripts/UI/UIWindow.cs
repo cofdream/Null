@@ -2,7 +2,7 @@
 
 namespace DA.UI
 {
-    public class UIWindow : IUIWindow
+    public class UIWindow
     {
         public virtual void Awake()
         {
