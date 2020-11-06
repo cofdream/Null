@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Cofdream.Utils
+namespace DA.Utils
 {
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour, ISingleton where T : SingletonMonoBehaviour<T>
     {

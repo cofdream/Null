@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace DA.UI
 {
-   public class #ScriptName# : UIWindow
+   public sealed class #ScriptName# : UIWindow
     {
         #region Lift
         Object bind;
@@ -22,7 +22,7 @@ namespace DA.UI
 
             #endregion
         }
-        public override void OnEnable()
+        public override void OnEnable(object age)
         {
 
         }

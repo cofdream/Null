@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Cofdream.Utils
+namespace DA.Utils
 {
     public abstract class Singleton<T> : ISingleton where T : Singleton<T>
     {

@@ -1,4 +1,4 @@
-﻿namespace Cofdream.Utils
+﻿namespace DA.Utils
 {
     internal interface ISingleton
     {

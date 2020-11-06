@@ -1,4 +1,4 @@
-﻿using Cofdream.Utils;
+﻿using DA.Utils;
 using System;
 using System.IO;
 using UnityEngine;
@@ -6,12 +6,13 @@ using UnityEngine;
 public sealed class ArchivesData : Singleton<ArchivesData>
 {
     private readonly string path = Application.persistentDataPath + "/Archive";
-    public static Archive Archive
+    private Archive archive;
+    public Archive Archive
     {
-        get;
-        private set;
+        get { return archive; }
     }
 
+    private ArchivesData() { }
     protected override void SingletonInit()
     {
         base.SingletonInit();
@@ -19,29 +20,28 @@ public sealed class ArchivesData : Singleton<ArchivesData>
 
     public void LoadArchive()
     {
-
         if (File.Exists(path) == false)
         {
-            Archive = new Archive();
-            Archive.Init();
+            archive = new Archive();
+            archive.Init();
 
-            File.WriteAllText(path, JsonUtility.ToJson(Archive));
+            File.WriteAllText(path, JsonUtility.ToJson(archive));
         }
         else
         {
-            Archive = JsonUtility.FromJson<Archive>(path);
+            archive = JsonUtility.FromJson<Archive>(File.ReadAllText(path));
         }
     }
 
     public void SaveArchive()
     {
-        File.WriteAllText(path, JsonUtility.ToJson(Archive));
+        File.WriteAllText(path, JsonUtility.ToJson(archive));
     }
 
 
     public void SaveName(string name)
     {
-        Archive.Name = name;
+        archive.Name = name;
     }
 
 

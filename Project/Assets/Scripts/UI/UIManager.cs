@@ -1,91 +1,69 @@
-﻿using Cofdream.Utils;
-using DA.UI;
+﻿using DA.DataConfig;
+using DA.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : Singleton<UIManager>
+namespace DA.UI
 {
-    private Transform windowsTran = null;
-
-    private BattlePanel battlePanel = null;
-
-    Dictionary<string, UIWindow> windows = null;
-
-    #region Life
-    protected override void SingletonInit()
+    public class UIManager : Singleton<UIManager>
     {
-        windowsTran = GameObject.Find("Windos").transform;
-        windows = new Dictionary<string, UIWindow>();
-    }
-    public override void Free()
-    {
+        private Transform windowsTran = null;
 
-    } 
-    #endregion
+        private BattlePanel battlePanel = null;
 
-    public void Init()
-    {
-        Debug.Log("UIManager Init Done.");
-    }
+        Dictionary<string, UIWindow> windows = null;
+        Dictionary<string, GameObject> windowGameObjs = null;
 
-    public void CreateBattlePanel()
-    {
-        GameObject game = Resources.Load<GameObject>("Prefabs/BattlePanel/BattlePanel");
-        game = GameObject.Instantiate(game, windowsTran);
-        battlePanel = new BattlePanel()
+        #region Life
+        protected override void SingletonInit()
         {
-            bind = game.GetComponent<BattlePanelBind>(),
-        };
-        battlePanel.Init();
-    }
-
-
-    public void OpenWindow<T>() where T : UIWindow, new()
-    {
-        string windowName = typeof(T).Name;
-        GameObject gameObject = CreateWindow(windowName);
-        if (gameObject == null)
-        {
-            Debug.LogError($"{windowName} not find.");
-            return;
+            windowsTran = GameObject.Find("UIRoot/Canvas").transform;
+            windows = new Dictionary<string, UIWindow>(30);
+            windowGameObjs = new Dictionary<string, GameObject>(30);
         }
-        gameObject = GameObject.Instantiate(gameObject, windowsTran);
-
-        UIWindow window = new T();
-        window.SetContext(gameObject);
-        windows.Add(windowName, window);
-    }
-    public void OpenWindow(string windowName)
-    {
-        GameObject gameObject = CreateWindow(windowName);
-        if (gameObject == null)
+        public override void Free()
         {
-            Debug.LogError($"{windowName} not find.");
-            return;
+
         }
-        gameObject = GameObject.Instantiate(gameObject, windowsTran);
+        #endregion
 
-        var type = Type.GetType(windowName);
-        var window = Activator.CreateInstance(type) as UIWindow;
-        window.SetContext(gameObject);
-        windows.Add(windowName, window);
-    }
+        UIManager() { }
+        public void Init()
+        {
+            Debug.Log("UIManager Init Done.");
+        }
 
-    private GameObject CreateWindow(string windowName)
-    {
-        GameObject win = Resources.Load<GameObject>($"Prefabs/BattlePanel/{windowName}");
-        return win;
-    }
+        public void OpenWindow<T>(string windowName) where T : UIWindow, new()
+        {
+            GameObject windowGameObj = null;
+            UIWindow window = null;
+            if (windows.TryGetValue(windowName, out window))
+            {
+                windowGameObj = windowGameObjs[windowName];
+            }
+
+            var window_Config = DataConfigManager.GetUIWindowConfig(windowName);
+            T window = CreateWindow<T>(window_Config.PrefabPath);
+        }
+
+        private T CreateWindow<T>(string path)
+        {
+            var windowGameObj = CreateWindowPrefab(path);
+
+            windowGameObj = GameObject.Instantiate(windowGameObj, windowsTran);
+
+            T t = new T();
+            t.SetContext(windowGameObj);
+
+        }
 
 
-    public static void OpenWindow<T>(string path) where T : UIWindow, new()
-    {
-        GameObject gameObject = Resources.Load<GameObject>("Prefabs/UI/" + path);
-        gameObject = GameObject.Instantiate(gameObject, instance.windowsTran.GetChild(0));
-        T t = new T();
-        t.SetContext(gameObject);
-        t.Awake();
-        t.OnEnable();
+        private GameObject CreateWindowPrefab(string windowName)
+        {
+            GameObject win = Resources.Load<GameObject>($"Prefabs/UI/{windowName}/{windowName}");
+            return win;
+        }
+
     }
 }

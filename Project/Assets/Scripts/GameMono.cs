@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using DA.DataConfig;
+using DA.UI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,8 +30,24 @@ namespace NullNamespace
         {
             print("Enter");
 
-            CreateRole createRole = new CreateRole();
+            DataConfigManager.LoadAllConfig();
+
+            ArchivesData.Instance.LoadArchive();
+
+            UIManager.Instance.Init();
+
+
+
+            UIManager.Instance.OpenWindow<LoginWindow>("LoginWindow");
         }
 
+
+
+        private void OnDestroy()
+        {
+            DataConfigManager.DisposeAllConfig();
+
+            ArchivesData.Instance.DeleArchiveFile();
+        }
     }
 }

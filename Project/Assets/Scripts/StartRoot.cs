@@ -16,13 +16,9 @@ public class StartRoot : MonoBehaviour
     {
         //LoadModel loadModel = new LoadModel();
 
-        ArchivesData.Instance.LoadArchive();
-
-        UIManager.Instance.Init();
+        
 
         //loadModel.InitLoad();
-
-        UIManager.OpenWindow<SetNameWindow>("SetNameWindow");
     }
 
 
@@ -55,7 +51,7 @@ public class StartRoot : MonoBehaviour
 
     private void OnDestroy()
     {
-        ArchivesData.Instance.DeleArchiveFile();
+        
     }
 
     private void HurtPlayer(int hurtValue)

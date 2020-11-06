@@ -5,9 +5,9 @@ namespace DA.UI
 {
     public class LoginWindow : UIWindow
     {
-        #region Lift
         public LoginWindowBind bind;
-
+        public override GameObject Context { set { value.GetComponent<LoginWindowBind>(); } }
+        #region Lift
         public override void Awake()
         {
             #region AddListener
@@ -16,20 +16,19 @@ namespace DA.UI
         }
         public override void OnDestory()
         {
+            bind = null;
+
             #region RemoveListener
             bind.Btn_Login.onClick.RemoveListener(Login);
             #endregion
         }
-        public override void OnEnable()
+        public override void OnEnable(object age)
         {
         }
         public override void OnDisable()
         {
         }
-        public override void SetContext(Object context)
-        {
-            bind = context as LoginWindowBind;
-        } 
+
         #endregion
 
         public void Login()

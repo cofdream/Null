@@ -19,14 +19,14 @@ public class SetNameWindow : UIWindow
 
     }
 
-    public override void OnEnable()
+    public override void OnEnable(object age)
     {
 
     }
 
-    public override void SetContext(Object context)
+    public override void SetContext(GameObject context)
     {
-        this.bind = context as SetNameWindowBind;
+        this.bind = context.GetComponent<SetNameWindowBind>();
     }
 
     public void EndInputName()
