@@ -24,12 +24,24 @@ namespace DA.DataConfig
             return parser.ParseFrom(data);
         }
 
-        public static UIWindow_Config GetUIWindowConfig(string windowName)
+        public static UIWindow_Config GetUIWindowConfigByName(string windowName)
         {
             var datas = UIWindow_Config_Array.Data.Values;
             foreach (var data in datas)
             {
                 if (data.WindowName == windowName)
+                {
+                    return data;
+                }
+            }
+            return null;
+        }
+        public static UIWindow_Config GetUIWindowConfigByType(string windowType)
+        {
+            var datas = UIWindow_Config_Array.Data.Values;
+            foreach (var data in datas)
+            {
+                if (data.ClassName == windowType)
                 {
                     return data;
                 }

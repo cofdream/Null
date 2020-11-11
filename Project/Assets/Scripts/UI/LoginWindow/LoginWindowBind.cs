@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginWindowBind : MonoBehaviour
+namespace DA.UI
 {
-    public Button Btn_Login;
+    public class LoginWindowBind : UIBindBase
+    {
+        public Button Btn_Login;
+    }
+
 }

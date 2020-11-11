@@ -17,6 +17,8 @@ message UIWindow_Config
     int32 id = 1;
     string windowName = 2;
     string prefabPath = 3;
+    string className = 4;
+    int32 cacheTime = 5;
 }
 
 message Excel_UIWindow_Config

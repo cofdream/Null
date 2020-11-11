@@ -1,39 +1,38 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace DA.UI
 {
-    public class LoginWindow : UIWindow
+    public class LoginWindow : UIWindowBase
     {
         public LoginWindowBind bind;
-        public override GameObject Context { set { value.GetComponent<LoginWindowBind>(); } }
+        //public override GameObject Context { get { return bind.gameObject; } set { bind = value.GetComponent<LoginWindowBind>(); } }
+
         #region Lift
-        public override void Awake()
+        public override void OnInit()
         {
-            #region AddListener
+            bind = BindBase as LoginWindowBind;
+
             bind.Btn_Login.onClick.AddListener(Login);
-            #endregion
         }
         public override void OnDestory()
         {
-            bind = null;
-
-            #region RemoveListener
             bind.Btn_Login.onClick.RemoveListener(Login);
-            #endregion
-        }
-        public override void OnEnable(object age)
-        {
-        }
-        public override void OnDisable()
-        {
-        }
 
+            bind = null;
+        }
+        public override void OnOpen()
+        {
+
+        }
+        public override void OnClose()
+        {
+
+        }
         #endregion
 
         public void Login()
         {
-            // 开始读取
+            UIManager.Instance.OpenWindow("LobbyWindow");
         }
     }
 }

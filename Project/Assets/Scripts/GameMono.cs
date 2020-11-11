@@ -36,9 +36,7 @@ namespace NullNamespace
 
             UIManager.Instance.Init();
 
-
-
-            UIManager.Instance.OpenWindow<LoginWindow>("LoginWindow");
+            UIManager.Instance.OpenWindow("LoginWindow");
         }
 
 

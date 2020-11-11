@@ -24,18 +24,19 @@ namespace DAProto {
     static UIWindowConfigReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChVVSVdpbmRvd19Db25maWcucHJvdG8SC3BhY2thZ2VOYW1lIkUKD1VJV2lu",
+            "ChVVSVdpbmRvd19Db25maWcucHJvdG8SC3BhY2thZ2VOYW1lImsKD1VJV2lu",
             "ZG93X0NvbmZpZxIKCgJpZBgBIAEoBRISCgp3aW5kb3dOYW1lGAIgASgJEhIK",
-            "CnByZWZhYlBhdGgYAyABKAkingEKFUV4Y2VsX1VJV2luZG93X0NvbmZpZxI6",
-            "CgREYXRhGAEgAygLMiwucGFja2FnZU5hbWUuRXhjZWxfVUlXaW5kb3dfQ29u",
-            "ZmlnLkRhdGFFbnRyeRpJCglEYXRhRW50cnkSCwoDa2V5GAEgASgFEisKBXZh",
-            "bHVlGAIgASgLMhwucGFja2FnZU5hbWUuVUlXaW5kb3dfQ29uZmlnOgI4AUI2",
-            "Chljb20uREFQcm90b2J1Zi5EQVByb3RvYnVmQg9VSVdpbmRvd19Db25maWeq",
-            "AgdEQVByb3RvYgZwcm90bzM="));
+            "CnByZWZhYlBhdGgYAyABKAkSEQoJY2xhc3NOYW1lGAQgASgJEhEKCWNhY2hl",
+            "VGltZRgFIAEoBSKeAQoVRXhjZWxfVUlXaW5kb3dfQ29uZmlnEjoKBERhdGEY",
+            "ASADKAsyLC5wYWNrYWdlTmFtZS5FeGNlbF9VSVdpbmRvd19Db25maWcuRGF0",
+            "YUVudHJ5GkkKCURhdGFFbnRyeRILCgNrZXkYASABKAUSKwoFdmFsdWUYAiAB",
+            "KAsyHC5wYWNrYWdlTmFtZS5VSVdpbmRvd19Db25maWc6AjgBQjYKGWNvbS5E",
+            "QVByb3RvYnVmLkRBUHJvdG9idWZCD1VJV2luZG93X0NvbmZpZ6oCB0RBUHJv",
+            "dG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::DAProto.UIWindow_Config), global::DAProto.UIWindow_Config.Parser, new[]{ "Id", "WindowName", "PrefabPath" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::DAProto.UIWindow_Config), global::DAProto.UIWindow_Config.Parser, new[]{ "Id", "WindowName", "PrefabPath", "ClassName", "CacheTime" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::DAProto.Excel_UIWindow_Config), global::DAProto.Excel_UIWindow_Config.Parser, new[]{ "Data" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
     }
@@ -71,6 +72,8 @@ namespace DAProto {
       id_ = other.id_;
       windowName_ = other.windowName_;
       prefabPath_ = other.prefabPath_;
+      className_ = other.className_;
+      cacheTime_ = other.cacheTime_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -112,6 +115,28 @@ namespace DAProto {
       }
     }
 
+    /// <summary>Field number for the "className" field.</summary>
+    public const int ClassNameFieldNumber = 4;
+    private string className_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ClassName {
+      get { return className_; }
+      set {
+        className_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "cacheTime" field.</summary>
+    public const int CacheTimeFieldNumber = 5;
+    private int cacheTime_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CacheTime {
+      get { return cacheTime_; }
+      set {
+        cacheTime_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as UIWindow_Config);
@@ -128,6 +153,8 @@ namespace DAProto {
       if (Id != other.Id) return false;
       if (WindowName != other.WindowName) return false;
       if (PrefabPath != other.PrefabPath) return false;
+      if (ClassName != other.ClassName) return false;
+      if (CacheTime != other.CacheTime) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -137,6 +164,8 @@ namespace DAProto {
       if (Id != 0) hash ^= Id.GetHashCode();
       if (WindowName.Length != 0) hash ^= WindowName.GetHashCode();
       if (PrefabPath.Length != 0) hash ^= PrefabPath.GetHashCode();
+      if (ClassName.Length != 0) hash ^= ClassName.GetHashCode();
+      if (CacheTime != 0) hash ^= CacheTime.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -162,6 +191,14 @@ namespace DAProto {
         output.WriteRawTag(26);
         output.WriteString(PrefabPath);
       }
+      if (ClassName.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(ClassName);
+      }
+      if (CacheTime != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(CacheTime);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -178,6 +215,12 @@ namespace DAProto {
       }
       if (PrefabPath.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabPath);
+      }
+      if (ClassName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ClassName);
+      }
+      if (CacheTime != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CacheTime);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -198,6 +241,12 @@ namespace DAProto {
       }
       if (other.PrefabPath.Length != 0) {
         PrefabPath = other.PrefabPath;
+      }
+      if (other.ClassName.Length != 0) {
+        ClassName = other.ClassName;
+      }
+      if (other.CacheTime != 0) {
+        CacheTime = other.CacheTime;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -220,6 +269,14 @@ namespace DAProto {
           }
           case 26: {
             PrefabPath = input.ReadString();
+            break;
+          }
+          case 34: {
+            ClassName = input.ReadString();
+            break;
+          }
+          case 40: {
+            CacheTime = input.ReadInt32();
             break;
           }
         }

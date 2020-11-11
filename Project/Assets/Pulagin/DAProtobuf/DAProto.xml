@@ -40,6 +40,12 @@
         <member name="F:DAProto.UIWindow_Config.PrefabPathFieldNumber">
             <summary>Field number for the "prefabPath" field.</summary>
         </member>
+        <member name="F:DAProto.UIWindow_Config.ClassNameFieldNumber">
+            <summary>Field number for the "className" field.</summary>
+        </member>
+        <member name="F:DAProto.UIWindow_Config.CacheTimeFieldNumber">
+            <summary>Field number for the "cacheTime" field.</summary>
+        </member>
         <member name="F:DAProto.Excel_UIWindow_Config.DataFieldNumber">
             <summary>Field number for the "Data" field.</summary>
         </member>
