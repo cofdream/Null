@@ -1,34 +1,36 @@
 ﻿using DA.UI;
 using UnityEngine;
+using UnityEditor;
+using NullNamespace;
 
-public class SetNameWindow 
+namespace DA.UI
 {
-    //SetNameWindowBind bind;
-    //public override GameObject Context { get => bind.gameObject; set => bind = value.GetComponent<SetNameWindowBind>(); }
-    //public override void Awake()
-    //{
-    //    bind.buttonEnd.onClick.AddListener(EndInputName);
-    //}
-
-    //public override void OnDestory()
-    //{
-    //    bind.buttonEnd.onClick.RemoveListener(EndInputName);
-    //}
-
-    //public override void OnDisable()
-    //{
-
-    //}
-
-    //public override void OnEnable()
-    //{
-
-    //}
-
-
-    public void EndInputName()
+    public class SetNameWindow : UIWindowBase
     {
-       // ArchivesData.Instance.SaveName(bind.inputFieldName.text);
+        SetNameWindowBind bind;
 
+        public override void OnInit()
+        {
+            bind = BindBase as SetNameWindowBind;
+            bind.buttonEnd.onClick.AddListener(EndInputName);
+
+            // DialogWindow
+        }
+
+        public override void OnDestory()
+        {
+            bind.buttonEnd.onClick.RemoveListener(EndInputName);
+        }
+
+        public override void OnOpen()
+        {
+            
+        }
+
+        public void EndInputName()
+        {
+             ArchivesData.Instance.SaveName(bind.inputFieldName.text);
+
+        }
     }
 }

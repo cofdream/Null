@@ -45,7 +45,6 @@ public sealed class ArchivesData : Singleton<ArchivesData>
     }
 
 
-
     public void DeleArchiveFile()
     {
         if (File.Exists(path))

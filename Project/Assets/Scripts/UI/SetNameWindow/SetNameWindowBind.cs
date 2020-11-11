@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SetNameWindowBind : MonoBehaviour
+namespace DA.UI
 {
-    public InputField inputFieldName;
-    public Button buttonEnd;
+    public class SetNameWindowBind : UIBindBase
+    {
+        public InputField inputFieldName;
+        public Button buttonEnd;
+    }
 }

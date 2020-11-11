@@ -32,7 +32,7 @@ namespace DA.UI
 
         public void Login()
         {
-            UIManager.Instance.OpenWindow("LobbyWindow");
+            UIManager.Instance.OpenWindow("SetNameWindow");
         }
     }
 }
