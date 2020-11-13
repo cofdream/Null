@@ -1,3 +1,4 @@
 
 D@LoginWindow"Prefabs/UI/LoginWindow/LoginWindow"LoginWindow
 D@LobbyWindow"Prefabs/UI/LobbyWindow/LobbyWindow"LobbyWindow
+LHSetNameWindow&Prefabs/UI/SetNameWindow/SetNameWindow"SetNameWindow

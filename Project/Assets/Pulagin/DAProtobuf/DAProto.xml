@@ -4,6 +4,24 @@
         <name>DAProto</name>
     </assembly>
     <members>
+        <member name="T:DAProto.DialogConfigReflection">
+            <summary>Holder for reflection information generated from Dialog_Config.proto</summary>
+        </member>
+        <member name="P:DAProto.DialogConfigReflection.Descriptor">
+            <summary>File descriptor for Dialog_Config.proto</summary>
+        </member>
+        <member name="F:DAProto.Dialog_Config.IdFieldNumber">
+            <summary>Field number for the "id" field.</summary>
+        </member>
+        <member name="F:DAProto.Dialog_Config.ContentFieldNumber">
+            <summary>Field number for the "content" field.</summary>
+        </member>
+        <member name="F:DAProto.Dialog_Config.NextDialogIdFieldNumber">
+            <summary>Field number for the "nextDialogId" field.</summary>
+        </member>
+        <member name="F:DAProto.Excel_Dialog_Config.DataFieldNumber">
+            <summary>Field number for the "Data" field.</summary>
+        </member>
         <member name="T:DAProto.TackConfigReflection">
             <summary>Holder for reflection information generated from Tack_Config.proto</summary>
         </member>

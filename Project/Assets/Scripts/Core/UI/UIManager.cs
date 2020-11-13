@@ -12,6 +12,8 @@ namespace DA.UI
 
         Dictionary<Type, UIWindowBase> windowCache = null;
 
+       public DialogControll DialogManager { get; private set; }
+
         #region Life
         protected override void SingletonInit()
         {
@@ -20,7 +22,7 @@ namespace DA.UI
         }
         public override void Free()
         {
-            
+
         }
         #endregion
 
@@ -28,6 +30,7 @@ namespace DA.UI
         public void Init()
         {
             Debug.Log("UIManager Init Done.");
+            DialogManager = new DialogControll();
         }
 
 

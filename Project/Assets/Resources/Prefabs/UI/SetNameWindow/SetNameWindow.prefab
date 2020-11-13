@@ -87,7 +87,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6523757848022712163}
-  - component: {fileID: 263884557789809264}
+  - component: {fileID: 8254842392926067282}
   m_Layer: 5
   m_Name: SetNameWindow
   m_TagString: Untagged
@@ -116,7 +116,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &263884557789809264
+--- !u!114 &8254842392926067282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4530118712807195850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 069709bb6e745334dabe256ed7fe46b6, type: 3}
+  m_Script: {fileID: 11500000, guid: f6ef91e87aa08f941b1580877c990eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputFieldName: {fileID: 7294230230656101130}

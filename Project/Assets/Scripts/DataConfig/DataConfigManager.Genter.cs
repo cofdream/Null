@@ -8,11 +8,13 @@ namespace DA.DataConfig
     {
         public static Excel_Tack_Config Tack_Config_Array { get; private set; }
         public static Excel_UIWindow_Config UIWindow_Config_Array { get; private set; }
+        public static Excel_Dialog_Config Dialog_Config { get; private set; }
 
         public static void LoadAllConfig()
         {
             Tack_Config_Array = LoadConfig<Excel_Tack_Config>(LoadData("DataConfig/Tack_Config"));
             UIWindow_Config_Array = LoadConfig<Excel_UIWindow_Config>(LoadData("DataConfig/UIWindow_Config"));
+            Dialog_Config = LoadConfig<Excel_Dialog_Config>(LoadData("DataConfig/Dialog_Config"));
         }
         public static void DisposeAllConfig()
         {
@@ -42,6 +44,18 @@ namespace DA.DataConfig
             foreach (var data in datas)
             {
                 if (data.ClassName == windowType)
+                {
+                    return data;
+                }
+            }
+            return null;
+        }
+        public static Dialog_Config GetDialogConfig(uint id)
+        {
+            var datas = Dialog_Config.Data.Values;
+            foreach (var data in datas)
+            {
+                if (data.Id == id)
                 {
                     return data;
                 }

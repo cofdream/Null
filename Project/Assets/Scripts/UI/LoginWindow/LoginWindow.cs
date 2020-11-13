@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+﻿using DA.DataModule;
+using UnityEngine;
 
 namespace DA.UI
 {
     public class LoginWindow : UIWindowBase
     {
-        public LoginWindowBind bind;
+        private LoginWindowBind bind;
+        private LoginDataModule dataModule;
         //public override GameObject Context { get { return bind.gameObject; } set { bind = value.GetComponent<LoginWindowBind>(); } }
 
         #region Lift
         public override void OnInit()
         {
             bind = BindBase as LoginWindowBind;
+            dataModule = new LoginDataModule();
 
             bind.Btn_Login.onClick.AddListener(Login);
         }
@@ -19,6 +22,7 @@ namespace DA.UI
             bind.Btn_Login.onClick.RemoveListener(Login);
 
             bind = null;
+            dataModule = null;
         }
         public override void OnOpen()
         {
@@ -32,7 +36,10 @@ namespace DA.UI
 
         public void Login()
         {
-            UIManager.Instance.OpenWindow("SetNameWindow");
+            if (dataModule.isFirst)
+            {
+                UIManager.Instance.OpenWindow("SetNameWindow");
+            }
         }
     }
 }

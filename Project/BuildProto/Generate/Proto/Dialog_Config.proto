@@ -1,0 +1,25 @@
+// Auto generated 
+
+syntax = "proto3";
+package packageName;
+
+// [START java_declaration]
+option java_package = "com.DAProtobuf.DAProtobuf";
+option java_outer_classname = "Dialog_Config";
+// [END java_declaration]
+
+// [START csharp_declaration]
+option csharp_namespace = "DAProto"; 
+// [END csharp_declaration]
+
+message Dialog_Config
+{
+    uint32 id = 1;
+    string content = 2;
+    uint32 nextDialogId = 3;
+}
+
+message Excel_Dialog_Config
+{
+    map<int32,Dialog_Config> Data = 1;
+}
