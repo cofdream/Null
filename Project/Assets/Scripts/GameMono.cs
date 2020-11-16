@@ -35,8 +35,14 @@ namespace NullNamespace
             ArchivesData.Instance.LoadArchive();
 
             UIManager.Instance.Init();
+            
+            var dispatcher = UIManager.Instance.OpenWindow("LoginWindow").Dispatcher;
+            dispatcher.Subscribe((short)LoginWindow.LoginWindowEvent.LoginWindowClose, EnterGame);
+        }
 
-            UIManager.Instance.OpenWindow("LoginWindow");
+        private void EnterGame(short type)
+        {
+
         }
 
 

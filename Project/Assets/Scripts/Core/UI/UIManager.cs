@@ -12,7 +12,7 @@ namespace DA.UI
 
         Dictionary<Type, UIWindowBase> windowCache = null;
 
-       public DialogControll DialogManager { get; private set; }
+        public DialogControll DialogManager { get; private set; }
 
         #region Life
         protected override void SingletonInit()
@@ -34,22 +34,30 @@ namespace DA.UI
         }
 
 
-        public void OpenWindow(string windowName)
+        public Event.IDispatch OpenWindow(string windowName)
         {
             var config = DataConfigManager.GetUIWindowConfigByName(windowName);
 
             var type = Type.GetType("DA.UI." + config.ClassName);
 
             var window = Activator.CreateInstance(type) as UIWindowBase;
+            windowCache.Add(type, window);
 
             window.Config = config;
 
             var bind = CreateWindowContext(config.PrefabPath);
             window.BindBase = bind.GetComponent<UIBindBase>();
+            window.DisposeCallBack =
+                () =>
+                {
+                    windowCache.Remove(type);
+                };
 
             window.OnInit();
 
             window.OnOpen();
+
+            return window;
         }
 
 
@@ -64,7 +72,6 @@ namespace DA.UI
             else
             {
                 var config = DataConfigManager.GetUIWindowConfigByType(type.Name);
-
 
                 return CreateWindow<T>(config);
             }

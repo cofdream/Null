@@ -4,11 +4,16 @@ namespace DA.DataModule
 {
     public class LoginDataModule
     {
-        public bool isFirst;
-
-        public LoginDataModule()
+        public bool ExistName()
         {
-            isFirst = true;
+            return ArchivesData.Instance.Archive.Name == null;
         }
+
+        public bool SaveName(string name)
+        {
+            ArchivesData.Instance.Archive.Name = name;
+            return true;
+        }
+        
     }
 }

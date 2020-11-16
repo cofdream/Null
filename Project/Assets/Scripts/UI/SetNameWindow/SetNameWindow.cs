@@ -3,21 +3,30 @@ using UnityEngine;
 using UnityEditor;
 using DAProto;
 using DA.DataConfig;
+using DA.DataModule;
 
 namespace DA.UI
 {
     public class SetNameWindow : UIWindowBase
     {
+        public enum SetNameWindowEvent : short
+        {
+            SetNameEnd,
+        }
+
         SetNameWindowBind bind;
+
+        LoginDataModule loginDataModule;
         public override void OnInit()
         {
+            base.OnInit();
             bind = BindBase as SetNameWindowBind;
-
+            loginDataModule = new LoginDataModule();
         }
 
         public override void OnDestory()
         {
-
+            Object.Destroy(bind);
         }
 
         public override void OnOpen()
@@ -25,18 +34,28 @@ namespace DA.UI
             ShowDialog();
         }
 
+        public override void OnClose()
+        {
+            DisposeCallBack();
+            OnDestory();
+        }
+
         public void EndInputName()
         {
+            Debug.Log(11);
             string name = bind.inputFieldName.text;
             if (string.IsNullOrWhiteSpace(name))
             {
-                ArchivesData.Instance.SaveName(bind.inputFieldName.text);
-                bind.buttonEnd.onClick.RemoveListener(EndInputName);
-                // close UIManager.Instance
+                Debug.Log("重新输入名字！");
             }
             else
             {
-                Debug.Log("重新输入名字！");
+                if (loginDataModule.SaveName(name))
+                {
+                    bind.buttonEnd.onClick.RemoveListener(EndInputName);
+                }
+                eventDispatcher.SendEvent((short)SetNameWindowEvent.SetNameEnd);
+                OnClose();
             }
         }
 

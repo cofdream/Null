@@ -5,14 +5,14 @@ namespace DA.Event
 {
     public delegate void EventHandler(short type);
     public delegate void EventHandler<T>(short type, T msg);
-    public class EventDispatcher
+    public class EventDispatcher : IDispatcher
     {
-        private Dictionary<short, List<Delegate>> events = null;
-        private List<List<Delegate>> removeHandles = null;
-        public EventDispatcher()
+        private readonly Dictionary<short, List<Delegate>> events = null;
+        private readonly List<List<Delegate>> removeHandles = null;
+        public EventDispatcher(int count = 10)
         {
-            events = new Dictionary<short, List<Delegate>>(10);
-            removeHandles = new List<List<Delegate>>();
+            events = new Dictionary<short, List<Delegate>>(count);
+            removeHandles = new List<List<Delegate>>(count);
         }
 
         public void ClearAllHandle()
@@ -46,6 +46,16 @@ namespace DA.Event
                 delegates.RemoveRange(newLength, oldLength - newLength);
             }
         }
+        public void Subscribe(short type, EventHandler handler)
+        {
+            Delegate @delegate = handler;
+            AddHandle(events, type, @delegate);
+        }
+        public void Unsubscribe(short type, EventHandler handler)
+        {
+            Delegate @delegate = handler;
+            RemoveHandle(events, type, @delegate);
+        }
         public void Subscribe<T>(short type, EventHandler<T> handler)
         {
             Delegate @delegate = handler;
@@ -56,11 +66,14 @@ namespace DA.Event
             Delegate @delegate = handler;
             RemoveHandle(events, type, @delegate);
         }
+        public void SendEvent(short type)
+        {
+            Send(events, type);
+        }
         public void SendEvent<T>(short type, T msg)
         {
             Send(events, type, msg);
         }
-
         private void AddHandle(Dictionary<short, List<Delegate>> dic, short type, Delegate handle)
         {
             List<Delegate> delegates = null;
@@ -94,23 +107,35 @@ namespace DA.Event
             }
         }
 
+        private void Send(Dictionary<short, List<Delegate>> dic, short type)
+        {
+            List<Delegate> delegates = null;
+            if (dic.TryGetValue(type, out delegates))
+            {
+                int length = delegates.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    var handler = delegates[i] as EventHandler;
+                    if (handler != null)
+                    {
+                        handler.Invoke(type);
+                    }
+                }
+            }
+        }
         private void Send<T>(Dictionary<short, List<Delegate>> dic, short type, T msg)
         {
             List<Delegate> delegates = null;
             if (dic.TryGetValue(type, out delegates))
             {
-                Send(delegates, type, msg);
-            }
-        }
-        private void Send<T>(List<Delegate> delegates, short type, T msg)
-        {
-            int length = delegates.Count;
-            for (int i = 0; i < length; i++)
-            {
-                var handler = delegates[i] as EventHandler<T>;
-                if (handler != null)
+                int length = delegates.Count;
+                for (int i = 0; i < length; i++)
                 {
-                    handler.Invoke(type, msg);
+                    var handler = delegates[i] as EventHandler<T>;
+                    if (handler != null)
+                    {
+                        handler.Invoke(type, msg);
+                    }
                 }
             }
         }
