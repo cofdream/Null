@@ -7,6 +7,7 @@ using UnityEngine;
 public class Archive
 {
     public string Name = null;
+    public int lv = 0;
     public void Init()
     {
 

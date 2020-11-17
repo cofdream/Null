@@ -30,7 +30,7 @@ namespace DA.Utils
                         }
 
                         instance = ctor.Invoke(null) as T;
-                        instance.SingletonInit();
+                        instance.InitSingleton();
 
                         @lock = null;
                     }
@@ -38,12 +38,17 @@ namespace DA.Utils
                 return instance;
             }
         }
-
-        protected virtual void SingletonInit() { }
-
-        public virtual void Free()
-        {
-            instance = null;
-        }
+        /// <summary>
+        /// 单例初始化
+        /// </summary>
+        protected virtual void InitSingleton() { }
+        /// <summary>
+        /// 释放单例，如有需要
+        /// </summary>
+        public virtual void Free() { }
+        /// <summary>
+        /// 提前加载单例
+        /// </summary>
+        public virtual void LoadSingleton() { }
     }
 }
