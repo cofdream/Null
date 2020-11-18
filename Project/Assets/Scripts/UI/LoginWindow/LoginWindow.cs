@@ -1,4 +1,5 @@
-﻿using DA.DataModule;
+﻿using DA.DataConfig;
+using DA.DataModule;
 using DA.Event;
 using UnityEngine;
 
@@ -13,7 +14,6 @@ namespace DA.UI
 
         private LoginWindowBind bind;
         private LoginDataModule dataModule;
-        //public override GameObject Context { get { return bind.gameObject; } set { bind = value.GetComponent<LoginWindowBind>(); } }
 
         #region Lift
         public override void OnInit()
@@ -23,20 +23,23 @@ namespace DA.UI
             bind = BindBase as LoginWindowBind;
             dataModule = new LoginDataModule();
 
-            bind.Btn_Login.onClick.AddListener(Login);
+            bind.Btn_Login.onClick.AddListener(ShowDialog);
+            bind.Btn_EndName.onClick.AddListener(EndInputName);
+        }
+        public override void OnOpen()
+        {
+            bind.DefaultPanelGameObj.SetActive(true);
+            bind.SetNamePanelGameObj.SetActive(false);
         }
         public override void OnDestory()
         {
-            bind.Btn_Login.onClick.RemoveListener(Login);
+            bind.Btn_Login.onClick.RemoveListener(ShowDialog);
+            bind.Btn_EndName.onClick.RemoveListener(EndInputName);
 
             bind = null;
             dataModule = null;
 
             Object.Destroy(bind);
-        }
-        public override void OnOpen()
-        {
-
         }
         public override void OnClose()
         {
@@ -46,22 +49,35 @@ namespace DA.UI
         }
         #endregion
 
-        public void Login()
-        {
-            if (dataModule.ExistName())
-            {
-                var dispatcher = UIManager.Instance.OpenWindow("SetNameWindow").Dispatcher;
-                dispatcher.Subscribe((short)SetNameWindow.SetNameWindowEvent.SetNameEnd, SetNameEnd);
-            }
-            else
-            {
-                SetNameEnd(short.MaxValue);
-            }
-        }
-        public void SetNameEnd(short type)
+        private void SendCloseEvent()
         {
             eventDispatcher.SendEvent((short)LoginWindowEvent.LoginWindowClose);
             OnClose();
+        }
+
+        private void ShowDialog()
+        {
+            var config = DataConfigManager.GetDialogConfig(1);
+            if (config != null)
+            {
+                UIManager.Instance.DialogManager.DisplayDialog(config, DialogOver);
+            }
+            else
+            {
+                DialogOver();
+            }
+        }
+        private void DialogOver()
+        {
+            Debug.Log("对话结束");
+
+            bind.SetNamePanelGameObj.SetActive(true);
+        }
+        private void EndInputName()
+        {
+            DataManager.NameBind.Value = bind.NameField.text;
+
+            SendCloseEvent();
         }
     }
 }

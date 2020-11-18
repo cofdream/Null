@@ -1,19 +1,11 @@
-﻿using UnityEngine;
-
+﻿
 namespace DA.DataModule
 {
     public class LoginDataModule
     {
-        public bool ExistName()
+        public void SaveName(string name)
         {
-            return ArchivesData.Instance.Archive.Name == null;
+            DataManager.NameBind.Value = name;
         }
-
-        public bool SaveName(string name)
-        {
-            ArchivesData.Instance.Archive.Name = name;
-            return true;
-        }
-        
     }
 }

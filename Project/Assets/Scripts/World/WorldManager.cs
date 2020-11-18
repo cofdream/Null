@@ -5,6 +5,7 @@ using UnityEngine;
 
 public sealed class WorldManager : Singleton<WorldManager>
 {
+    WorldManager() { }
     public void EnterWorld()
     {
 

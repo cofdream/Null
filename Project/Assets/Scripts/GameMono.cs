@@ -33,7 +33,7 @@ namespace NullNamespace
 
             DataConfigManager.LoadAllConfig();
 
-            ArchivesData.Instance.LoadSingleton();
+            ArchivesData.LoadArchivesData();
             DataManager.Init();
 
             UIManager.Instance.Init();
@@ -55,28 +55,6 @@ namespace NullNamespace
             // 传送至存档的位置
 
             // 启动游戏所需的各模块
-
-            DataManager.Name.Bind((a, b) => { print($"old {a}  new {b}"); });
-
-            DataManager.Lv.Bind((a, b) => { print($"old {a}  new {b}"); });
-
-            DataManager.Name.Value = "111";
-
-            print($"Arc {ArchivesData.Instance.Archive.Name}");
-
-            DataManager.Lv.Value = 10;
-
-            print($"Arc {ArchivesData.Instance.Archive.lv}");
-
-
-            DataManager.Name.Value = "222";
-
-            print($"Arc {ArchivesData.Instance.Archive.Name}");
-
-            DataManager.Lv.Value = 20;
-
-            print($"Arc {ArchivesData.Instance.Archive.lv}");
-
         }
 
 
@@ -85,7 +63,7 @@ namespace NullNamespace
         {
             DataConfigManager.DisposeAllConfig();
 
-            ArchivesData.Instance.DeleArchiveFile();
+            ArchivesData.DeleArchiveFile();
         }
     }
 }

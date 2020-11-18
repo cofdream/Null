@@ -1,8 +1,15 @@
-﻿using System;
-
+﻿
 namespace DA.DataModule
 {
-    public sealed class DataBind<T>
+    public delegate void BindAction<T>(T old, T @new);
+
+    public interface IBind<T>
+    {
+        void Bind(BindAction<T> callBack);
+        void Unbind(BindAction<T> callBack);
+    }
+
+    public class DataBind<T> : IBind<T>
     {
         private bool firste = true;
         private T value;
@@ -17,32 +24,32 @@ namespace DA.DataModule
                     firste = false;
 
                     this.value = value;
-                    this.cahngeValue?.Invoke(this.value, value);
+                    this.callback.Invoke(this.value, value);
                     return;
                 }
                 if (temp.Equals(value) == false)
                 {
                     this.value = value;
-                    this.cahngeValue?.Invoke(temp, value);
+                    this.callback.Invoke(temp, value);
                 }
             }
         }
 
-        private Action<T, T> cahngeValue;
+        private BindAction<T> callback;
 
-        public DataBind(T value)
+        public DataBind(BindAction<T> callBack)
         {
-            this.value = value;
+            this.callback = callBack;
         }
 
-        public void Bind(Action<T, T> cahngeValue)
+        public void Bind(BindAction<T> callBack)
         {
-            this.cahngeValue += cahngeValue;
+            this.callback += callback;
         }
 
-        public void Unbind(Action<T, T> cahngeValue)
+        public void Unbind(BindAction<T> callBack)
         {
-            this.cahngeValue -= cahngeValue;
+            this.callback -= callback;
         }
     }
 }

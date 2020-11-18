@@ -26,7 +26,7 @@ namespace DA.Utils
 
                         if (ctor == null)
                         {
-                            throw new Exception("Non Constructor() not found! in " + typeof(T));
+                            throw new Exception($"{typeof(T)} need private constructor");
                         }
 
                         instance = ctor.Invoke(null) as T;

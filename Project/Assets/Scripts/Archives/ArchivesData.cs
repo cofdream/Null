@@ -1,22 +1,19 @@
 ﻿using DA.Utils;
-using System;
 using System.IO;
 using UnityEngine;
 
 namespace DA.DataModule
 {
-    public sealed class ArchivesData : Singleton<ArchivesData>
+    public static class ArchivesData
     {
-        private readonly string path = Application.persistentDataPath + "/Archive";
-        private Archive archive;
-        public Archive Archive
+        private static readonly string path = Application.persistentDataPath + "/Archive";
+        private static Archive archive;
+        public static Archive Archive
         {
             get { return archive; }
         }
 
-        private ArchivesData() { }
-
-        protected override void InitSingleton()
+        public static void LoadArchivesData()
         {
             if (File.Exists(path) == false)
             {
@@ -28,15 +25,15 @@ namespace DA.DataModule
             else
             {
                 archive = JsonUtility.FromJson<Archive>(File.ReadAllText(path));
-            }          
+            }
         }
 
-        public void SaveArchive()
+        public static void SaveArchive()
         {
             File.WriteAllText(path, JsonUtility.ToJson(archive));
         }
 
-        public void DeleArchiveFile()
+        public static void DeleArchiveFile()
         {
             if (File.Exists(path))
             {
