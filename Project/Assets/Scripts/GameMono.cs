@@ -7,26 +7,24 @@ using UnityEngine;
 
 namespace DA
 {
-    public sealed class GameMono : MonoBehaviour
+    public static class GameMono
     {
-        private void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-            Initialize();
-        }
-        private void Initialize()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initialize()
         {
             Debug.Log("Init Done.");
+
+            new GameObject("MonoController").AddComponent<MonoController>();
+
+            MonoController.UpdataAction += StartGame;
         }
 
-        private void Start()
-        {
-            StartGame();
-        }
 
-        private void StartGame()
+        private static void StartGame()
         {
-            print("Enter");
+            MonoController.UpdataAction -= StartGame;
+
+            Debug.Log("Enter");
 
             DataConfigManager.LoadAllConfig();
 
@@ -34,13 +32,11 @@ namespace DA
 
             DataManager.Init();
 
-            UIManager.Instance.Init();
-
-            var dispatcher = UIManager.Instance.OpenWindow("LoginWindow").Dispatcher;
+            var dispatcher = UIManager.OpenWindow("LoginWindow").Dispatcher;
             dispatcher.Subscribe((short)LoginWindow.LoginWindowEvent.LoginWindowClose, EnterGame);
         }
 
-        private void EnterGame(short type)
+        private static void EnterGame(short type)
         {
             // 读取当前游戏进度
 
@@ -53,13 +49,5 @@ namespace DA
             // 启动游戏所需的各模块
         }
 
-
-
-        private void OnDestroy()
-        {
-            DataConfigManager.DisposeAllConfig();
-
-            ArchivesData.DeleArchiveFile();
-        }
     }
 }

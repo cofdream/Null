@@ -60,7 +60,7 @@ namespace DA.UI
             var config = DataConfigManager.GetDialogConfig(1);
             if (config != null)
             {
-                UIManager.Instance.DialogManager.DisplayDialog(config, DialogOver);
+                UIManager.DialogManager.DisplayDialog(config, DialogOver);
             }
             else
             {

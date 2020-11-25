@@ -6,33 +6,29 @@ using UnityEngine;
 
 namespace DA.UI
 {
-    public class UIManager : Singleton<UIManager>
+    public class UIManager
     {
-        private Transform windowsTran = null;
+        private const string UINamespace = "DA.UI.";
 
-        Dictionary<Type, UIWindowBase> windowCache = null;
+        static Transform windowsTran = null;
 
-        public DialogControll DialogManager { get; private set; }
+        static Dictionary<Type, UIWindowBase> windowCache = null;
 
-        protected override void InitSingleton()
+        public static DialogControll DialogManager { get; private set; }
+
+        static UIManager()
         {
             windowsTran = GameObject.Find("UIRoot/Canvas").transform;
             windowCache = new Dictionary<Type, UIWindowBase>(30);
-        }
 
-        UIManager() { }
-        public void Init()
-        {
-            Debug.Log("UIManager Init Done.");
             DialogManager = new DialogControll();
         }
 
-
-        public Event.IDispatch OpenWindow(string windowName)
+        public static Event.IDispatch OpenWindow(string windowName)
         {
             var config = DataConfigManager.GetUIWindowConfigByName(windowName);
 
-            var type = Type.GetType("DA.UI." + config.ClassName);
+            var type = Type.GetType(UINamespace + config.ClassName);
 
             var window = Activator.CreateInstance(type) as UIWindowBase;
             windowCache.Add(type, window);
@@ -55,7 +51,7 @@ namespace DA.UI
         }
 
 
-        private T GetWindow<T>() where T : UIWindowBase, new()
+        private static T GetWindow<T>() where T : UIWindowBase, new()
         {
             UIWindowBase window;
             Type type = typeof(T);
@@ -71,7 +67,7 @@ namespace DA.UI
             }
         }
 
-        private T CreateWindow<T>(DAProto.UIWindow_Config config) where T : UIWindowBase, new()
+        private static T CreateWindow<T>(DAProto.UIWindow_Config config) where T : UIWindowBase, new()
         {
             var window = new T()
             {
@@ -81,7 +77,7 @@ namespace DA.UI
             return window;
         }
 
-        private GameObject CreateWindowContext(string path)
+        private static GameObject CreateWindowContext(string path)
         {
             var gameObject = CreateWindowPrefab(path);
             gameObject = GameObject.Instantiate(gameObject, windowsTran);
@@ -89,7 +85,7 @@ namespace DA.UI
             return gameObject;
         }
 
-        private GameObject CreateWindowPrefab(string path)
+        private static GameObject CreateWindowPrefab(string path)
         {
             GameObject win = Resources.Load<GameObject>(path);
             return win;

@@ -8,6 +8,7 @@ namespace DA
         public static float DelateTime { get; private set; }
 
         public static event Action UpdataAction;
+
         void Update()
         {
             DelateTime = Time.deltaTime;
