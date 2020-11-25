@@ -1,4 +1,4 @@
-﻿using DA.Utils;
+﻿using DA;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +11,7 @@ public class TTTT : MonoBehaviour
 
     void Start()
     {
-        var pool = new ObjectPoolTime<Data>();
+        var pool = new ObjectPoolTimer<Data>();
         pool.Count = 10;
         objectPool = pool;
     }
@@ -38,7 +38,7 @@ public class Data : IPoolObjectTime
     public string name;
 
     public float LeftCacheTime { get; set; }
-    public int CacheTime { get; set; } = 1;
+    public float CacheTime { get; set; } = 1;
 
     public void Free()
     {

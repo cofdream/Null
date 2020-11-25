@@ -14,17 +14,11 @@ namespace DA.UI
 
         public DialogControll DialogManager { get; private set; }
 
-        #region Life
         protected override void InitSingleton()
         {
             windowsTran = GameObject.Find("UIRoot/Canvas").transform;
             windowCache = new Dictionary<Type, UIWindowBase>(30);
         }
-        public override void Free()
-        {
-
-        }
-        #endregion
 
         UIManager() { }
         public void Init()

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using DAProto;
+﻿using DAProto;
 using Google.Protobuf;
 
 namespace DA.DataConfig
 {
+    // todo： 封装到外部Dll去调用，减少编译时间
     public static partial class DataConfigManager
     {
         public static Excel_Tack_Config Tack_Config_Array { get; private set; }

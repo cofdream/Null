@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DA.Utils
+namespace DA
 {
 
     public class ObjectPool<T> : IObjectPool<T> where T : class, IPoolObject
@@ -46,12 +46,12 @@ namespace DA.Utils
             objs.Clear();
         }
     }
-    public class ObjectPoolTime<T> : IObjectPoolTime<T> where T : class, IPoolObjectTime
+    public class ObjectPoolTimer<T> : IObjectPoolTime<T> where T : class, IPoolObjectTime
     {
         public int Count;
         readonly List<T> objs;
 
-        public ObjectPoolTime(int count = 10)
+        public ObjectPoolTimer(int count = 10)
         {
             Count = count;
             objs = new List<T>(Count);
@@ -129,6 +129,6 @@ namespace DA.Utils
     public interface IPoolObjectTime : IPoolObject
     {
         float LeftCacheTime { get; set; }
-        int CacheTime { get; set; }
+        float CacheTime { get; set; }
     }
 }
