@@ -14,6 +14,13 @@
       "dependencies": {},
       "hash": "62ddb0c9c68531b9c4cd0cc8b86477e29c2055aa"
     },
+    "com.ourpalm.ilruntime": {
+      "version": "1.6.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.cn"
+    },
     "com.unity.textmeshpro": {
       "version": "2.1.1",
       "depth": 0,
