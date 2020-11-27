@@ -9,13 +9,14 @@ namespace HotFix_Project
 {
     public class Init
     {
-        public void Func()
+        const string hellow = "Hello";
+        public static void Fun()
         {
-            Debug.Log("Hello");
+            Debug.Log(hellow);
         }
-        public void Func(int a)
+        public static void Fun(int a)
         {
-            Debug.Log(a);
+            //Debug.Log(a);
         }
     }
 }

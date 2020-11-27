@@ -26,7 +26,7 @@ public class Test_IL : MonoBehaviour
         {
             ILRuntimeManager.Appdomain.Invoke("HotFix_Project.Init", "Fun", null, null);
 
-            ILRuntimeManager.Appdomain.Invoke("HotFix_Project.Init", "Fun", null, "11");
+            //ILRuntimeManager.Appdomain.Invoke("HotFix_Project.Init", "Fun", null, "11");
 
             ILRuntimeManager.Appdomain.Invoke("HotFix_Project.Init", "Fun", null, 123);
 
@@ -34,12 +34,12 @@ public class Test_IL : MonoBehaviour
 
             Func = initType.GetMethod("Fun", 1);
 
-            using (var ctx =ILRuntimeManager.Appdomain.BeginInvoke(Func))
+            using (var ctx = ILRuntimeManager.Appdomain.BeginInvoke(Func))
             {
                 ctx.PushInteger(123);
                 ctx.Invoke();
             }
-
         }
+
     }
 }

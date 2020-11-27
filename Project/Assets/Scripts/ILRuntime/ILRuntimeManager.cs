@@ -25,7 +25,9 @@ public sealed class ILRuntimeManager
         //首先实例化ILRuntime的AppDomain，AppDomain是一个应用程序域，每个AppDomain都是一个独立的沙盒
         Appdomain = new AppDomain();
 
-        Appdomain.DebugService.StartDebugService(56000);
+#if ILRUNTIME_ENABLEPDB
+        Appdomain.DebugService.StartDebugService(56000); 
+#endif
     }
 
     public static IEnumerator AsyncLoadHotFixAssembly()
@@ -109,3 +111,8 @@ public sealed class ILRuntimeManager
         symbolStream = null;
     }
 }
+
+// ILR
+// 创建类实例
+//    1.可以通过调用静态函数去返回实例
+//    2.继承原工程的类，通过名字去创建
