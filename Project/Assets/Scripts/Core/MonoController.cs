@@ -5,7 +5,8 @@ namespace DA
 {
     public sealed class MonoController : MonoBehaviour
     {
-        public static float DelateTime { get; private set; }
+        private static float delateTime;
+        public static float DelateTime { get => delateTime; private set => delateTime = value; }
 
         public static event Action UpdataAction;
 

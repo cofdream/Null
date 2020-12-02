@@ -91,5 +91,17 @@ namespace DA.UI
             return win;
         }
 
+
+        public static void ShowWin(string winName)
+        {
+            Event.IDispatch dispatch;
+            ShowWin(winName, out dispatch);
+        }
+        public static void ShowWin(string winName, out Event.IDispatch dispatch)
+        {
+
+
+            dispatch = null;
+        }
     }
 }
