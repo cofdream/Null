@@ -12,7 +12,6 @@ namespace DA.Res
             AssetBundle = 2,
         }
         public static AssetBundleLoadMode loadMode = AssetBundleLoadMode.Develop;
-
         static AssetBundleManager()
         {
 
@@ -22,5 +21,12 @@ namespace DA.Res
         {
             
         }
+
+        public static void SetLoadMode(AssetBundleLoadMode loadMode)
+        {
+        }
     }
+    public interface ILoader { };
+    public class AssetsBundleLoder : ILoader { }
+
 }
