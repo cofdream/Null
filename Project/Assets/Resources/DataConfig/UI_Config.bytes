@@ -1,0 +1,4 @@
+
+JFLoginWindow"Prefabs/UI/LoginWindow/LoginWindow"DA.UI.LoginWindow
+JFLobbyWindow"Prefabs/UI/LobbyWindow/LobbyWindow"DA.UI.LobbyWindow
+RNSetNameWindow&Prefabs/UI/SetNameWindow/SetNameWindow"DA.UI.SetNameWindow

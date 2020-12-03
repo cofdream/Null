@@ -8,8 +8,6 @@ namespace DA.UI
 {
     public class UIManager
     {
-        private const string UINamespace = "DA.UI.";
-
         static Transform windowsTran = null;
 
         static Dictionary<Type, UIWindowBase> windowCache = null;
@@ -18,7 +16,7 @@ namespace DA.UI
 
         static UIManager()
         {
-            windowsTran = GameObject.Find("UIRoot/Canvas").transform;
+            //windowsTran = GameObject.Find("UIRoot/Canvas").transform;
             windowCache = new Dictionary<Type, UIWindowBase>(30);
 
             DialogManager = new DialogControll();
@@ -28,7 +26,7 @@ namespace DA.UI
         {
             var config = DataConfigManager.GetUIWindowConfigByName(windowName);
 
-            var type = Type.GetType(UINamespace + config.ClassName);
+            var type = Type.GetType(config.ClassName);
 
             var window = Activator.CreateInstance(type) as UIWindowBase;
             windowCache.Add(type, window);
@@ -67,7 +65,7 @@ namespace DA.UI
             }
         }
 
-        private static T CreateWindow<T>(DAProto.UIWindow_Config config) where T : UIWindowBase, new()
+        private static T CreateWindow<T>(DAProto.UI_Config config) where T : UIWindowBase, new()
         {
             var window = new T()
             {
@@ -99,9 +97,21 @@ namespace DA.UI
         }
         public static void ShowWin(string winName, out Event.IDispatch dispatch)
         {
+            var config = DataConfigManager.GetUIWindowConfigByName(winName);
 
+            var uiType = Type.GetType(config.ClassName);
 
-            dispatch = null;
+            var window = Activator.CreateInstance(uiType) as UIWindowBase;
+            windowCache.Add(uiType, window);
+
+            window.Config = config;
+
+            //GameObject bind = CreateWindowContext(config.PrefabPath);
+            //window.BindBase = bind.GetComponent<UIBindBase>();
+
+            window.OnInit();
+
+            dispatch = window;
         }
     }
 }

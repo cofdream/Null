@@ -7,13 +7,13 @@ namespace DA.DataConfig
     public static partial class DataConfigManager
     {
         public static Excel_Tack_Config Tack_Config_Array { get; private set; }
-        public static Excel_UIWindow_Config UIWindow_Config_Array { get; private set; }
+        public static Excel_UI_Config UI_Config_Array { get; private set; }
         public static Excel_Dialog_Config Dialog_Config { get; private set; }
 
         public static void LoadAllConfig()
         {
             Tack_Config_Array = LoadConfig<Excel_Tack_Config>(LoadData("DataConfig/Tack_Config"));
-            UIWindow_Config_Array = LoadConfig<Excel_UIWindow_Config>(LoadData("DataConfig/UIWindow_Config"));
+            UI_Config_Array = LoadConfig<Excel_UI_Config>(LoadData("DataConfig/UI_Config"));
             Dialog_Config = LoadConfig<Excel_Dialog_Config>(LoadData("DataConfig/Dialog_Config"));
         }
         public static void DisposeAllConfig()
@@ -26,9 +26,9 @@ namespace DA.DataConfig
             return parser.ParseFrom(data);
         }
 
-        public static UIWindow_Config GetUIWindowConfigByName(string windowName)
+        public static UI_Config GetUIWindowConfigByName(string windowName)
         {
-            var datas = UIWindow_Config_Array.Data.Values;
+            var datas = UI_Config_Array.Data.Values;
             foreach (var data in datas)
             {
                 if (data.WindowName == windowName)
@@ -38,9 +38,9 @@ namespace DA.DataConfig
             }
             return null;
         }
-        public static UIWindow_Config GetUIWindowConfigByType(string windowType)
+        public static UI_Config GetUIWindowConfigByType(string windowType)
         {
-            var datas = UIWindow_Config_Array.Data.Values;
+            var datas = UI_Config_Array.Data.Values;
             foreach (var data in datas)
             {
                 if (data.ClassName == windowType)

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using DA.DataConfig;
+using QFramework;
+using UnityEngine;
 
 namespace DA
 {
@@ -11,7 +13,9 @@ namespace DA
 
         private void Start()
         {
+            DataConfigManager.LoadAllConfig();
 
+            ResMgr.Init();
             UI.UIManager.ShowWin("LobbyWindow");
         }
     }

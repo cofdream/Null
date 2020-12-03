@@ -43,28 +43,28 @@
         <member name="F:DAProto.Excel_Tack_Config.DataFieldNumber">
             <summary>Field number for the "Data" field.</summary>
         </member>
-        <member name="T:DAProto.UIWindowConfigReflection">
-            <summary>Holder for reflection information generated from UIWindow_Config.proto</summary>
+        <member name="T:DAProto.UIConfigReflection">
+            <summary>Holder for reflection information generated from UI_Config.proto</summary>
         </member>
-        <member name="P:DAProto.UIWindowConfigReflection.Descriptor">
-            <summary>File descriptor for UIWindow_Config.proto</summary>
+        <member name="P:DAProto.UIConfigReflection.Descriptor">
+            <summary>File descriptor for UI_Config.proto</summary>
         </member>
-        <member name="F:DAProto.UIWindow_Config.IdFieldNumber">
+        <member name="F:DAProto.UI_Config.IdFieldNumber">
             <summary>Field number for the "id" field.</summary>
         </member>
-        <member name="F:DAProto.UIWindow_Config.WindowNameFieldNumber">
+        <member name="F:DAProto.UI_Config.WindowNameFieldNumber">
             <summary>Field number for the "windowName" field.</summary>
         </member>
-        <member name="F:DAProto.UIWindow_Config.PrefabPathFieldNumber">
+        <member name="F:DAProto.UI_Config.PrefabPathFieldNumber">
             <summary>Field number for the "prefabPath" field.</summary>
         </member>
-        <member name="F:DAProto.UIWindow_Config.ClassNameFieldNumber">
+        <member name="F:DAProto.UI_Config.ClassNameFieldNumber">
             <summary>Field number for the "className" field.</summary>
         </member>
-        <member name="F:DAProto.UIWindow_Config.CacheTimeFieldNumber">
+        <member name="F:DAProto.UI_Config.CacheTimeFieldNumber">
             <summary>Field number for the "cacheTime" field.</summary>
         </member>
-        <member name="F:DAProto.Excel_UIWindow_Config.DataFieldNumber">
+        <member name="F:DAProto.Excel_UI_Config.DataFieldNumber">
             <summary>Field number for the "Data" field.</summary>
         </member>
     </members>

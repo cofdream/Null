@@ -21,6 +21,13 @@
       "dependencies": {},
       "url": "https://packages.unity.cn"
     },
+    "com.unity.assetbundlebrowser": {
+      "version": "1.7.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.cn"
+    },
     "com.unity.textmeshpro": {
       "version": "2.1.1",
       "depth": 0,

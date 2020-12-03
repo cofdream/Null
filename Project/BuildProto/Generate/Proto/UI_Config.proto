@@ -1,0 +1,27 @@
+// Auto generated 
+
+syntax = "proto3";
+package packageName;
+
+// [START java_declaration]
+option java_package = "com.DAProtobuf.DAProtobuf";
+option java_outer_classname = "UI_Config";
+// [END java_declaration]
+
+// [START csharp_declaration]
+option csharp_namespace = "DAProto"; 
+// [END csharp_declaration]
+
+message UI_Config
+{
+    int32 id = 1;
+    string windowName = 2;
+    string prefabPath = 3;
+    string className = 4;
+    int32 cacheTime = 5;
+}
+
+message Excel_UI_Config
+{
+    map<int32,UI_Config> Data = 1;
+}
