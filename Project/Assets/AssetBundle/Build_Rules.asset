@@ -16,5 +16,13 @@ MonoBehaviour:
   nameByHash: 1
   buildBundleOptions: 256
   scenesInBuild: []
-  assets: []
+  assets:
+  - path: Assets/Scenes/SplashScreen.unity
+    patch: 0
+    bundle: 
+    groupBy: 2
+  - path: Assets/Scenes/MainScene.unity
+    patch: 0
+    bundle: 
+    groupBy: 2
   bundles: []

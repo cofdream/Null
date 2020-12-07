@@ -42,6 +42,11 @@ namespace DA.AssetsBundle
             }
         }
 
+        internal static void BuildStandalonePlayer()
+        {
+            throw new NotImplementedException();
+        }
+
         internal static void BuildRules()
         {
             BuildRules buildRules = GetOrCreateBuildRules();
@@ -70,7 +75,7 @@ namespace DA.AssetsBundle
             Dictionary<string, int> bundle_IndexDic = CreateBundle_IndexDictionary(allAssetBundleName);
             List<BundleRef> bundleRefs = GetBundleRefs(assetBundleManifest, bundleDir, allAssetBundleName, bundle_IndexDic); //保存ab的依赖
             var dirs = new List<string>();
-            var assets = new List<AssetRef>();
+            var assetRefs = new List<AssetRef>();
             var patches = new List<VPatch>();
 
             int length = rules.assets.Length;
@@ -88,8 +93,97 @@ namespace DA.AssetsBundle
                     index = dirs.Count;
                     dirs.Add(dir);
                 }
+
+                var assetRef = new AssetRef();
+                if (!bundle_IndexDic.TryGetValue(item.bundle, out assetRef.bundle))
+                {
+                    // to read
+                    // 第三方资源
+                    var bundleRef = new BundleRef();
+                    bundleRef.id = bundleRefs.Count;
+                    bundleRef.name = Path.GetFileName(path);
+                    using (FileStream stream = File.OpenRead(path))
+                    {
+                        bundleRef.length = stream.Length;
+                        bundleRef.crc32Hash = Utility.GetCRC32Hash(stream);
+                    }
+
+                    bundleRefs.Add(bundleRef);
+                    assetRef.bundle = bundleRef.id;
+                }
+
+                assetRef.dir = index;
+                assetRef.name = Path.GetFileName(path);
+                assetRefs.Add(assetRef);
+                VPatch patch = patches.Find(patchArg => patchArg.id == item.patch);
+                if (patch == null)
+                {
+                    patch = new VPatch() { id = item.patch };
+                    patches.Add(patch);
+                }
+                if (assetRef.bundle != -1)
+                {
+                    if (!patch.files.Contains(assetRef.bundle))
+                    {
+                        patch.files.Add(assetRef.bundle);
+                    }
+                    BundleRef bundleRef = bundleRefs[assetRef.bundle];
+                    foreach (var child in bundleRef.children)
+                    {
+                        if (!patch.files.Contains(child))
+                        {
+                            patch.files.Add(child);
+                        }
+                    }
+                }
+
             }
 
+            manifest.dirs = dirs.ToArray();
+            manifest.assets = assetRefs.ToArray();
+            manifest.bundles = bundleRefs.ToArray();
+
+            EditorUtility.SetDirty(manifest);
+            //AssetDatabase.SaveAssets();
+            //AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(Manifest.AssetPath);//刷新单个文件，不刷新全局
+
+            var manifestBundleName = "manifest.unity3d";
+            var assetBundleBuilds = new[]
+            {
+                new AssetBundleBuild
+                {
+                    assetNames = new[]
+                    {
+                        AssetDatabase.GetAssetPath(manifest)
+                    },
+                    assetBundleName = manifestBundleName
+                }
+            };
+
+            var targetPlatform = EditorUserBuildSettings.activeBuildTarget;
+            BuildPipeline.BuildAssetBundles(bundleDir, assetBundleBuilds, rules.buildBundleOptions, targetPlatform);
+            {
+                var bundlePath = bundleDir + "/" + manifestBundleName;
+                var bundleRef = new BundleRef();
+                bundleRef.id = bundleRefs.Count;
+                bundleRef.name = Path.GetFileName(bundlePath);
+                using (FileStream stream = File.OpenRead(bundlePath))
+                {
+                    bundleRef.length = stream.Length;
+                    bundleRef.crc32Hash = Utility.GetCRC32Hash(stream);
+                }
+                var patch = patches.Find(patchAge => patchAge.id == PatchId.Level1);
+                if (patch == null)
+                {
+                    patch = new VPatch() { id = PatchId.Level1 };
+                    patches.Add(patch);
+                }
+                bundleRefs.Add(bundleRef);
+            }
+            
+            Versions.BuildVersion(bundleDir,bundleRefs,patches, rules.AddVersion());
+            //GetOrCreateBuildRules().AddVersion();
         }
 
         private static List<BundleRef> GetBundleRefs(AssetBundleManifest assetBundleManifest, string bundleDir, string[] allAssetBundleName, Dictionary<string, int> bundle2Ids)
@@ -160,7 +254,7 @@ namespace DA.AssetsBundle
             {
                 asset = ScriptableObject.CreateInstance<T>();
                 AssetDatabase.CreateAsset(asset, path);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.SaveAssets(); create会自动刷新编辑器的对应资源显示
             }
             return asset;
         }

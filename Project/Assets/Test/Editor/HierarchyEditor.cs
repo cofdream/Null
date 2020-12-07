@@ -33,7 +33,7 @@ public class HierarchyEditor
                   drawRect.x -= drawRect.width;
             }
         }
-        Debug.Log("TTS  " + instanceID);
+        //Debug.Log("TTS  " + instanceID);
 
     }
 
@@ -76,6 +76,7 @@ public class HierarchyEditor
                     }
                     can.name = str1;
                     can.GetComponent<Test2222>().CallBack(str,str1);
+                    EditorUtility.SetDirty(can);
                     Debug.Log(sort + "   " + a.GetInstanceID());
                 }
                 else
@@ -93,6 +94,7 @@ public class HierarchyEditor
                 if (int.TryParse(str, out sort))
                 {
                     can.sortingOrder = sort;
+                    EditorUtility.SetDirty(can);
                 }
             }
             return true;

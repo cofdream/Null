@@ -27,7 +27,7 @@ namespace DA.AssetsBundle
 
     public class Manifest : ScriptableObject, IBundleAsset
     {
-        public static readonly string AssetPath = "Assets/Manifest.asset";
+        public static readonly string AssetPath = "Assets/AssetBundle/Manifest.asset";
 
         public string[] activeVariants = new string[0];
         public string[] dirs = new string[0];

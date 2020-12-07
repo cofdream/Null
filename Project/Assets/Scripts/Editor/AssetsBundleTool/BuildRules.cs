@@ -6,15 +6,6 @@ using System.IO;
 
 namespace DA.AssetsBundle
 {
-    public enum PatchId
-    {
-        Level1,
-        Level2,
-        Level3,
-        Level4,
-        Level5
-    }
-
     /// <summary>
     /// 资源打包的分组方式
     /// </summary>
@@ -60,7 +51,7 @@ namespace DA.AssetsBundle
 
     public class BuildRules : ScriptableObject, IBundleAsset
     {
-        internal const string AssetPath = "AssetBundle/Build_Rules.asset";
+        internal const string AssetPath = "Assets/AssetBundle/Build_Rules.asset";
 
 
         private readonly Dictionary<string, string> _asset2Bundles = new Dictionary<string, string>();
@@ -85,6 +76,11 @@ namespace DA.AssetsBundle
             return Array.ConvertAll(bundles, input => input.ToAssetBundleBuild());
         }
 
+        public int AddVersion()
+        {
+            version = version + 1;
+            return version;
+        }
         internal void Build()
         {
             Clear();
@@ -115,6 +111,58 @@ namespace DA.AssetsBundle
             }
 
         }
+
+        internal void GroupAsset(string path, GroupBy groupBy = GroupBy.Filename)
+        {
+            bool Match(AssetBuild bundleAsset)
+            {
+                return bundleAsset.path.Equals(path);
+            }
+            var asset = ArrayUtility.Find(assets, Match);
+            if (asset != null)
+            {
+                asset.groupBy = groupBy;
+            }
+            else
+            {
+                ArrayUtility.Add(ref assets, new AssetBuild()
+                {
+                    path = path,
+                    groupBy = groupBy,
+                });
+            }
+        }
+        internal void PatchAsset(string path, PatchId patch = 0)
+        {
+            bool Match(AssetBuild bundleAsset)
+            {
+                return bundleAsset.path.Equals(path);
+            }
+            var asset = ArrayUtility.Find(assets, Match);
+            if (asset != null)
+            {
+                asset.patch = patch;
+                return;
+            }
+            ArrayUtility.Add(ref assets, new AssetBuild()
+            {
+                path = path,
+                patch = patch,
+            });
+        }
+        internal void RemoveGroupAsset(string path)
+        {
+            bool Match(AssetBuild bundleAsset)
+            {
+                return bundleAsset.path.Equals(path);
+            }
+            int index = ArrayUtility.FindIndex(assets, Match);
+            if (index != -1)
+            {
+                ArrayUtility.RemoveAt(ref assets, index);
+            }
+        }
+
         private string RuledAssetBundleName(string assetName)
         {
             if (nameByHash)
