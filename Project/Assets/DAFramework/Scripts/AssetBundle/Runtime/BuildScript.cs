@@ -10,7 +10,7 @@ namespace DA.AssetsBundle
     {
         public static string outputPath = "AssetBundleFile/" + GetPlatformName();
 
-        private static string GetPlatformName()
+        public static string GetPlatformName()
         {
             return GetPlatformForAssetBundles(EditorUserBuildSettings.activeBuildTarget);
         }
@@ -38,22 +38,22 @@ namespace DA.AssetsBundle
                     return "OSX";
 #endif
                 default:
-                    return "Default";
+                    return "Other";
             }
         }
 
-        internal static void BuildStandalonePlayer()
+        public static void BuildStandalonePlayer()
         {
             throw new NotImplementedException();
         }
 
-        internal static void BuildRules()
+        public static void BuildRules()
         {
             BuildRules buildRules = GetOrCreateBuildRules();
             buildRules.Build();
         }
 
-        internal static void BuildAssetBundles()
+        public static void BuildAssetBundles()
         {
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
@@ -181,8 +181,8 @@ namespace DA.AssetsBundle
                 }
                 bundleRefs.Add(bundleRef);
             }
-            
-            Versions.BuildVersion(bundleDir,bundleRefs,patches, rules.AddVersion());
+
+            Versions.BuildVersion(bundleDir, bundleRefs, patches, rules.AddVersion());
             //GetOrCreateBuildRules().AddVersion();
         }
 
@@ -239,15 +239,15 @@ namespace DA.AssetsBundle
             return bundleToIndexDic;
         }
 
-        internal static Manifest GetOrCreateManifest()
+        public static Manifest GetOrCreateManifest()
         {
             return GetOrCreateAsset<Manifest>(AssetsBundle.Manifest.AssetPath);
         }
-        internal static BuildRules GetOrCreateBuildRules()
+        public static BuildRules GetOrCreateBuildRules()
         {
             return GetOrCreateAsset<BuildRules>(AssetsBundle.BuildRules.AssetPath);
         }
-        private static T GetOrCreateAsset<T>(string path) where T : ScriptableObject, IBundleAsset
+        private static T GetOrCreateAsset<T>(string path) where T : ScriptableObject
         {
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
             if (asset == null)

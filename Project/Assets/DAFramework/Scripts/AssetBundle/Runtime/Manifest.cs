@@ -25,7 +25,7 @@ namespace DA.AssetsBundle
         public string crc32Hash;
     }
 
-    public class Manifest : ScriptableObject, IBundleAsset
+    public class Manifest : ScriptableObject
     {
         public static readonly string AssetPath = "Assets/AssetBundle/Manifest.asset";
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -93,6 +94,7 @@ namespace DA.AssetsBundle
                     writer.Write(bundleId);
                 }
             }
+
         }
         public void Deserialize(BinaryReader reader)
         {
@@ -119,12 +121,47 @@ namespace DA.AssetsBundle
                 dataPatches[patch.id] = patch;
             }
         }
+
+        public VFile GetFile(string path)
+        {
+            VFile file;
+            dataFiles.TryGetValue(path, out file);
+            return file;
+        }
+        public List<VFile> GetFiles(PatchId patchId)
+        {
+            List<VFile> vFiles = new List<VFile>();
+            VPatch patch;
+            if (dataPatches.TryGetValue(patchId, out patch))
+            {
+                foreach (var index in patch.files)
+                {
+                    vFiles.Add(files[index]);
+                }
+            }
+            return vFiles;
+        }
     }
 
 
     public static class Versions
     {
         public const string FileName = "version";
+        public static readonly VerifyBy verifyBy = VerifyBy.Hash;
+
+        internal static Version serverVersion;
+        internal static Version localVersion;
+
+        public static Version LoadFullVersion(string filename)
+        {
+            using (var stream = File.OpenRead(filename))
+            {
+                var reader = new BinaryReader(stream);
+                var ver = new Version();
+                ver.Deserialize(reader);
+                return ver;
+            }
+        }
 
         internal static void BuildVersion(string outputPath, List<BundleRef> bundleRefs, List<VPatch> patches, int version)
         {
@@ -158,6 +195,46 @@ namespace DA.AssetsBundle
                 var writer = new BinaryWriter(stream);
                 ver.Serialize(writer);
             }
+        }
+
+        public static bool IsNew(string path, long length, string hash)
+        {
+            if (!File.Exists(path)) return true;
+
+            // 检测本地版本
+            if (localVersion != null)
+            {
+                var key = Path.GetFileName(path);
+                var file = localVersion.GetFile(key);
+                if (file != null &&
+                    file.length == length &&
+                    file.hash.Equals(hash, StringComparison.OrdinalIgnoreCase))
+                    return false;
+            }
+            // 基于服务器的版本去检测文件是否需要更新
+            using (var stream = File.OpenRead(path))
+            {
+                if (stream.Length != length) return true;
+                if (verifyBy == VerifyBy.Hash)
+                    return !Utility.GetCRC32Hash(stream).Equals(hash, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
+        }
+
+        public static List<VFile> GetNewFiles(PatchId patchId, string path)
+        {
+            var newFiles = new List<VFile>();
+
+            var files = serverVersion.GetFiles(patchId);
+            foreach (var file in files)
+            {
+                if (IsNew(path + file.name, file.length, file.hash))
+                {
+                    newFiles.Add(file);
+                }
+            }
+            return newFiles;
         }
     }
 }

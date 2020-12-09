@@ -10,6 +10,11 @@ namespace DA
 
         public static event Action UpdataAction;
 
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         void Update()
         {
             DelateTime = Time.deltaTime;

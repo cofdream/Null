@@ -12,17 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36796b2af9eba4648b2869c517a25a48, type: 3}
   m_Name: Build_Rules
   m_EditorClassIdentifier: 
-  version: 0
+  version: 1
   nameByHash: 1
   buildBundleOptions: 256
   scenesInBuild: []
   assets:
   - path: Assets/Scenes/SplashScreen.unity
     patch: 0
-    bundle: 
+    bundle: 4b6695789855a7b486a143a413807a91.bundle
     groupBy: 2
   - path: Assets/Scenes/MainScene.unity
     patch: 0
-    bundle: 
+    bundle: e7d09227c4cd2e20e5667611ae73a785.bundle
     groupBy: 2
-  bundles: []
+  - path: Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+    patch: 0
+    bundle: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    groupBy: 2
+  - path: Assets/Resources/Prefabs/UI/LobbyWindow/LobbyWindow.prefab
+    patch: 0
+    bundle: 0fe5f637c9f510f3600c15987827d5cd.bundle
+    groupBy: 2
+  bundles:
+  - assetBundleName: 4b6695789855a7b486a143a413807a91.bundle
+    assetNames:
+    - Assets/Scenes/SplashScreen.unity
+  - assetBundleName: e7d09227c4cd2e20e5667611ae73a785.bundle
+    assetNames:
+    - Assets/Scenes/MainScene.unity
+  - assetBundleName: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    assetNames:
+    - Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+  - assetBundleName: 0fe5f637c9f510f3600c15987827d5cd.bundle
+    assetNames:
+    - Assets/Resources/Prefabs/UI/LobbyWindow/LobbyWindow.prefab

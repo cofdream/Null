@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace DA.DataModule
+namespace DA.Archives
 {
     public static class ArchivesData
     {
