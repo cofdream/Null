@@ -1,5 +1,4 @@
-﻿using DA.Utils;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace DA.DataConfig

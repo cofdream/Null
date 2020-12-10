@@ -18,12 +18,14 @@ namespace DA
         [SerializeField]
         private string baseURL = "http://10.46.88.66/Windows/";
 
-        public  int newFileCount = 0;
-        public  int DownCount = 0;
+        public int newFileCount = 0;
+        public int DownCount = 0;
+
+        Downloader downloader = new Downloader();
 
         void Start()
         {
-            dlcPath = Application.persistentDataPath + "/DLC/"; ;
+            dlcPath = Application.persistentDataPath + "/DLC/";
             if (!Directory.Exists(dlcPath)) Directory.CreateDirectory(dlcPath);
 
             Message("检测更新文件...");
@@ -51,13 +53,16 @@ namespace DA
                 var asyncOperation2 = webRequest2.SendWebRequest();
                 asyncOperation2.completed += (op) =>
                 {
-
                     if (webRequest2.isNetworkError || webRequest2.isHttpError)
                     {
                         Message("获取文件错误： " + webRequest2.error);
-                            //return;
-                        }
-                    newFileCount++;
+                        //return;
+                    }
+                    DownCount++;
+                    if (DownCount >= newFileCount)
+                    {
+                        LoadAB();
+                    }
                 };
             }
 
@@ -66,10 +71,6 @@ namespace DA
         void Update()
         {
             update?.Invoke();
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    AssetBundle.LoadFromFile();
-            //}
         }
 
         void CheckUpdateFile()
@@ -79,6 +80,18 @@ namespace DA
 
         }
 
+        void LoadAB()
+        {
+            var rules = BuildScript.GetOrCreateBuildRules();
+            //Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+            //Assets/Scenes/SplashScreen.unity
+            var assetBuild = Array.Find(rules.assets, (asset) => asset.path == "Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab");
+
+            var assetBundle = AssetBundle.LoadFromFile(dlcPath + assetBuild.bundle);
+            var go = assetBundle.LoadAsset<GameObject>("LoginWIndow");
+
+            Instantiate(go);
+        }
 
         void Message(string content)
         {

@@ -10,9 +10,9 @@ namespace DA
 
         public static event Action UpdataAction;
 
-        private void Awake()
+        static MonoController()
         {
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(new GameObject("MonoController (instance)").AddComponent<MonoController>());
         }
 
         void Update()

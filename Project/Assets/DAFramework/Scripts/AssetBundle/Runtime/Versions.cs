@@ -149,8 +149,8 @@ namespace DA.AssetsBundle
         public const string FileName = "version";
         public static readonly VerifyBy verifyBy = VerifyBy.Hash;
 
-        internal static Version serverVersion;
-        internal static Version localVersion;
+        public static Version serverVersion;
+        public static Version localVersion;
 
         public static Version LoadFullVersion(string filename)
         {
