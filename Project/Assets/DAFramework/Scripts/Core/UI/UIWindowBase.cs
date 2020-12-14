@@ -1,6 +1,5 @@
 ﻿using DA.Event;
 using DAProto;
-using QFramework;
 using System;
 using System.IO;
 using UnityEngine;
@@ -23,16 +22,7 @@ namespace DA.UI
         {
             eventDispatcher = new EventDispatcher();
 
-            ResLoader resLoader = ResLoader.Allocate();
-
             string fileNmae = Path.GetFileName(Config.PrefabPath);
-
-            GameObject go = resLoader.LoadSync<GameObject>(fileNmae);
-            go = GameObject.Instantiate(go);
-            resLoader.Dispose();
-
-            BindBase = go.GetComponent<UIBindBase>();
-            OnOpen();
 
             //resLoader.Add2Load(fileNmae, (arg1, arg2) => {
             //    if (arg1)
