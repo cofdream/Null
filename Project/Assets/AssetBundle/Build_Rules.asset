@@ -25,13 +25,53 @@ MonoBehaviour:
     patch: 0
     bundle: e7d09227c4cd2e20e5667611ae73a785.bundle
     groupBy: 2
-  - path: Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+  - path: Assets/Scenes/UpdateScene.unity
     patch: 0
-    bundle: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    bundle: ac106f8f3242aa027a1dac1f60bccb2d.bundle
+    groupBy: 2
+  - path: Assets/AssetBundle/Build_Rules.asset
+    patch: 0
+    bundle: 3e57bd52ef3b52a83dacf4df80796f70.bundle
+    groupBy: 2
+  - path: Assets/Resources/Icons/img_icon_twitter.png
+    patch: 0
+    bundle: b610df9c1fdb6aa2957935986b838812.bundle
+    groupBy: 2
+  - path: Assets/Resources/Icons/img_icon_wechat.png
+    patch: 0
+    bundle: 77e9acde9bca93ae06fd27764857ad81.bundle
     groupBy: 2
   - path: Assets/Resources/Prefabs/UI/LobbyWindow/LobbyWindow.prefab
     patch: 0
     bundle: 0fe5f637c9f510f3600c15987827d5cd.bundle
+    groupBy: 2
+  - path: Assets/Resources/Prefabs/UI/BattlePanel.prefab
+    patch: 0
+    bundle: c8d0f7be50952e061b2e8a53d9896964.bundle
+    groupBy: 2
+  - path: Assets/Resources/Icons/img_icon_qq.png
+    patch: 0
+    bundle: 3cfcd7a62a1174e2fb82f5fa0cf3b839.bundle
+    groupBy: 2
+  - path: Assets/Resources/Prefabs/UI/PlayerItem.prefab
+    patch: 0
+    bundle: 8fa6f10f43cce1b0db96106d60c4c6dc.bundle
+    groupBy: 2
+  - path: Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+    patch: 0
+    bundle: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    groupBy: 2
+  - path: Assets/Test/Test.unity
+    patch: 0
+    bundle: 2ce85a1fae2bb4c7116f0da40dfafbe5.bundle
+    groupBy: 2
+  - path: Assets/TestObj.prefab
+    patch: 0
+    bundle: 8f429582379ed5ffce9d866a4363f93b.bundle
+    groupBy: 2
+  - path: Assets/Resources/Icons/img_icon_qqSSS.png
+    patch: 0
+    bundle: 93b5638a4087325a35fd225143ee9ca6.bundle
     groupBy: 2
   bundles:
   - assetBundleName: 4b6695789855a7b486a143a413807a91.bundle
@@ -40,9 +80,39 @@ MonoBehaviour:
   - assetBundleName: e7d09227c4cd2e20e5667611ae73a785.bundle
     assetNames:
     - Assets/Scenes/MainScene.unity
-  - assetBundleName: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+  - assetBundleName: ac106f8f3242aa027a1dac1f60bccb2d.bundle
     assetNames:
-    - Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+    - Assets/Scenes/UpdateScene.unity
+  - assetBundleName: 3e57bd52ef3b52a83dacf4df80796f70.bundle
+    assetNames:
+    - Assets/AssetBundle/Build_Rules.asset
+  - assetBundleName: b610df9c1fdb6aa2957935986b838812.bundle
+    assetNames:
+    - Assets/Resources/Icons/img_icon_twitter.png
+  - assetBundleName: 77e9acde9bca93ae06fd27764857ad81.bundle
+    assetNames:
+    - Assets/Resources/Icons/img_icon_wechat.png
   - assetBundleName: 0fe5f637c9f510f3600c15987827d5cd.bundle
     assetNames:
     - Assets/Resources/Prefabs/UI/LobbyWindow/LobbyWindow.prefab
+  - assetBundleName: c8d0f7be50952e061b2e8a53d9896964.bundle
+    assetNames:
+    - Assets/Resources/Prefabs/UI/BattlePanel.prefab
+  - assetBundleName: 3cfcd7a62a1174e2fb82f5fa0cf3b839.bundle
+    assetNames:
+    - Assets/Resources/Icons/img_icon_qq.png
+  - assetBundleName: 8fa6f10f43cce1b0db96106d60c4c6dc.bundle
+    assetNames:
+    - Assets/Resources/Prefabs/UI/PlayerItem.prefab
+  - assetBundleName: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    assetNames:
+    - Assets/Resources/Prefabs/UI/LoginWIndow/LoginWIndow.prefab
+  - assetBundleName: 2ce85a1fae2bb4c7116f0da40dfafbe5.bundle
+    assetNames:
+    - Assets/Test/Test.unity
+  - assetBundleName: 8f429582379ed5ffce9d866a4363f93b.bundle
+    assetNames:
+    - Assets/TestObj.prefab
+  - assetBundleName: 93b5638a4087325a35fd225143ee9ca6.bundle
+    assetNames:
+    - Assets/Resources/Icons/img_icon_qqSSS.png

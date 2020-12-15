@@ -15,43 +15,138 @@ MonoBehaviour:
   activeVariants: []
   dirs:
   - Assets/Scenes
-  - Assets/Resources/Prefabs/UI/LoginWIndow
+  - Assets/AssetBundle
+  - Assets/Resources/Icons
   - Assets/Resources/Prefabs/UI/LobbyWindow
+  - Assets/Resources/Prefabs/UI
+  - Assets/Resources/Prefabs/UI/LoginWIndow
+  - Assets/Test
+  - Assets
   assets:
   - name: SplashScreen.unity
-    bundle: 1
+    bundle: 4
     dir: 0
   - name: MainScene.unity
-    bundle: 3
+    bundle: 13
     dir: 0
-  - name: LoginWIndow.prefab
-    bundle: 2
+  - name: UpdateScene.unity
+    bundle: 10
+    dir: 0
+  - name: Build_Rules.asset
+    bundle: 3
     dir: 1
+  - name: img_icon_twitter.png
+    bundle: 11
+    dir: 2
+  - name: img_icon_wechat.png
+    bundle: 6
+    dir: 2
   - name: LobbyWindow.prefab
     bundle: 0
+    dir: 3
+  - name: BattlePanel.prefab
+    bundle: 12
+    dir: 4
+  - name: img_icon_qq.png
+    bundle: 2
+    dir: 2
+  - name: PlayerItem.prefab
+    bundle: 8
+    dir: 4
+  - name: LoginWIndow.prefab
+    bundle: 5
+    dir: 5
+  - name: Test.unity
+    bundle: 1
+    dir: 6
+  - name: TestObj.prefab
+    bundle: 7
+    dir: 7
+  - name: img_icon_qqSSS.png
+    bundle: 9
     dir: 2
   bundles:
   - name: 0fe5f637c9f510f3600c15987827d5cd.bundle
     id: 0
     children: 
-    length: 9507
-    abHash: 104791a37c2a53c489cfa477e486a61c
-    crc32Hash: 59a0c01f
-  - name: 4b6695789855a7b486a143a413807a91.bundle
+    length: 9519
+    abHash: a1ecfa764b28a3f94a3a9d5595a9b9d3
+    crc32Hash: 3823f04f
+  - name: 2ce85a1fae2bb4c7116f0da40dfafbe5.bundle
     id: 1
     children: 
-    length: 20700
-    abHash: 30a19c6bf88763e44130b023410fb2cd
-    crc32Hash: dcf4acbd
-  - name: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    length: 26113
+    abHash: 5bbba7b820da6973ac6e98bcad4c7e2b
+    crc32Hash: 8ff6097c
+  - name: 3cfcd7a62a1174e2fb82f5fa0cf3b839.bundle
     id: 2
     children: 
-    length: 12054
-    abHash: ab8a2438c6e7c3259c5fa7cd83030abe
-    crc32Hash: 84a597a1
-  - name: e7d09227c4cd2e20e5667611ae73a785.bundle
+    length: 4578
+    abHash: 9c2b4ee5b28b0204f2e5c623dad6ebe6
+    crc32Hash: 80ee7fc2
+  - name: 3e57bd52ef3b52a83dacf4df80796f70.bundle
     id: 3
     children: 
-    length: 22977
+    length: 1054
+    abHash: 49c5be4ffcbb297711c94eb92e0acfa8
+    crc32Hash: eb443861
+  - name: 4b6695789855a7b486a143a413807a91.bundle
+    id: 4
+    children: 
+    length: 20665
+    abHash: 201ed2ee41113be9a1f88d27e98f581a
+    crc32Hash: 1f67d525
+  - name: 5fc9d8986a1de53f82b54f263ea1feaf.bundle
+    id: 5
+    children: 
+    length: 12066
+    abHash: 3280d150b6e55cf3885ec590f12f51bb
+    crc32Hash: 4e418210
+  - name: 77e9acde9bca93ae06fd27764857ad81.bundle
+    id: 6
+    children: 
+    length: 4799
+    abHash: b7416589e162163fe5f4a9986a3cf0ef
+    crc32Hash: 2dced8ec
+  - name: 8f429582379ed5ffce9d866a4363f93b.bundle
+    id: 7
+    children: 02000000060000000b000000
+    length: 46798
+    abHash: 265417cbdee1bc3b89c5f5b4cbcd7835
+    crc32Hash: 2277ff1b
+  - name: 8fa6f10f43cce1b0db96106d60c4c6dc.bundle
+    id: 8
+    children: 
+    length: 3878
+    abHash: 30d20e8f1cbcb9dc7b9475c713cc71e0
+    crc32Hash: cfd765df
+  - name: 93b5638a4087325a35fd225143ee9ca6.bundle
+    id: 9
+    children: 
+    length: 4813
+    abHash: ffe63803cdec1a9085e3136742de67fb
+    crc32Hash: da50db57
+  - name: ac106f8f3242aa027a1dac1f60bccb2d.bundle
+    id: 10
+    children: 
+    length: 23399
+    abHash: e1a1179c001deefed25ff11cdec9ca3a
+    crc32Hash: f117e145
+  - name: b610df9c1fdb6aa2957935986b838812.bundle
+    id: 11
+    children: 
+    length: 4718
+    abHash: d7308e7e93effffb21025d105d221924
+    crc32Hash: 3e11bc18
+  - name: c8d0f7be50952e061b2e8a53d9896964.bundle
+    id: 12
+    children: 
+    length: 2895
+    abHash: 981f07e0ff9813cf41e3b9d9902c63a9
+    crc32Hash: e4cb8f19
+  - name: e7d09227c4cd2e20e5667611ae73a785.bundle
+    id: 13
+    children: 
+    length: 22989
     abHash: 07f69ea2be8064ed218edd23a5933cec
-    crc32Hash: 8926d20f
+    crc32Hash: 9edce483

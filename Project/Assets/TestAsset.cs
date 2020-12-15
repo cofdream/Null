@@ -13,7 +13,34 @@ public class TestAsset : MonoBehaviour
     {
         assetLoader = DA.AssetLoader.Loader;
 
-        img.sprite = assetLoader.Load<Sprite>(path);
+        // img.sprite = assetLoader.Load<Sprite>(path);//.LoadAsset<Sprite>("img_icon_qq");
+
+       // var ab = assetLoader.Load<AssetBundle>(path);
+
+       // img.sprite = ab.LoadAsset<Sprite>("img_icon_qqSSS").GetSprite("img_icon_qqSSS_1");
+
+       // Sprite sprite;
+       //img.sprite = 
+
+        //img.sprite = ab.LoadAllAssets<Sprite>()[0];
+
+        //img.sprite = ab.LoadAllAssets<Sprite>()[1];
+
+        //img.sprite = ab.LoadAllAssets<Sprite>()[2];
+
+        //img.sprite = ab.LoadAllAssets<Sprite>()[3];
+
+        //, (ss) =>
+        //{
+
+
+        //    //var sprites = ss.LoadAllAssets<Sprite>();
+
+        //    //img.sprite = sprites[0];
+
+        //    //img.sprite = ss;
+        //    Debug.Log(111);
+        //});//.LoadAsset<Sprite>("img_icon_qq");
     }
 
     private void Update()
@@ -31,6 +58,7 @@ public class TestAsset : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(TestAsset))]
 public class TestAssetExpand : Editor
 {
@@ -42,4 +70,4 @@ public class TestAssetExpand : Editor
         GUILayout.Label("资源 ：" + testAsset.path + "\n加载到内存的状态 ：" + AssetDatabase.IsMainAssetAtPathLoaded(testAsset.path).ToString());
     }
 }
-
+#endif

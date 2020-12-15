@@ -163,7 +163,7 @@ namespace DA.AssetsBundle
             }
         }
 
-        internal static void BuildVersion(string outputPath, List<BundleRef> bundleRefs, List<VPatch> patches, int version)
+        public static void BuildVersion(string outputPath, List<BundleRef> bundleRefs, List<VPatch> patches, int version)
         {
             var path = outputPath + "/" + FileName;
             if (File.Exists(path)) File.Delete(path);

@@ -1,4 +1,6 @@
-﻿namespace DA.Timer
+﻿using System;
+
+namespace DA.Timer
 {
     /// <summary>
     /// 一次性计时器Plus
@@ -7,7 +9,7 @@
     {
         public float TotalTime;
         public float ElapsedTime;
-        public TimeCallBack CallBack;
+        public Action CallBack;
         public bool Pause;
 
         public bool Update(float time)

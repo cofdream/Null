@@ -12,7 +12,7 @@ namespace DA
 
     public class AssetLoader
     {
-        private List<Asset> assets = new List<Asset>();
+        private List<IAsset> assets = new List<IAsset>();
 
         public static AssetLoader Loader
         {
@@ -24,7 +24,7 @@ namespace DA
             }
         }
 
-        private Asset GetAsset<T>(string path) where T : UnityEngine.Object
+        private IAsset GetAsset<T>(string path) where T : UnityEngine.Object
         {
             foreach (var item in assets)
             {
@@ -50,42 +50,28 @@ namespace DA
                 }
             }
 
-            return null;
+#if UNITY_EDITOR
+            IAsset asset = new AssetAB();// Asset();
+#else
+            IAsset asset = new AssetAB();
+#endif
+            assets.Add(asset);
+            return asset;
         }
         public T Load<T>(string path) where T : UnityEngine.Object
         {
-            var asset = GetAsset<T>(path);
-
-            if (asset == null)
-            {
-                asset = new Asset();
-                assets.Add(asset);
-                asset.LoadAsset<T>(path);
-            }
-
-            return asset.Load() as T;
+            return GetAsset<T>(path).LoadAsset<T>(path);
         }
         public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
         {
-            var asset = GetAsset<T>(path);
-
-            if (asset == null)
-            {
-                asset = new Asset();
-                assets.Add(asset);
-                asset.LoadAsync<T>(path, loadCallBack);
-            }
-            else
-            {
-                loadCallBack?.Invoke(asset.Load() as T);
-            }
+            GetAsset<T>(path).LoadAsync<T>(path, loadCallBack);
         }
         public void Unload(UnityEngine.Object asset)
         {
             int length = assets.Count;
             for (int i = 0; i < length; i++)
             {
-                Asset _asset = assets[i];
+                IAsset _asset = assets[i];
                 if (_asset.Equals(asset))
                 {
                     _asset.Unload();
@@ -118,7 +104,20 @@ namespace DA
         private UnityEngine.Object asset;
         private string assetPath;
         private ushort refNumber = 0;
-        private Action<Asset> unusedAssetCallBack;
+
+        private bool isLoaded;
+
+        public Asset()
+        {
+            Reset();
+        }
+        private void Reset()
+        {
+            asset = null;
+            assetPath = null;
+            refNumber = 0;
+            isLoaded = false;
+        }
 
         public bool Equals(string path)
         {
@@ -128,19 +127,48 @@ namespace DA
         {
             return this.asset.Equals(asset);
         }
-        public void LoadAsset<T>(string path) where T : UnityEngine.Object
+        public T LoadAsset<T>(string path) where T : UnityEngine.Object
         {
-            assetPath = path;
-            asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            if (asset == null)
+            {
+                if (isLoaded) return null; // throw new Exception("当前Asset 已加载过,不要重复加载");
+
+                isLoaded = true;
+                assetPath = path;
+                asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+
+
+                AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            }
+            return Load() as T;
         }
         public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
         {
+            if (asset != null)
+            {
+                T temp = Load() as T;
+                loadCallBack?.Invoke(temp);
+                return;
+            }
+            if (isLoaded) return; // throw new Exception("当前Asset 已加载过,不要重复加载");
+
+            isLoaded = true;
+
             assetPath = path;
-            asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
             //todo 基于携程 实现一个异步 
-            loadCallBack?.Invoke(Load() as T);
+            Timer.Timer.timers.Add(new Timer.TimerOnce()
+            {
+                CallBack = () =>
+                {
+                    T temp = Load() as T;
+                    loadCallBack?.Invoke(temp);
+                },
+                ElapsedTime = 0,
+                TotalTime = 0.3f,
+            });
         }
-        public UnityEngine.Object Load()
+        private UnityEngine.Object Load()
         {
             refNumber++;
             return asset;
@@ -165,14 +193,28 @@ namespace DA
     public class AssetAB : IAsset
     {
         private AssetBundle assetBundle;
-        private UnityEngine.Object asset;
         private string assetPath;
-        private ushort refNumber = 0;
-        private Action<Asset> unusedAssetCallBack;
+        private ushort refNumber;
 
         private AssetBundleCreateRequest createRequest;
-        private Action<UnityEngine.Object> loadCallBack;
-        private Type type;
+        private Action<UnityEngine.Object> onLoaded;
+
+        private bool isLoaded;
+
+        public AssetAB()
+        {
+            Reset();
+        }
+
+        private void Reset()
+        {
+            assetBundle = null;
+            assetPath = null;
+            refNumber = 0;
+            createRequest = null;
+            onLoaded = null;
+            isLoaded = false;
+        }
 
         public bool Equals(string path)
         {
@@ -180,39 +222,57 @@ namespace DA
         }
         public bool Equals(UnityEngine.Object asset)
         {
-            return this.asset.Equals(asset);
+            return this.assetBundle.Equals(asset);
         }
-        public void LoadAsset<T>(string path) where T : UnityEngine.Object
+        public T LoadAsset<T>(string path) where T : UnityEngine.Object
         {
-            assetPath = path;
-            asset = assetBundle = AssetBundle.LoadFromFile(path);
+            if (assetBundle == null)
+            {
+                if (isLoaded)
+                    return null; //throw new Exception("当前Asset 已加载过,不要重复加载");
+
+                isLoaded = true;
+
+                assetPath = path;
+                assetBundle = AssetBundle.LoadFromFile(path);
+            }
+
+
+            return Load() as T;
         }
         public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
         {
+            if (assetBundle != null)
+            {
+                T temp = Load() as T;
+                loadCallBack?.Invoke(temp);
+                return;
+            }
+
+            loadCallBack += loadCallBack;
+
+            if (isLoaded)
+                return;//throw new Exception("当前Asset 已加载过,不要重复加载");
+            isLoaded = true;
+
             assetPath = path;
-
-            this.loadCallBack = loadCallBack as Action<UnityEngine.Object>;
-            type = typeof(T);
-
             createRequest = AssetBundle.LoadFromFileAsync(path);
             createRequest.completed += ABLoadCallBack;
-
-
         }
         private void ABLoadCallBack(AsyncOperation asyncOperation)
         {
-            asset = assetBundle = createRequest.assetBundle;
-
-            loadCallBack?.Invoke(Load());
-
+            assetBundle = createRequest.assetBundle;
+            var temp = Load();
+            onLoaded?.Invoke(temp);
             createRequest = null;
         }
 
-        public UnityEngine.Object Load()
+        private UnityEngine.Object Load()
         {
             refNumber++;
-            return asset;
+            return assetBundle;
         }
+
         public void Unload()
         {
             refNumber--;
@@ -227,9 +287,8 @@ namespace DA
     {
         bool Equals(string path);
         bool Equals(UnityEngine.Object asset);
-        void LoadAsset<T>(string path) where T : UnityEngine.Object;
+        T LoadAsset<T>(string path) where T : UnityEngine.Object;
         void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object;
-        UnityEngine.Object Load();
         void Unload();
     }
 }
