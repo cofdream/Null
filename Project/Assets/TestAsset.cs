@@ -15,14 +15,14 @@ public class TestAsset : MonoBehaviour
 
         // img.sprite = assetLoader.Load<Sprite>(path);//.LoadAsset<Sprite>("img_icon_qq");
 
-       // var ab = assetLoader.Load<AssetBundle>(path);
+        //var ab = assetLoader.Load<AssetBundle>(path);
 
-       // img.sprite = ab.LoadAsset<Sprite>("img_icon_qqSSS").GetSprite("img_icon_qqSSS_1");
+        //img.sprite = ab.LoadAsset<Sprite>("img_icon_qqSSS").GetSprite("img_icon_qqSSS_1");
 
-       // Sprite sprite;
-       //img.sprite = 
+        //Sprite sprite;
+        //img.sprite =
 
-        //img.sprite = ab.LoadAllAssets<Sprite>()[0];
+        // img.sprite = ab.LoadAllAssets<Sprite>()[0];
 
         //img.sprite = ab.LoadAllAssets<Sprite>()[1];
 
@@ -30,17 +30,15 @@ public class TestAsset : MonoBehaviour
 
         //img.sprite = ab.LoadAllAssets<Sprite>()[3];
 
-        //, (ss) =>
-        //{
+        assetLoader.LoadAsync<AssetBundle>(path, (ss) =>
+        {
+            var sprites = ss.LoadAllAssets<Sprite>();
 
+            img.sprite = sprites[0];
 
-        //    //var sprites = ss.LoadAllAssets<Sprite>();
-
-        //    //img.sprite = sprites[0];
-
-        //    //img.sprite = ss;
-        //    Debug.Log(111);
-        //});//.LoadAsset<Sprite>("img_icon_qq");
+            //img.sprite = ss;
+            Debug.Log(111);
+        });//.LoadAsset<Sprite>("img_icon_qq");
     }
 
     private void Update()

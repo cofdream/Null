@@ -248,8 +248,9 @@ namespace DA
                 loadCallBack?.Invoke(temp);
                 return;
             }
+            Delegate va = loadCallBack;
 
-            loadCallBack += loadCallBack;
+            va.DynamicInvoke();
 
             if (isLoaded)
                 return;//throw new Exception("当前Asset 已加载过,不要重复加载");
@@ -264,6 +265,7 @@ namespace DA
             assetBundle = createRequest.assetBundle;
             var temp = Load();
             onLoaded?.Invoke(temp);
+
             createRequest = null;
         }
 
