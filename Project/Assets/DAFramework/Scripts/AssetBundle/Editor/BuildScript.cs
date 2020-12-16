@@ -148,7 +148,6 @@ namespace DA.AssetsBundle
             //AssetDatabase.Refresh();
             AssetDatabase.ImportAsset(Manifest.AssetPath);//刷新单个文件，不刷新全局
 
-            var manifestBundleName = "manifest.unity3d";
             var assetBundleBuilds = new[]
             {
                 new AssetBundleBuild
@@ -157,14 +156,14 @@ namespace DA.AssetsBundle
                     {
                         AssetDatabase.GetAssetPath(manifest)
                     },
-                    assetBundleName = manifestBundleName
+                    assetBundleName = Manifest.AssetBundleName,
                 }
             };
 
             var targetPlatform = EditorUserBuildSettings.activeBuildTarget;
             BuildPipeline.BuildAssetBundles(bundleDir, assetBundleBuilds, rules.buildBundleOptions, targetPlatform);
             {
-                var bundlePath = bundleDir + "/" + manifestBundleName;
+                var bundlePath = bundleDir + "/" + Manifest.AssetBundleName;
                 var bundleRef = new BundleRef();
                 bundleRef.id = bundleRefs.Count;
                 bundleRef.name = Path.GetFileName(bundlePath);

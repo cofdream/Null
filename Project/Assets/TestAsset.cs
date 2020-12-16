@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DA;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -30,15 +31,18 @@ public class TestAsset : MonoBehaviour
 
         //img.sprite = ab.LoadAllAssets<Sprite>()[3];
 
-        assetLoader.LoadAsync<AssetBundle>(path, (ss) =>
-        {
-            var sprites = ss.LoadAllAssets<Sprite>();
+        //assetLoader.LoadAsync<AssetBundle>(path, (ss) =>
+        //{
+        //    var sprites = ss.LoadAllAssets<Sprite>();
 
-            img.sprite = sprites[0];
+        //    img.sprite = sprites[0];
 
-            //img.sprite = ss;
-            Debug.Log(111);
-        });//.LoadAsset<Sprite>("img_icon_qq");
+        //    //img.sprite = ss;
+        //    Debug.Log(111);
+        //});//.LoadAsset<Sprite>("img_icon_qq");
+
+
+        img.sprite = assetLoader.Load<AssetBundle>(Assets.GetAssetPath("img_icon_qq" + ".png")).LoadAsset<Sprite>("img_icon_qq");
     }
 
     private void Update()

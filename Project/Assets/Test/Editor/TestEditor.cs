@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
+using DA;
 
 namespace NullNamespace
 {
@@ -38,6 +39,13 @@ namespace NullNamespace
         //{
         //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.ForceUncompressedImport);
         //}
+
+
+        [MenuItem("Test/Run_1")]
+        public static void Test()
+        {
+            Assets.Init();
+        }
     }
 
 }
