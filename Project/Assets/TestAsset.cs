@@ -42,7 +42,7 @@ public class TestAsset : MonoBehaviour
         //});//.LoadAsset<Sprite>("img_icon_qq");
 
 
-        img.sprite = assetLoader.Load<AssetBundle>(Assets.GetAssetPath("img_icon_qq" + ".png")).LoadAsset<Sprite>("img_icon_qq");
+       // img.sprite = assetLoader.Load<AssetBundle>(Assets.GetAssetPath("img_icon_qq" + ".png")).LoadAsset<Sprite>("img_icon_qq");
     }
 
     private void Update()
@@ -56,7 +56,6 @@ public class TestAsset : MonoBehaviour
     private void OnDestroy()
     {
         assetLoader.UnloadAll();
-        assetLoader.Dispose();
     }
 }
 

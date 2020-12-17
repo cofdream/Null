@@ -9,10 +9,12 @@ namespace DA
     {
         private UnityEngine.Object asset;
         private string assetPath;
+        private string assetName;
         private ushort refNumber = 0;
 
-        private bool isLoaded;
+        private AssetLoadState loadState;
 
+        public event Action<IAssetLoad> UnloadCallBack;
         public LocalAssetLoad()
         {
             Reset();
@@ -22,57 +24,64 @@ namespace DA
             asset = null;
             assetPath = null;
             refNumber = 0;
-            isLoaded = false;
+            loadState = AssetLoadState.NotLoaded;
+            UnloadCallBack = null;
         }
 
-        public bool Equals(string path)
+        public bool Equals(string path, string name)
         {
-            return assetPath.Equals(path);
+            return assetPath.Equals(path) && assetName.Equals(name);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return this.asset.Equals(asset);
         }
-        public T LoadAsset<T>(string path) where T : UnityEngine.Object
+        public T LoadAsset<T>(string path, string name) where T : UnityEngine.Object
         {
-            if (asset == null)
+            if (loadState == AssetLoadState.NotLoaded)
             {
-                if (isLoaded) return null; // throw new Exception("当前Asset 已加载过,不要重复加载");
-
-                isLoaded = true;
                 assetPath = path;
-                asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+                assetName = name;
+                loadState = AssetLoadState.Loading;
 
+                asset = AssetDatabase.LoadAssetAtPath<T>($"{path}/{assetName}");
 
-                AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                loadState = AssetLoadState.Loaded;
             }
+
             return Load() as T;
         }
-        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync<T>(string path, string name, Action<T> loadCallBack) where T : UnityEngine.Object
         {
-            if (asset != null)
+            switch (loadState)
             {
-                T temp = Load() as T;
-                loadCallBack?.Invoke(temp);
-                return;
+                case AssetLoadState.NotLoaded:
+
+                    assetPath = path;
+                    assetName = name;
+                    loadState = AssetLoadState.Loading;
+
+                    asset = AssetDatabase.LoadAssetAtPath<T>($"{path}/{assetName}");
+
+                    Timer.Timer.timers.Add(new Timer.TimerOnce()
+                    {
+                        ElapsedTime = 0,
+                        TotalTime = 0.1f,
+                        CallBack = () =>
+                        {
+                            loadState = AssetLoadState.Loaded;
+
+                            loadCallBack?.Invoke(Load() as T);
+                        },
+                    });
+
+                    break;
+                case AssetLoadState.Loaded:
+
+                    loadCallBack?.Invoke(Load() as T);
+
+                    break;
             }
-            if (isLoaded) return; // throw new Exception("当前Asset 已加载过,不要重复加载");
-
-            isLoaded = true;
-
-            assetPath = path;
-            asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-            //todo 基于携程 实现一个异步 
-            Timer.Timer.timers.Add(new Timer.TimerOnce()
-            {
-                CallBack = () =>
-                {
-                    T temp = Load() as T;
-                    loadCallBack?.Invoke(temp);
-                },
-                ElapsedTime = 0,
-                TotalTime = 0.3f,
-            });
         }
         private UnityEngine.Object Load()
         {
@@ -84,6 +93,8 @@ namespace DA
             refNumber--;
             if (refNumber == 0)
             {
+                loadState = AssetLoadState.Unload;
+                UnloadCallBack.Invoke(this);
                 if (asset is GameObject)
                 {
                     Resources.UnloadUnusedAssets();

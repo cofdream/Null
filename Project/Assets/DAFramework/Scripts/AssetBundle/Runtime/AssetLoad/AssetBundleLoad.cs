@@ -6,13 +6,16 @@ namespace DA
     public class AssetBundleLoad : IAssetLoad
     {
         private AssetBundle assetBundle;
-        private string assetPath;
+        private Delegate onLoad;
+        private string assetBundlePath;
+        private string assetName;
         private ushort refNumber;
 
         private AssetBundleCreateRequest createRequest;
-        private Action<UnityEngine.Object> onLoaded;
 
-        private bool isLoaded;
+        private AssetLoadState loadState;
+
+        public event Action<IAssetLoad> UnloadCallBack;
 
         public AssetBundleLoad()
         {
@@ -22,62 +25,66 @@ namespace DA
         private void Reset()
         {
             assetBundle = null;
-            assetPath = null;
+            assetBundlePath = null;
             refNumber = 0;
             createRequest = null;
-            onLoaded = null;
-            isLoaded = false;
+            onLoad = null;
+            loadState = AssetLoadState.NotLoaded;
+            UnloadCallBack = null;
         }
 
-        public bool Equals(string path)
+        public bool Equals(string path, string name)
         {
-            return assetPath.Equals(path);
+            return assetBundlePath.Equals(path)
+                && (loadState == AssetLoadState.Loading || loadState == AssetLoadState.Loaded);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return this.assetBundle.Equals(asset);
         }
-        public T LoadAsset<T>(string path) where T : UnityEngine.Object
+        public T LoadAsset<T>(string path, string name) where T : UnityEngine.Object
         {
-            if (assetBundle == null)
+            if (loadState == AssetLoadState.NotLoaded)
             {
-                if (isLoaded)
-                    return null; //throw new Exception("当前Asset 已加载过,不要重复加载");
+                assetBundlePath = path;
+                assetName = name;
+                loadState = AssetLoadState.Loading;
 
-                isLoaded = true;
+                assetBundle = AssetBundle.LoadFromFile($"{path}/{assetName}");
 
-                assetPath = path;
-                assetBundle = AssetBundle.LoadFromFile(path);
+                loadState = AssetLoadState.Loaded;
             }
-
 
             return Load() as T;
         }
-        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync<T>(string path, string name, Action<T> loadCallBack) where T : UnityEngine.Object
         {
-            if (assetBundle != null)
+            switch (loadState)
             {
-                T temp = Load() as T;
-                loadCallBack?.Invoke(temp);
-                return;
+                case AssetLoadState.NotLoaded:
+
+                    assetBundlePath = path;
+                    assetName = name;
+                    loadState = AssetLoadState.Loading;
+
+                    createRequest = AssetBundle.LoadFromFileAsync($"{path}/{assetName}");
+                    createRequest.completed += ABLoadCallBack;
+
+                    break;
+                case AssetLoadState.Loaded:
+
+                    loadCallBack?.Invoke(Load() as T);
+
+                    break;
             }
-            Delegate va = loadCallBack;
-
-            va.DynamicInvoke();
-
-            if (isLoaded)
-                return;//throw new Exception("当前Asset 已加载过,不要重复加载");
-            isLoaded = true;
-
-            assetPath = path;
-            createRequest = AssetBundle.LoadFromFileAsync(path);
-            createRequest.completed += ABLoadCallBack;
         }
         private void ABLoadCallBack(AsyncOperation asyncOperation)
         {
+            loadState = AssetLoadState.Loaded;
+
             assetBundle = createRequest.assetBundle;
-            var temp = Load();
-            onLoaded?.Invoke(temp);
+
+            onLoad?.DynamicInvoke(Load());
 
             createRequest = null;
         }
@@ -93,6 +100,8 @@ namespace DA
             refNumber--;
             if (refNumber == 0)
             {
+                loadState = AssetLoadState.Unload;
+                UnloadCallBack.Invoke(this);
                 assetBundle.Unload(true);
             }
         }
