@@ -9,59 +9,55 @@ namespace DA
     {
         private UnityEngine.Object asset;
         private string assetPath;
-        private string assetName;
         private ushort refNumber = 0;
 
         private AssetLoadState loadState;
 
         public event Action<IAssetLoad> UnloadCallBack;
-        public LocalAssetLoad()
-        {
-            Reset();
-        }
-        private void Reset()
+
+        public IAssetLoad Init()
         {
             asset = null;
             assetPath = null;
             refNumber = 0;
             loadState = AssetLoadState.NotLoaded;
             UnloadCallBack = null;
+
+            return this;
         }
 
-        public bool Equals(string path, string name)
+        public bool Equals(string path)
         {
-            return assetPath.Equals(path) && assetName.Equals(name);
+            return assetPath.Equals(path);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return this.asset.Equals(asset);
         }
-        public T LoadAsset<T>(string path, string name) where T : UnityEngine.Object
+        public T LoadAsset<T>(string path) where T : UnityEngine.Object
         {
             if (loadState == AssetLoadState.NotLoaded)
             {
                 assetPath = path;
-                assetName = name;
                 loadState = AssetLoadState.Loading;
 
-                asset = AssetDatabase.LoadAssetAtPath<T>($"{path}/{assetName}");
+                asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
                 loadState = AssetLoadState.Loaded;
             }
 
             return Load() as T;
         }
-        public void LoadAsync<T>(string path, string name, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
         {
             switch (loadState)
             {
                 case AssetLoadState.NotLoaded:
 
                     assetPath = path;
-                    assetName = name;
                     loadState = AssetLoadState.Loading;
 
-                    asset = AssetDatabase.LoadAssetAtPath<T>($"{path}/{assetName}");
+                    asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
                     Timer.Timer.timers.Add(new Timer.TimerOnce()
                     {

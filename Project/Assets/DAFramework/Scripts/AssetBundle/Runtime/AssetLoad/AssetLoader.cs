@@ -4,33 +4,17 @@ using UnityEngine;
 
 namespace DA
 {
-    public class AssetLoader
+    public partial class AssetLoader
     {
-#if UNITY_EDITOR
-        public static bool IsSimulationMode = true;
-#endif
-        private static List<AssetLoader> loaders = new List<AssetLoader>();
-
-
         private List<IAssetLoad> assetLoads = new List<IAssetLoad>();
         private List<IAssetLoad> refAssetLoads = new List<IAssetLoad>();
 
-        public static AssetLoader Loader
-        {
-            get
-            {
-                var loader = new AssetLoader();
-                loaders.Add(loader);
-                return loader;
-            }
-        }
-
-        private IAssetLoad GetAsset<T>(string path, string name) where T : UnityEngine.Object
+        private IAssetLoad GetAsset<T>(string path) where T : UnityEngine.Object
         {
             // 本地的Load
             foreach (var item in assetLoads)
             {
-                if (item.Equals(path, name))
+                if (item.Equals(path))
                 {
                     return item;
                 }
@@ -39,7 +23,7 @@ namespace DA
             // 本地引用的外部Load
             foreach (var item in refAssetLoads)
             {
-                if (item.Equals(path, name))
+                if (item.Equals(path))
                 {
                     return item;
                 }
@@ -55,7 +39,7 @@ namespace DA
                 // 仅检测自己创建的
                 foreach (var item in loader.assetLoads)
                 {
-                    if (item.Equals(path, name))
+                    if (item.Equals(path))
                     {
                         item.UnloadCallBack += RemoveRefLoader;
                         refAssetLoads.Add(item);//全局内的资源 保存本地一份
@@ -67,24 +51,25 @@ namespace DA
             IAssetLoad assetLoad;
 #if UNITY_EDITOR
             if (IsSimulationMode == false)
-                assetLoad = new LocalAssetLoad();
+                assetLoad = new LocalAssetLoad().Init();
             else
 #endif
-                assetLoad = new AssetBundleLoad();
+                assetLoad = new AssetBundleLoad().Init();
 
             assetLoad.UnloadCallBack += RemoveLoader;
             assetLoads.Add(assetLoad);
 
             return assetLoad;
         }
-        public T Load<T>(string path, string name) where T : UnityEngine.Object
+        public T Load<T>(string assetPath) where T : UnityEngine.Object
         {
-            return GetAsset<T>(path, name).LoadAsset<T>(path, name);
+            return GetAsset<T>(assetPath).LoadAsset<T>(assetPath);
         }
-        public void LoadAsync<T>(string path, string name, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
         {
-            GetAsset<T>(path, name).LoadAsync<T>(path, name, loadCallBack);
+            GetAsset<T>(path).LoadAsync<T>(path, loadCallBack);
         }
+
         public void Unload(UnityEngine.Object asset)
         {
             int length = assetLoads.Count;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DA
 {
-    public class AssetBundleLoad : IAssetLoad
+    public class AssetLoad : IAssetLoad
     {
         private AssetBundle assetBundle;
         private string assetBundlePath;

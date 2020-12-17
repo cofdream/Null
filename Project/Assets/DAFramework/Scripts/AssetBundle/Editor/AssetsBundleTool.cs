@@ -277,7 +277,7 @@ namespace DA.AssetsBundle
         [InitializeOnLoadMethod]
         static void InitSimulationMode()
         {
-            bool state = EditorPrefs.GetBool("Asset bundle simulation mode", true);
+            bool state = EditorPrefs.GetBool("Asset bundle simulation mode", false);
             Menu.SetChecked(MenuItemName_SimulationMode, state);
             DA.AssetLoader.IsSimulationMode = state;
         }
@@ -285,7 +285,7 @@ namespace DA.AssetsBundle
         [MenuItem(MenuItemName_SimulationMode)]
         static void ChangeSimulationMode()
         {
-            bool state = !EditorPrefs.GetBool("Asset bundle simulation mode", true);
+            bool state = !EditorPrefs.GetBool("Asset bundle simulation mode", false);
             EditorPrefs.SetBool("Asset bundle simulation mode", state);
             Menu.SetChecked(MenuItemName_SimulationMode, state);
             DA.AssetLoader.IsSimulationMode = state;

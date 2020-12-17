@@ -44,7 +44,7 @@ namespace NullNamespace
         [MenuItem("Test/Run_1")]
         public static void Test()
         {
-            Assets.Init();
+            //Assets.Init();
         }
     }
 
