@@ -50,11 +50,13 @@ namespace DA
 
             IAssetLoad assetLoad;
 #if UNITY_EDITOR
-            if (IsSimulationMode == false)
-                assetLoad = new LocalAssetLoad().Init();
+            if (IsSimulationMode)
+                assetLoad = new AssetBundleLoad().Init(this);
             else
+                assetLoad = new LocalAssetLoad().Init();
+#else
+            assetLoad = new AssetBundleLoad().Init(this);
 #endif
-                assetLoad = new AssetBundleLoad().Init();
 
             assetLoad.UnloadCallBack += RemoveLoader;
             assetLoads.Add(assetLoad);

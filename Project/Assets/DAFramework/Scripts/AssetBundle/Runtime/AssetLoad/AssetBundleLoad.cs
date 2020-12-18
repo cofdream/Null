@@ -12,7 +12,25 @@ namespace DA
 
         public event Action<IAssetLoad> UnloadCallBack;
 
-        public IAssetLoad Init()
+        private AssetLoader loader;
+
+        private static string assetBundleRoot;
+        private static AssetBundleManifest assetBundleManifest;
+
+        static AssetBundleLoad()
+        {
+#if UNITY_EDITOR
+            assetBundleRoot = $"{System.IO.Directory.GetParent(Application.dataPath).FullName}/AssetBundle/{AssetsBundle.AssetUtil.GetPlatform(Application.platform)}/";
+#else
+            assetBundleRoot = $"{Application.persistentDataPath}/AssetBundle/";
+#endif
+
+            var ab = AssetBundle.LoadFromFile(assetBundleRoot + AssetsBundle.AssetUtil.GetPlatform(Application.platform));
+            assetBundleManifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+        }
+
+
+        public IAssetLoad Init(AssetLoader loader)
         {
             assetBundle = null;
             assetBundlePath = null;
@@ -20,6 +38,8 @@ namespace DA
             loadState = AssetLoadState.NotLoaded;
 
             UnloadCallBack = null;
+
+            this.loader = loader;
 
             return this;
         }
@@ -39,7 +59,13 @@ namespace DA
                 assetBundlePath = assetPath;
                 loadState = AssetLoadState.Loading;
 
-                assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+                assetBundle = AssetBundle.LoadFromFile(assetBundleRoot + assetBundlePath);
+
+                var dependencies = assetBundleManifest.GetAllDependencies(assetBundle.name);
+                foreach (var dependencie in dependencies)
+                {
+                    loader.Load<AssetBundle>(dependencie);
+                }
 
                 loadState = AssetLoadState.Loaded;
             }
@@ -54,8 +80,6 @@ namespace DA
                     assetBundlePath = assetPath;
                     loadState = AssetLoadState.Loading;
 
-                    // todo寻找依赖，把依赖文件都加载进来
-
                     var createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
                     createRequest.completed += (AsyncOperation asyncOperation) =>
                     {
@@ -65,6 +89,12 @@ namespace DA
 
                         loadCallBack?.Invoke(Load() as T);
                     };
+
+                    var dependencies = assetBundleManifest.GetAllDependencies(System.IO.Path.GetFileNameWithoutExtension(assetBundlePath));
+                    foreach (var dependencie in dependencies)
+                    {
+                        loader.LoadAsync<AssetBundle>(dependencie, null);
+                    }
 
                     break;
                 case AssetLoadState.Loaded:
@@ -88,8 +118,10 @@ namespace DA
             if (refNumber == 0)
             {
                 loadState = AssetLoadState.Unload;
-                UnloadCallBack.Invoke(this);
+                UnloadCallBack?.Invoke(this);
                 assetBundle.Unload(true);
+
+                this.loader = null;
             }
         }
     }

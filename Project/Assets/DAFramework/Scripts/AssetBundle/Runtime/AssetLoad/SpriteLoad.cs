@@ -30,9 +30,13 @@ namespace DA
 
         private void Start()
         {
-            AssetLoader.Init();
+            //AssetLoader.Init();
 
             loader = AssetLoader.Loader;
+
+            loader.Load<AssetBundle>(@"E:\Git\Null\Project\AssetBundle\Windows\cube");
+
+            Debug.Log("11");
         }
 
 
@@ -58,9 +62,7 @@ namespace DA
                 default: pathRoot = string.Empty; break;
             }
 
-            loader = AssetLoader.Loader;
-
-            loader.LoadAsync<AssetBundle>(pathRoot, name, Loaded);
+            loader.LoadAsync<AssetBundle>(pathRoot, Loaded);
         }
 
         private void Loaded(UnityEngine.Object obj)

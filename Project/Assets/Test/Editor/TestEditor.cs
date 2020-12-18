@@ -2,49 +2,45 @@
 using UnityEditor;
 using System.IO;
 using DA;
+using DATools;
 
 namespace NullNamespace
 {
     public class TestEditor : EditorWindow
     {
-        //[MenuItem("Test/Run_1")]
-        //public static void Test()
-        //{
-        //    AssetDatabase.SaveAssets();
-        //}
-        //[MenuItem("Test/Run_2")]
-        //public static void Test2()
-        //{
-        //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.ForceUpdate);
-        //}
-        //[MenuItem("Test/Run_3")]
-        //public static void Test3()
-        //{
-        //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.ForceSynchronousImport);
-        //}
-
-        //[MenuItem("Test/Run_4")]
-        //public static void Test4()
-        //{
-        //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.ImportRecursive);
-        //}
-
-        //[MenuItem("Test/Run_5")]
-        //public static void Test5()
-        //{
-        //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.DontDownloadFromCacheServer);
-        //}
-        //[MenuItem("Test/Run_6")]
-        //public static void Test6()
-        //{
-        //    AssetDatabase.ImportAsset(@"Assets\Test\Editor\Build_Rules 1.asset", ImportAssetOptions.ForceUncompressedImport);
-        //}
-
-
-        [MenuItem("Test/Run_1")]
-        public static void Test()
+        [MenuItem("AssetBundle/Window", false, 0)]
+        static void Open()
         {
-            //Assets.Init();
+            var wind = EditorMainWindow.GetWindowInCenter<TestEditor>();
+            wind.Show();
+        }
+
+
+        static AssetBundle ab;
+        private void OnGUI()
+        {
+            if (GUILayout.Button("Build AB"))
+            {
+                string output = Directory.GetParent(Application.dataPath).FullName + "/AssetBundle/" + DA.AssetsBundle.AssetUtil.GetPlatform(Application.platform);
+
+                if (Directory.Exists(output) == false)
+                {
+                    Directory.CreateDirectory(output);
+                }
+
+                UnityEditor.BuildPipeline.BuildAssetBundles(output, BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
+            }
+
+
+            GUILayout.Space(1);
+            GUILayout.Space(1);
+
+            if (GUILayout.Button("Unload cube"))
+            {
+
+                AssetBundle.UnloadAllAssetBundles(true);
+                Debug.Log("UnloadAB");
+            }
         }
     }
 
