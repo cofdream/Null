@@ -8,7 +8,7 @@ namespace DA.AssetsBundle
 {
     public static class BuildScript
     {
-        public static string outputPath = "AssetBundleFile/" + GetPlatformName();
+        public static string outputPath = "AssetBundle/" + GetPlatformName();
 
         public static string GetPlatformName()
         {

@@ -22,22 +22,6 @@ namespace DA
         private int dependentCount;
         private AssetBundle[] assetBundleDependencies;
 
-        private static string assetBundleRoot;
-        private static AssetBundleManifest assetBundleManifest;
-
-        static AssetBundleLoad()
-        {
-#if UNITY_EDITOR
-            assetBundleRoot = $"{System.IO.Directory.GetParent(Application.dataPath).FullName}/AssetBundle/{AssetsBundle.AssetUtil.GetPlatform(Application.platform)}/";
-#else
-            assetBundleRoot = $"{Application.persistentDataPath}/AssetBundle/";
-#endif
-
-            var ab = AssetBundle.LoadFromFile(assetBundleRoot + AssetsBundle.AssetUtil.GetPlatform(Application.platform));
-            assetBundleManifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
-        }
-
-
         public AssetBundleLoad Init(AssetLoader loader)
         {
             assetBundle = null;
@@ -57,15 +41,15 @@ namespace DA
             return this;
         }
 
-        public bool Equals(string path)
+        public bool Equals(string assetPath,string assetName)
         {
-            return assetBundlePath.Equals(path);
+            return assetBundlePath.Equals(assetPath);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return assetBundle.Equals(asset);
         }
-        public UnityEngine.Object LoadAsset(string assetPath)
+        public UnityEngine.Object LoadAsset(string assetPath, string assetName)
         {
             if (loadState == AssetLoadState.Loading)
             {
@@ -76,9 +60,9 @@ namespace DA
                 assetBundlePath = assetPath;
                 loadState = AssetLoadState.Loading;
 
-                assetBundle = AssetBundle.LoadFromFile(assetBundleRoot + assetBundlePath);
+                assetBundle = AssetBundle.LoadFromFile(Manifest.AssetBundleRoot + assetBundlePath);
 
-                var dependencies = assetBundleManifest.GetAllDependencies(assetBundle.name);
+                var dependencies = Manifest.AssetBundleManifest.GetAllDependencies(assetBundle.name);
                 dependentCount = dependencies.Length;
                 if (dependentCount != 0)
                 {
@@ -88,7 +72,7 @@ namespace DA
                     {
                         //var asseBundleDependent = loader.Load<AssetBundle>(dependencie);
 
-                       // assetBundleDependencies[dependentIndex] = asseBundleDependent;
+                        // assetBundleDependencies[dependentIndex] = asseBundleDependent;
                         dependentIndex++;
                     }
                 }
@@ -98,7 +82,7 @@ namespace DA
 
             return Load();
         }
-        public void LoadAsync(string assetPath, Action<UnityEngine.Object> callback)
+        public void LoadAsync(string assetPath, string assetName, Action<UnityEngine.Object> callback)
         {
             switch (loadState)
             {
@@ -107,9 +91,9 @@ namespace DA
                     loadState = AssetLoadState.Loading;
                     loadedCallback += callback;
 
-                    createRequest = AssetBundle.LoadFromFileAsync(assetBundleRoot + assetBundlePath);
+                    createRequest = AssetBundle.LoadFromFileAsync(Manifest.AssetBundleRoot + assetBundlePath);
 
-                    var dependencies = assetBundleManifest.GetAllDependencies(System.IO.Path.GetFileNameWithoutExtension(assetBundlePath));
+                    var dependencies = Manifest.AssetBundleManifest.GetAllDependencies(System.IO.Path.GetFileNameWithoutExtension(assetBundlePath));
                     dependentCount = dependencies.Length;
                     if (dependentCount != 0)
                     {

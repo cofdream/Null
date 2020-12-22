@@ -55,7 +55,7 @@ namespace DA
             else
 #endif
             {
-                if (assetPath.EndsWith(".bundle"))
+                if (assetPath.EndsWith(".ab"))
                     assetLoad = new AssetBundleLoad().Init(this);
                 else
                     assetLoad = new AssetLoad().Init();
@@ -75,7 +75,7 @@ namespace DA
             var local = assetLoad as AssetEditorLoad;
             if (local != null) local.LoadType = typeof(T);
 #endif
-            return assetLoad.LoadAsset(assetPath) as T;
+            return assetLoad.LoadAsset(assetPath, assetName) as T;
         }
         public void LoadAsync<T>(string assetName, string assetPath, Action<T> loadCallBack) where T : UnityEngine.Object
         {
@@ -85,11 +85,7 @@ namespace DA
             var local = assetLoad as AssetEditorLoad;
             if (local != null) local.LoadType = typeof(T);
 #endif
-
-            assetLoad.LoadAsync(assetPath, (asset) =>
-            {
-                 loadCallBack?.Invoke(asset as T);
-            });
+            assetLoad.LoadAsync(assetPath, assetName, (asset) => loadCallBack?.Invoke(asset as T));
         }
 
         public void Unload(UnityEngine.Object asset)

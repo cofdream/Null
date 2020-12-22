@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tested2 : MonoBehaviour
+namespace DA
 {
-    public Image sp;
-    void Start()
+    public class Tested2 : MonoBehaviour
     {
-        sp.sprite = Resources.Load<Sprite>("Icons/img_icon_qq");
-    }
+        public Image sp;
+        void Start()
+        {
+            //sp.sprite = Resources.Load<Sprite>("Icons/img_icon_qq");
 
-    // Update is called once per frame
-    void Update()
-    {
 
+            var a = Manifest.AssetBundleManifest;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }

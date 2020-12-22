@@ -6,7 +6,8 @@ namespace DA
     public class AssetLoad : IAssetLoad
     {
         private AssetBundle assetBundle;
-        private string assetBundlePath;
+        private string assetPath;
+        private string assetName;
         private ushort refNumber;
         private AssetLoadState loadState;
 
@@ -15,7 +16,8 @@ namespace DA
         public IAssetLoad Init()
         {
             assetBundle = null;
-            assetBundlePath = null;
+            assetPath = null;
+            assetName = null;
             refNumber = 0;
             loadState = AssetLoadState.NotLoaded;
 
@@ -24,39 +26,41 @@ namespace DA
             return this;
         }
 
-        public bool Equals(string path)
+        public bool Equals(string assetPath, string assetName)
         {
-            return assetBundlePath.Equals(path);
+            return this.assetPath.Equals(assetPath) && this.assetName.Equals(assetName);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return assetBundle.Equals(asset);
         }
-        public UnityEngine.Object LoadAsset(string assetPath)
+        public UnityEngine.Object LoadAsset(string assetPath, string assetName)
         {
             if (loadState == AssetLoadState.NotLoaded)
             {
-                assetBundlePath = assetPath;
+                this.assetPath = assetPath;
+                this.assetName = assetName;
                 loadState = AssetLoadState.Loading;
 
-                assetBundle = AssetBundle.LoadFromFile(assetBundlePath);
+                assetBundle = AssetBundle.LoadFromFile(this.assetName);
 
                 loadState = AssetLoadState.Loaded;
             }
 
             return Load();
         }
-        public void LoadAsync(string assetPath, Action<UnityEngine.Object> loadCallBack)
+        public void LoadAsync(string assetPath, string assetName, Action<UnityEngine.Object> loadCallBack)
         {
             switch (loadState)
             {
                 case AssetLoadState.NotLoaded:
-                    assetBundlePath = assetPath;
+                    this.assetPath = assetPath;
+                    this.assetName = assetName;
                     loadState = AssetLoadState.Loading;
 
+                    var createRequest = AssetBundle.LoadFromFileAsync(this.assetName);
                     // todo寻找依赖，把依赖文件都加载进来
 
-                    var createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
                     createRequest.completed += (AsyncOperation asyncOperation) =>
                     {
                         loadState = AssetLoadState.Loaded;

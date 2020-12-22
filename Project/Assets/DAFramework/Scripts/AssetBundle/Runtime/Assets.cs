@@ -6,10 +6,13 @@ using System.IO;
 
 namespace DA
 {
-    public  class Assets : MonoBehaviour
+    public class Assets : MonoBehaviour
     {
-        public const string Extension = ".bundle";
+        public const string Extension = ".ab";
 
-        
+        private void GetAssetBundlePath(string assetName)
+        {
+
+        }
     }
 }

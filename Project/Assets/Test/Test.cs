@@ -9,15 +9,15 @@ public class Test : MonoBehaviour
     GameObject ab;
     void Start()
     {
-        loader = AssetLoader.Loader;
+        //loader = AssetLoader.Loader;
 
-        // loader.Load<AssetBundle>("ma3");
+        //// loader.Load<AssetBundle>("ma3");
 
-        loader.LoadAsync<GameObject>("Cube3","", (obj) =>
-        {
-            ab = obj;
-            var i_go = Instantiate(obj);
-        });
+        //loader.LoadAsync<GameObject>("Cube3","", (obj) =>
+        //{
+        //    ab = obj;
+        //    var i_go = Instantiate(obj);
+        //});
     }
 
     private void OnDestroy()

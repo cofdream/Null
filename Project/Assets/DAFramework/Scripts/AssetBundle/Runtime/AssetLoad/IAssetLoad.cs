@@ -14,10 +14,10 @@ namespace DA
     {
         event Action<IAssetLoad> UnloadCallback;
 
-        bool Equals(string assetPath);
+        bool Equals(string assetPath,string assetName);
         bool Equals(UnityEngine.Object asset);
-        UnityEngine.Object LoadAsset(string assetPath);
-        void LoadAsync(string assetPath, Action<UnityEngine.Object> loadCallBack);
+        UnityEngine.Object LoadAsset(string assetPath, string assetName);
+        void LoadAsync(string assetPath, string assetName, Action<UnityEngine.Object> loadCallBack);
         void Unload();
     }
 }

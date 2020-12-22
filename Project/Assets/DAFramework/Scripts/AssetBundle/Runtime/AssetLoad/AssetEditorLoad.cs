@@ -28,38 +28,38 @@ namespace DA
             return this;
         }
 
-        public bool Equals(string path)
+        public bool Equals(string assetPath, string assetName)
         {
-            return assetPath.Equals(path);
+            return this.assetPath.Equals(assetPath);
         }
         public bool Equals(UnityEngine.Object asset)
         {
             return this.asset.Equals(asset);
         }
-        public UnityEngine.Object LoadAsset(string path)
+        public UnityEngine.Object LoadAsset(string assetPath, string assetName)
         {
             if (loadState == AssetLoadState.NotLoaded)
             {
-                assetPath = path;
+                this.assetPath = assetPath;
                 loadState = AssetLoadState.Loading;
 
-                asset = AssetDatabase.LoadAssetAtPath(assetPath, LoadType);
+                asset = AssetDatabase.LoadAssetAtPath(this.assetPath, LoadType);
 
                 loadState = AssetLoadState.Loaded;
             }
 
             return Load();
         }
-        public void LoadAsync(string path, Action<UnityEngine.Object> loadCallBack)
+        public void LoadAsync(string assetPath, string assetName, Action<UnityEngine.Object> loadCallBack)
         {
             switch (loadState)
             {
                 case AssetLoadState.NotLoaded:
 
-                    assetPath = path;
+                    this.assetPath = assetPath;
                     loadState = AssetLoadState.Loading;
 
-                    asset = AssetDatabase.LoadAssetAtPath(assetPath, LoadType);
+                    asset = AssetDatabase.LoadAssetAtPath(this.assetPath, LoadType);
 
                     Timer.Timer.timers.Add(new Timer.TimerOnce()
                     {
