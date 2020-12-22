@@ -39,9 +39,9 @@ namespace NullNamespace
             {
 
                 AssetBundle.UnloadAllAssetBundles(true);
+                EditorUtility.UnloadUnusedAssetsImmediate();
                 Debug.Log("UnloadAB");
             }
         }
     }
-
 }

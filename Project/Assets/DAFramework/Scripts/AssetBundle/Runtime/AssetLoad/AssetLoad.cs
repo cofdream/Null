@@ -10,7 +10,7 @@ namespace DA
         private ushort refNumber;
         private AssetLoadState loadState;
 
-        public event Action<IAssetLoad> UnloadCallBack;
+        public event Action<IAssetLoad> UnloadCallback;
 
         public IAssetLoad Init()
         {
@@ -19,7 +19,7 @@ namespace DA
             refNumber = 0;
             loadState = AssetLoadState.NotLoaded;
 
-            UnloadCallBack = null;
+            UnloadCallback = null;
 
             return this;
         }
@@ -32,7 +32,7 @@ namespace DA
         {
             return assetBundle.Equals(asset);
         }
-        public T LoadAsset<T>(string assetPath) where T : UnityEngine.Object
+        public UnityEngine.Object LoadAsset(string assetPath)
         {
             if (loadState == AssetLoadState.NotLoaded)
             {
@@ -44,9 +44,9 @@ namespace DA
                 loadState = AssetLoadState.Loaded;
             }
 
-            return Load() as T;
+            return Load();
         }
-        public void LoadAsync<T>(string assetPath, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync(string assetPath, Action<UnityEngine.Object> loadCallBack)
         {
             switch (loadState)
             {
@@ -63,13 +63,13 @@ namespace DA
 
                         assetBundle = createRequest.assetBundle;
 
-                        loadCallBack?.Invoke(Load() as T);
+                        loadCallBack?.Invoke(Load());
                     };
 
                     break;
                 case AssetLoadState.Loaded:
 
-                    loadCallBack?.Invoke(Load() as T);
+                    loadCallBack?.Invoke(Load());
 
                     break;
             }
@@ -88,7 +88,7 @@ namespace DA
             if (refNumber == 0)
             {
                 loadState = AssetLoadState.Unload;
-                UnloadCallBack.Invoke(this);
+                UnloadCallback.Invoke(this);
                 assetBundle.Unload(true);
             }
         }

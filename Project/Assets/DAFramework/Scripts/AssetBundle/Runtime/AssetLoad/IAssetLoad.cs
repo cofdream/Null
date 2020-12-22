@@ -12,12 +12,12 @@ namespace DA
 
     public interface IAssetLoad
     {
-        event Action<IAssetLoad> UnloadCallBack;
+        event Action<IAssetLoad> UnloadCallback;
 
         bool Equals(string assetPath);
         bool Equals(UnityEngine.Object asset);
-        T LoadAsset<T>(string assetPath) where T : UnityEngine.Object;
-        void LoadAsync<T>(string assetPath, Action<T> loadCallBack) where T : UnityEngine.Object;
+        UnityEngine.Object LoadAsset(string assetPath);
+        void LoadAsync(string assetPath, Action<UnityEngine.Object> loadCallBack);
         void Unload();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DA
 {
-    public class LocalAssetLoad : IAssetLoad
+    public class AssetEditorLoad : IAssetLoad
     {
         private UnityEngine.Object asset;
         private string assetPath;
@@ -13,7 +13,9 @@ namespace DA
 
         private AssetLoadState loadState;
 
-        public event Action<IAssetLoad> UnloadCallBack;
+        public Type LoadType;
+
+        public event Action<IAssetLoad> UnloadCallback;
 
         public IAssetLoad Init()
         {
@@ -21,7 +23,7 @@ namespace DA
             assetPath = null;
             refNumber = 0;
             loadState = AssetLoadState.NotLoaded;
-            UnloadCallBack = null;
+            UnloadCallback = null;
 
             return this;
         }
@@ -34,21 +36,21 @@ namespace DA
         {
             return this.asset.Equals(asset);
         }
-        public T LoadAsset<T>(string path) where T : UnityEngine.Object
+        public UnityEngine.Object LoadAsset(string path)
         {
             if (loadState == AssetLoadState.NotLoaded)
             {
                 assetPath = path;
                 loadState = AssetLoadState.Loading;
 
-                asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                asset = AssetDatabase.LoadAssetAtPath(assetPath, LoadType);
 
                 loadState = AssetLoadState.Loaded;
             }
 
-            return Load() as T;
+            return Load();
         }
-        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync(string path, Action<UnityEngine.Object> loadCallBack)
         {
             switch (loadState)
             {
@@ -57,7 +59,7 @@ namespace DA
                     assetPath = path;
                     loadState = AssetLoadState.Loading;
 
-                    asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                    asset = AssetDatabase.LoadAssetAtPath(assetPath, LoadType);
 
                     Timer.Timer.timers.Add(new Timer.TimerOnce()
                     {
@@ -67,14 +69,14 @@ namespace DA
                         {
                             loadState = AssetLoadState.Loaded;
 
-                            loadCallBack?.Invoke(Load() as T);
+                            loadCallBack?.Invoke(Load());
                         },
                     });
 
                     break;
                 case AssetLoadState.Loaded:
 
-                    loadCallBack?.Invoke(Load() as T);
+                    loadCallBack?.Invoke(Load());
 
                     break;
             }
@@ -90,7 +92,7 @@ namespace DA
             if (refNumber == 0)
             {
                 loadState = AssetLoadState.Unload;
-                UnloadCallBack.Invoke(this);
+                UnloadCallback.Invoke(this);
                 if (asset is GameObject)
                 {
                     Resources.UnloadUnusedAssets();

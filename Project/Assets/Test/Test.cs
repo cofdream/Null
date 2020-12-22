@@ -6,23 +6,23 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     AssetLoader loader;
-    AssetBundle ab;
+    GameObject ab;
     void Start()
     {
         loader = AssetLoader.Loader;
 
-        loader.LoadAsync<AssetBundle>("cube", (obj) =>
+        // loader.Load<AssetBundle>("ma3");
+
+        loader.LoadAsync<GameObject>("Cube3","", (obj) =>
         {
             ab = obj;
-            var go = ab.LoadAsset<GameObject>("Cube");
-            var i_go = Instantiate(go);
+            var i_go = Instantiate(obj);
         });
     }
 
     private void OnDestroy()
     {
         loader.Unload(ab);
-        loader.UnloadAll();
         loader = null;
     }
 }

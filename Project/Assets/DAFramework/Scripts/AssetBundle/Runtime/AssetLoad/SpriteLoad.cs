@@ -34,7 +34,7 @@ namespace DA
 
             loader = AssetLoader.Loader;
 
-            loader.Load<AssetBundle>(@"E:\Git\Null\Project\AssetBundle\Windows\cube");
+            //  loader.Load<AssetBundle>(@"E:\Git\Null\Project\AssetBundle\Windows\cube");
 
             Debug.Log("11");
         }
@@ -42,10 +42,10 @@ namespace DA
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                image.sprite = loader.Load<Sprite>("img_icon_qqSSS");
-            }
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    image.sprite = loader.Load<Sprite>("img_icon_qqSSS");
+            //}
         }
 
 
@@ -62,7 +62,7 @@ namespace DA
                 default: pathRoot = string.Empty; break;
             }
 
-            loader.LoadAsync<AssetBundle>(pathRoot, Loaded);
+            //loader.LoadAsync<AssetBundle>(pathRoot, Loaded);
         }
 
         private void Loaded(UnityEngine.Object obj)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d827e0a3f2e54b341a4376e0de440621
+guid: 885029f51eae0524faa6b03c69558652
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -32,7 +32,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -100
     wrapU: 1
     wrapV: 1
@@ -112,5 +112,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: ma
   assetBundleVariant: 

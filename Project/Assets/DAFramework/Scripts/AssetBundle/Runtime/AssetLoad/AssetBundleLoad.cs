@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DA
@@ -10,9 +11,16 @@ namespace DA
         private ushort refNumber;
         private AssetLoadState loadState;
 
-        public event Action<IAssetLoad> UnloadCallBack;
+        private Action<UnityEngine.Object> loadedCallback;
+        private AssetBundleCreateRequest createRequest;
+
+        public event Action<IAssetLoad> UnloadCallback;
 
         private AssetLoader loader;
+
+        private int dependentIndex;
+        private int dependentCount;
+        private AssetBundle[] assetBundleDependencies;
 
         private static string assetBundleRoot;
         private static AssetBundleManifest assetBundleManifest;
@@ -30,14 +38,19 @@ namespace DA
         }
 
 
-        public IAssetLoad Init(AssetLoader loader)
+        public AssetBundleLoad Init(AssetLoader loader)
         {
             assetBundle = null;
             assetBundlePath = null;
             refNumber = 0;
             loadState = AssetLoadState.NotLoaded;
 
-            UnloadCallBack = null;
+            loadedCallback = null;
+            createRequest = null;
+            UnloadCallback = null;
+
+            dependentCount = 0;
+            assetBundleDependencies = null;
 
             this.loader = loader;
 
@@ -52,8 +65,12 @@ namespace DA
         {
             return assetBundle.Equals(asset);
         }
-        public T LoadAsset<T>(string assetPath) where T : UnityEngine.Object
+        public UnityEngine.Object LoadAsset(string assetPath)
         {
+            if (loadState == AssetLoadState.Loading)
+            {
+                Debug.LogError("处于异步加载中");
+            }
             if (loadState == AssetLoadState.NotLoaded)
             {
                 assetBundlePath = assetPath;
@@ -62,45 +79,58 @@ namespace DA
                 assetBundle = AssetBundle.LoadFromFile(assetBundleRoot + assetBundlePath);
 
                 var dependencies = assetBundleManifest.GetAllDependencies(assetBundle.name);
-                foreach (var dependencie in dependencies)
+                dependentCount = dependencies.Length;
+                if (dependentCount != 0)
                 {
-                    loader.Load<AssetBundle>(dependencie);
+                    assetBundleDependencies = new AssetBundle[dependentCount];
+                    dependentIndex = 0;
+                    foreach (var dependencie in dependencies)
+                    {
+                        //var asseBundleDependent = loader.Load<AssetBundle>(dependencie);
+
+                       // assetBundleDependencies[dependentIndex] = asseBundleDependent;
+                        dependentIndex++;
+                    }
                 }
 
                 loadState = AssetLoadState.Loaded;
             }
 
-            return Load() as T;
+            return Load();
         }
-        public void LoadAsync<T>(string assetPath, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync(string assetPath, Action<UnityEngine.Object> callback)
         {
             switch (loadState)
             {
                 case AssetLoadState.NotLoaded:
                     assetBundlePath = assetPath;
                     loadState = AssetLoadState.Loading;
+                    loadedCallback += callback;
 
-                    var createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
-                    createRequest.completed += (AsyncOperation asyncOperation) =>
-                    {
-                        loadState = AssetLoadState.Loaded;
-
-                        assetBundle = createRequest.assetBundle;
-
-                        loadCallBack?.Invoke(Load() as T);
-                    };
+                    createRequest = AssetBundle.LoadFromFileAsync(assetBundleRoot + assetBundlePath);
 
                     var dependencies = assetBundleManifest.GetAllDependencies(System.IO.Path.GetFileNameWithoutExtension(assetBundlePath));
-                    foreach (var dependencie in dependencies)
+                    dependentCount = dependencies.Length;
+                    if (dependentCount != 0)
                     {
-                        loader.LoadAsync<AssetBundle>(dependencie, null);
+                        assetBundleDependencies = new AssetBundle[dependencies.Length];
+                        foreach (var dependent in dependencies)
+                        {
+                            //loader.LoadAsync<AssetBundle>(dependent, DependentLoadCallBack);
+                        }
+                    }
+                    else
+                    {
+                        createRequest.completed += AssetBundleLoadedCallBack;
                     }
 
                     break;
+                case AssetLoadState.Loading:
+                    loadedCallback += callback;
+                    break;
+
                 case AssetLoadState.Loaded:
-
-                    loadCallBack?.Invoke(Load() as T);
-
+                    loadedCallback?.Invoke(Load());
                     break;
             }
         }
@@ -108,7 +138,29 @@ namespace DA
         private UnityEngine.Object Load()
         {
             refNumber++;
+            Debug.Log($"Load {assetBundlePath} Done.");
             return assetBundle;
+        }
+
+        private void AssetBundleLoadedCallBack(AsyncOperation asyncOperation)
+        {
+            loadState = AssetLoadState.Loaded;
+
+            assetBundle = createRequest.assetBundle;
+            createRequest = null;
+
+            loadedCallback?.Invoke(Load());
+        }
+
+        private void DependentLoadCallBack(AssetBundle assetBundle)
+        {
+            assetBundleDependencies[dependentIndex] = assetBundle;
+            dependentIndex++;
+
+            if (dependentIndex == dependentCount)
+            {
+                createRequest.completed += AssetBundleLoadedCallBack;
+            }
         }
 
         public void Unload()
@@ -118,8 +170,20 @@ namespace DA
             if (refNumber == 0)
             {
                 loadState = AssetLoadState.Unload;
-                UnloadCallBack?.Invoke(this);
+                UnloadCallback?.Invoke(this);
+
+                //卸载依赖
+                if (dependentCount != 0)
+                {
+                    foreach (var assetBundleDependent in assetBundleDependencies)
+                    {
+                        loader.Unload(assetBundleDependent);
+                    }
+                    assetBundleDependencies = null;
+                }
+
                 assetBundle.Unload(true);
+                Debug.Log($"Unload {assetBundlePath} Done.");
 
                 this.loader = null;
             }

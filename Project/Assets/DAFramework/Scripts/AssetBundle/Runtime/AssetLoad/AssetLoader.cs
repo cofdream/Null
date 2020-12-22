@@ -9,12 +9,12 @@ namespace DA
         private List<IAssetLoad> assetLoads = new List<IAssetLoad>();
         private List<IAssetLoad> refAssetLoads = new List<IAssetLoad>();
 
-        private IAssetLoad GetAsset<T>(string path) where T : UnityEngine.Object
+        private IAssetLoad GetAsset(string assetName, string assetPath)
         {
             // 本地的Load
             foreach (var item in assetLoads)
             {
-                if (item.Equals(path))
+                if (item.Equals(assetPath))
                 {
                     return item;
                 }
@@ -23,7 +23,7 @@ namespace DA
             // 本地引用的外部Load
             foreach (var item in refAssetLoads)
             {
-                if (item.Equals(path))
+                if (item.Equals(assetPath))
                 {
                     return item;
                 }
@@ -39,9 +39,9 @@ namespace DA
                 // 仅检测自己创建的
                 foreach (var item in loader.assetLoads)
                 {
-                    if (item.Equals(path))
+                    if (item.Equals(assetPath))
                     {
-                        item.UnloadCallBack += RemoveRefLoader;
+                        item.UnloadCallback += RemoveRefLoader;
                         refAssetLoads.Add(item);//全局内的资源 保存本地一份
                         return item;
                     }
@@ -50,26 +50,46 @@ namespace DA
 
             IAssetLoad assetLoad;
 #if UNITY_EDITOR
-            if (IsSimulationMode)
-                assetLoad = new AssetBundleLoad().Init(this);
+            if (IsSimulationMode == false)
+                assetLoad = new AssetEditorLoad().Init();
             else
-                assetLoad = new LocalAssetLoad().Init();
-#else
-            assetLoad = new AssetBundleLoad().Init(this);
 #endif
+            {
+                if (assetPath.EndsWith(".bundle"))
+                    assetLoad = new AssetBundleLoad().Init(this);
+                else
+                    assetLoad = new AssetLoad().Init();
+            }
 
-            assetLoad.UnloadCallBack += RemoveLoader;
+            assetLoad.UnloadCallback += RemoveLoader;
             assetLoads.Add(assetLoad);
 
             return assetLoad;
         }
-        public T Load<T>(string assetPath) where T : UnityEngine.Object
+
+        public T Load<T>(string assetName, string assetPath) where T : UnityEngine.Object
         {
-            return GetAsset<T>(assetPath).LoadAsset<T>(assetPath);
+            IAssetLoad assetLoad = GetAsset(assetName, assetPath);
+
+#if UNITY_EDITOR
+            var local = assetLoad as AssetEditorLoad;
+            if (local != null) local.LoadType = typeof(T);
+#endif
+            return assetLoad.LoadAsset(assetPath) as T;
         }
-        public void LoadAsync<T>(string path, Action<T> loadCallBack) where T : UnityEngine.Object
+        public void LoadAsync<T>(string assetName, string assetPath, Action<T> loadCallBack) where T : UnityEngine.Object
         {
-            GetAsset<T>(path).LoadAsync<T>(path, loadCallBack);
+            IAssetLoad assetLoad = GetAsset(assetName, assetPath);
+
+#if UNITY_EDITOR
+            var local = assetLoad as AssetEditorLoad;
+            if (local != null) local.LoadType = typeof(T);
+#endif
+
+            assetLoad.LoadAsync(assetPath, (asset) =>
+            {
+                 loadCallBack?.Invoke(asset as T);
+            });
         }
 
         public void Unload(UnityEngine.Object asset)
@@ -80,7 +100,7 @@ namespace DA
                 IAssetLoad assetload = assetLoads[i];
                 if (assetload.Equals(asset))
                 {
-                    assetload.UnloadCallBack -= RemoveLoader;//移除回调
+                    assetload.UnloadCallback -= RemoveLoader;//移除回调
                     assetload.Unload();
                     assetLoads.RemoveAt(i);
                     return;
@@ -93,7 +113,7 @@ namespace DA
                 IAssetLoad assetload = refAssetLoads[i];
                 if (assetload.Equals(asset))
                 {
-                    assetload.UnloadCallBack -= RemoveRefLoader;//移除回调
+                    assetload.UnloadCallback -= RemoveRefLoader;//移除回调
                     assetload.Unload();
                     refAssetLoads.RemoveAt(i);
                     return;
@@ -102,26 +122,24 @@ namespace DA
 
             Dispose();
         }
-
         public void UnloadAll()
         {
             foreach (var assetload in assetLoads)
             {
-                assetload.UnloadCallBack -= RemoveLoader;//移除回调
+                assetload.UnloadCallback -= RemoveLoader;//移除回调
                 assetload.Unload();
             }
             assetLoads.Clear();
 
             foreach (var assetload in refAssetLoads)
             {
-                assetload.UnloadCallBack -= RemoveRefLoader;//移除回调
+                assetload.UnloadCallback -= RemoveRefLoader;//移除回调
                 assetload.Unload();
             }
             refAssetLoads.Clear();
 
             Dispose();
         }
-
         public void Dispose()
         {
             if (assetLoads.Count == 0)
@@ -133,12 +151,12 @@ namespace DA
 
         private void RemoveLoader(IAssetLoad assetLoad)
         {
-            assetLoad.UnloadCallBack -= RemoveLoader;
+            assetLoad.UnloadCallback -= RemoveLoader;
             assetLoads.Remove(assetLoad);
         }
         private void RemoveRefLoader(IAssetLoad assetLoad)
         {
-            assetLoad.UnloadCallBack -= RemoveRefLoader;
+            assetLoad.UnloadCallback -= RemoveRefLoader;
             refAssetLoads.Remove(assetLoad);
         }
     }
