@@ -7,7 +7,7 @@ namespace NullNamespace
     public class AssetLoadManager : MonoBehaviour
     {
 
-        public static List<AssetLoad> AssetLoadList = new List<AssetLoad>();
+        public static List<IAssetLoad> AssetLoadList = new List<IAssetLoad>();
 
         static AssetLoadManager()
         {
@@ -18,12 +18,12 @@ namespace NullNamespace
         }
 
 
-        public static void AddIAssetLoad(AssetLoad assetLoad)
+        public static void AddIAssetLoad(IAssetLoad assetLoad)
         {
             AssetLoadList.Add(assetLoad);
             assetLoad.OnUnload += RemoveIAssettLoad;
         }
-        private static void RemoveIAssettLoad(AssetLoad assetLoad)
+        private static void RemoveIAssettLoad(IAssetLoad assetLoad)
         {
             AssetLoadList.Remove(assetLoad);
             Debug.Log("RemoveIAssettLoad");

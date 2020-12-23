@@ -5,48 +5,82 @@ namespace NullNamespace
 {
     public class AssetLoader
     {
-        private List<AssetLoad> allAssets = new List<AssetLoad>();
-
-       
+        private List<IAssetLoad> allAssets = new List<IAssetLoad>();
 
         public T LoadAsset<T>(string assetName) where T : UnityEngine.Object
         {
-            foreach (var item in allAssets)
+            IAssetLoad assetLoad = GetIAssetLoad(assetName);
+
+            if (assetLoad == null)
             {
-                if (item.Name == assetName)
-                {
-                    return item.Asset as T;
-                }
+                string path = "Assets/Resources/" + assetName + ".png";
+
+                assetLoad = new EditorLoad(path);
+
+                allAssets.Add(assetLoad);
+                AssetLoadManager.AddIAssetLoad(assetLoad);
             }
 
-            foreach (var item in AssetLoadManager.AssetLoadList)
-            {
-                if (item.Name == assetName)
-                {
-                    item.Retatin();
+            assetLoad.Retain();
+            assetLoad.LoadAsset();
 
-                    allAssets.Add(item);
-
-                    return item.Asset as T;
-                }
-            }
-
-            //var asset = Resources.Load<T>(assetName);
-            string path = "Assets/Resources/" + assetName + ".png"; 
-            var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
-
-            AssetLoad assetLoad = new AssetLoad(asset);
-
-            allAssets.Add(assetLoad);
-
-            AssetLoadManager.AddIAssetLoad(assetLoad);
-
-            assetLoad.Retatin();
-
-            Debug.Log("New");
-
-            return asset;
+            return assetLoad.Asset as T;
         }
+
+        public void LoadAsset<T>(string assetName, System.Action<T> onLoaded) where T : UnityEngine.Object
+        {
+            IAssetLoad assetLoad = GetIAssetLoad(assetName);
+
+            if (assetLoad == null)
+            {
+                if (assetName.StartsWith("resources://"))
+                {
+                    assetLoad = new EditorLoad(assetName);
+                }
+                else
+                {
+                    assetLoad = new AssetBundleLoad(assetName, this);
+                }
+
+                allAssets.Add(assetLoad);
+                AssetLoadManager.AddIAssetLoad(assetLoad);
+            }
+
+            assetLoad.Retain();
+            assetLoad.LoadAsset((asset) =>
+            {
+                onLoaded?.Invoke(asset as T);
+            });
+
+        }
+
+        private IAssetLoad GetIAssetLoad(string assetName)
+        {
+            IAssetLoad assetLoad = GetIAssetLoad(allAssets, assetName);
+            if (assetLoad != null)
+                return assetLoad;
+
+
+            assetLoad = GetIAssetLoad(AssetLoadManager.AssetLoadList, assetName);
+            if (assetLoad != null)
+            {
+                assetLoad.Retain();
+                allAssets.Add(assetLoad);
+
+                return assetLoad;
+            }
+
+            return null;
+        }
+
+        private static IAssetLoad GetIAssetLoad(IEnumerable<IAssetLoad> collection, string assetName)
+        {
+            foreach (var item in collection)
+                if (item.Name == assetName)
+                    return item;
+            return null;
+        }
+
 
         public void UnloadAll()
         {
