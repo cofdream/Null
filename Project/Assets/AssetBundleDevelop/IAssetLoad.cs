@@ -268,10 +268,11 @@ namespace NullNamespace
 
         private System.Action<string> onLoadAssetAsync;
         private System.Action<string, System.Action> onLoadAssetSync;
+        private System.Action<string> unloadAsset;
 
         public AssetLoadState LoadState { get; private set; }
 
-        public AssetBundleLoad(string path, System.Action<string> onLoadAssetAsync, System.Action<string, System.Action> onLoadAssetSync)
+        public AssetBundleLoad(string path, System.Action<string> onLoadAssetAsync, System.Action<string, System.Action> onLoadAssetSync, System.Action<string> unloadAsset)
         {
             referenceCount = 0;
             assetPath = path;
@@ -282,9 +283,10 @@ namespace NullNamespace
 
             this.onLoadAssetAsync = onLoadAssetAsync;
             this.onLoadAssetSync = onLoadAssetSync;
+            this.unloadAsset = unloadAsset;
         }
 
-        public bool LoadAsset()
+        public void LoadAsset()
         {
             switch (LoadState)
             {
@@ -301,22 +303,19 @@ namespace NullNamespace
                     }
 
                     LoadState = AssetLoadState.Loaded;
-
-                    return assetBundle == null;
+                    break;
 
                 case AssetLoadState.Loading:
                     Debug.LogError("资源已在异步加载队列中，无法立即加载。AssetPath:" + this.assetPath);
-                    return false;
+                    break;
                 case AssetLoadState.Loaded:
-                    return assetBundle == null;
+                    break;
                 case AssetLoadState.Unload:
                     Debug.LogError("资源已卸载，无法加载。");
-                    return false;
+                    break;
                 case AssetLoadState.LoadError:
-                    return false;
+                    break;
             }
-
-            return false;
         }
 
         public void LoadAsset(System.Action<Object> onLoaded)
@@ -357,10 +356,9 @@ namespace NullNamespace
             OnLoaded = null;
         }
 
-        public Object Retain()
+        public void Retain()
         {
             referenceCount++;
-            return assetBundle;
         }
         public void Release()
         {

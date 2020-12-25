@@ -61,17 +61,17 @@ namespace DA
 
                     asset = AssetDatabase.LoadAssetAtPath(this.assetPath, LoadType);
 
-                    Timer.Timer.timers.Add(new Timer.TimerOnce()
-                    {
-                        ElapsedTime = 0,
-                        TotalTime = 0.1f,
-                        Callback = () =>
-                        {
-                            loadState = AssetLoadState.Loaded;
+                    //Timer.Timer.timers.Add(new Timer.TimerOnce()
+                    //{
+                    //    ElapsedTime = 0,
+                    //    TotalTime = 0.1f,
+                    //    Callback= () =>
+                    //    {
+                    //        loadState = AssetLoadState.Loaded;
 
-                            loadCallBack?.Invoke(Load());
-                        },
-                    });
+                    //        loadCallBack?.Invoke(Load());
+                    //    },
+                    //});
 
                     break;
                 case AssetLoadState.Loaded:
