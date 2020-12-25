@@ -35,5 +35,10 @@ namespace DA.Timer
                 }
             }
         }
+
+        public static void AddTimer(ITimer timer)
+        {
+            timers.Add(timer);
+        }
     }
 }

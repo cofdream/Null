@@ -65,7 +65,7 @@ namespace DA
                     {
                         ElapsedTime = 0,
                         TotalTime = 0.1f,
-                        CallBack = () =>
+                        Callback = () =>
                         {
                             loadState = AssetLoadState.Loaded;
 

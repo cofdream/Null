@@ -44,7 +44,7 @@ namespace NullNamespace
             else
             {
                 rawImage.texture = null;
-                rawImage.texture = loader.LoadAsset<Texture>(path2);
+                //rawImage.texture = loader.LoadAsset<Texture>(path2);
             }
         }
         void Load2()
@@ -52,12 +52,12 @@ namespace NullNamespace
             if (isSprite)
             {
                 image.sprite = null;
-                loader.LoadAsset<Sprite>(path);
+                //loader.LoadAsset<Sprite>(path);
             }
             else
             {
                 rawImage.texture = null;
-                loader.LoadAsset<Texture>(path2);
+                //loader.LoadAsset<Texture>(path2);
 
             }
         }
@@ -73,7 +73,7 @@ namespace NullNamespace
         {
             if (GUILayout.Button("Load Sprite"))
             {
-                image.sprite = loader.LoadAsset<Sprite>(path);
+                //image.sprite = loader.LoadAsset<Sprite>(path);
             }
             if (GUILayout.Button("Sprite Set Null"))
             {
@@ -85,7 +85,7 @@ namespace NullNamespace
             {
                 var tt = rawImage.texture;
 
-                rawImage.texture = loader.LoadAsset<Texture>(path2);
+                //rawImage.texture = loader.LoadAsset<Texture>(path2);
 
                 Debug.Log(tt.Equals(rawImage.texture));
             }

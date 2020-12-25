@@ -15,14 +15,23 @@ namespace DA.Timer
         /// 流逝时间
         /// </summary>
         public float ElapsedTime;
-        public Action CallBack;
+        public event Action Callback;
+
+        public TimerOnce(Action callback, float waitTime, float useTime = 0f)
+        {
+            TotalTime = waitTime;
+            ElapsedTime = useTime;
+            Callback = callback;
+
+            Timer.AddTimer(this);
+        }
 
         public bool Update(float time)
         {
             ElapsedTime += time;
             if (TotalTime <= ElapsedTime)
             {
-                CallBack?.Invoke();
+                Callback?.Invoke();
                 return true;
             }
             return false;
