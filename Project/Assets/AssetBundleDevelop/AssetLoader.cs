@@ -5,7 +5,7 @@ namespace NullNamespace
 {
     public class AssetLoader
     {
-        private List<IAssetLoad> allAssets = new List<IAssetLoad>();
+        public List<IAssetLoad> allAssets = new List<IAssetLoad>();
 
         public T LoadAsset<T>(string assetName) where T : UnityEngine.Object
         {
@@ -37,7 +37,7 @@ namespace NullNamespace
             }
 
             assetLoad.Retain();
-            assetLoad.LoadAsset((asset) =>
+            assetLoad.LoadAssetSync((asset) =>
             {
                 onLoaded?.Invoke(asset as T);
             });
@@ -72,7 +72,7 @@ namespace NullNamespace
             }
 
             assetLoad.Retain();
-            assetLoad.LoadAsset((asset) =>
+            assetLoad.LoadAssetSync((asset) =>
             {
                 onLoaded?.Invoke();
             });
@@ -81,25 +81,31 @@ namespace NullNamespace
 
         private IAssetLoad CreateIAssetLoad(string assetName, System.Type loadType)
         {
-            IAssetLoad assetLoad = null;
-            if (assetName.EndsWith(".ab"))
+
+#if UNITY_EDITOR
+            if (assetName.StartsWith("resources://"))
             {
-                assetLoad = new AssetLoad(assetName, LoadAsset, LoadAssetSync, Unload, loadType);
-            }
-            else if (assetName.StartsWith("resources://"))
-            {
-                assetLoad = new ResourcesrLoad(assetName, loadType);
-            }
-            else if (assetName.StartsWith("assetdatabase://"))
-            {
-                assetLoad = new EditorLoad(assetName, loadType);
-            }
-            else
-            {
-                assetLoad = new AssetBundleLoad(assetName, LoadAsset, LoadAssetSync, Unload);
+                return new ResourcesrLoad(assetName, loadType);
             }
 
-            return assetLoad;
+            if (AssetLoadManager.IsSimulationMode)
+            {
+                return new EditorLoad(assetName, loadType);
+            }
+            else
+#endif
+            {
+                if (assetName.EndsWith(".ab"))
+                {
+                    return new AssetBundleLoad(assetName, LoadAsset, LoadAssetSync, Unload);
+                }
+                else
+                {
+                    return new AssetLoad(assetName, LoadAsset, LoadAssetSync, Unload, loadType);
+                }
+            }
+
+            return null;
         }
 
         private IAssetLoad GetIAssetLoad(string assetName)
@@ -125,8 +131,12 @@ namespace NullNamespace
         {
             foreach (var item in allAssets)
                 if (item.Name == assetName)
+                {
                     item.Release();
-            allAssets.Clear();
+                    return;
+                }
+            Debug.Log("删除失败," + assetName);
+            return;
         }
 
         public void UnloadAll()
@@ -135,7 +145,6 @@ namespace NullNamespace
             {
                 item.Release();
             }
-            Debug.Log("UnloadAll");
             allAssets.Clear();
         }
 

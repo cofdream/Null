@@ -24,6 +24,10 @@ namespace DA.Timer
             }
             return false;
         }
+        public void Reset()
+        {
+
+        }
         public void Dispose()
         {
 

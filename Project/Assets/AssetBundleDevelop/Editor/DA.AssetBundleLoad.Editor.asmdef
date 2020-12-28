@@ -1,0 +1,17 @@
+{
+    "name": "DA.AssetBundleLoad.Editor",
+    "references": [
+        "GUID:b1c44d593726319419813ce72a7a5348"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -23,226 +23,12 @@ namespace NullNamespace
         void Retain();
         void Release();
         void LoadAsset();
-        void LoadAsset(System.Action<Object> p);
+        void LoadAssetSync(System.Action<Object> p);
     }
 
-    public class ResourcesrLoad : IAssetLoad
-    {
-        private string name;
-        public string Name { get { return name; } }
+    
 
-        public Object Asset { get; private set; }
-
-        private int referenceCount;
-
-        public event System.Action<Object> OnLoaded;
-        public event System.Action<IAssetLoad> OnUnload;
-
-        private ResourceRequest resourceRequest;
-
-        private string assetPath;
-
-        public AssetLoadState LoadState { get; private set; }
-
-        private System.Type loadType;
-
-        public ResourcesrLoad(string path, System.Type loadType)
-        {
-            referenceCount = 0;
-
-            name = path;
-            assetPath = path.Substring("resources://".Length);
-
-            LoadState = AssetLoadState.NotLoad;
-
-            this.loadType = loadType;
-        }
-        public void LoadAsset()
-        {
-            if (LoadState == AssetLoadState.NotLoad)
-            {
-                LoadState = AssetLoadState.Loading;
-
-                Asset = Resources.Load(this.assetPath);
-                LoadState = AssetLoadState.Loaded;
-            }
-        }
-
-        public void LoadAsset(System.Action<Object> onLoaded)
-        {
-            switch (LoadState)
-            {
-                case AssetLoadState.NotLoad:
-                    LoadState = AssetLoadState.Loading;
-                    resourceRequest = Resources.LoadAsync(assetPath, loadType);
-                    resourceRequest.completed += ResourceRequest_completed;
-
-                    OnLoaded += onLoaded;
-                    break;
-                case AssetLoadState.Loading:
-                    OnLoaded += onLoaded;
-                    break;
-                case AssetLoadState.Loaded:
-                    onLoaded?.Invoke(Asset);
-                    break;
-            }
-        }
-
-        private void ResourceRequest_completed(AsyncOperation obj)
-        {
-            LoadState = AssetLoadState.Loaded;
-
-            Asset = resourceRequest.asset;
-            resourceRequest = null;
-
-            OnLoaded?.Invoke(Asset);
-            OnLoaded = null;
-        }
-
-        public void Retain()
-        {
-            referenceCount++;
-        }
-        public void Release()
-        {
-            referenceCount--;
-
-            if (referenceCount == 0)
-            {
-                LoadState = AssetLoadState.Unload;
-
-                if (Asset is GameObject == false)
-                    Resources.UnloadAsset(Asset);
-                //Resources.UnloadUnusedAssets();
-                Asset = null;
-
-                OnUnload?.Invoke(this);
-
-                OnUnload = null;
-            }
-        }
-    }
-
-    public class EditorLoad : IAssetLoad
-    {
-        private string name;
-        public string Name { get { return name; } }
-
-        public Object Asset { get; private set; }
-
-        private int referenceCount;
-
-        public event System.Action<Object> OnLoaded;
-        public event System.Action<IAssetLoad> OnUnload;
-
-        private ResourceRequest resourceRequest;
-
-        private string assetPath;
-
-        public AssetLoadState LoadState { get; private set; }
-
-        private System.Type loadType;
-
-        public EditorLoad(string path, System.Type loadType)
-        {
-            referenceCount = 0;
-
-            name = path;
-            assetPath = path;
-
-            LoadState = AssetLoadState.NotLoad;
-
-            this.loadType = loadType;
-        }
-        public void LoadAsset()
-        {
-            if (LoadState == AssetLoadState.NotLoad)
-            {
-                LoadState = AssetLoadState.Loading;
-
-                Asset = UnityEditor.AssetDatabase.LoadAssetAtPath(this.assetPath, loadType);
-
-                LoadState = AssetLoadState.Loaded;
-            }
-        }
-
-        public void LoadAsset(System.Action<Object> onLoaded)
-        {
-            switch (LoadState)
-            {
-                case AssetLoadState.NotLoad:
-
-                    string res = "Assets/Resources";
-                    if (assetPath.StartsWith(res))
-                    {
-                        resourceRequest = Resources.LoadAsync(assetPath.Substring(res.Length), loadType);
-                        resourceRequest.completed += ResourceRequest_completed;
-
-                        OnLoaded += onLoaded;
-                    }
-                    else
-                    {
-                        LoadState = AssetLoadState.Loading;
-
-                        new DA.Timer.TimerOnce(() =>
-                        {
-                            Asset = UnityEditor.AssetDatabase.LoadAssetAtPath(this.assetPath, loadType);
-
-                            LoadState = AssetLoadState.Loaded;
-
-                            LoadAsset();
-                            OnLoaded?.Invoke(Asset);
-                            OnLoaded = null;
-
-                        }, 0.0001f);
-
-                        OnLoaded += onLoaded;
-                    }
-
-                    break;
-                case AssetLoadState.Loading:
-                    OnLoaded += onLoaded;
-                    break;
-                case AssetLoadState.Loaded:
-                    onLoaded?.Invoke(Asset);
-                    break;
-            }
-
-
-        }
-
-        private void ResourceRequest_completed(AsyncOperation obj)
-        {
-            Asset = resourceRequest.asset;
-            resourceRequest = null;
-
-            OnLoaded?.Invoke(Asset);
-            OnLoaded = null;
-        }
-
-        public void Retain()
-        {
-            referenceCount++;
-        }
-        public void Release()
-        {
-            referenceCount--;
-
-            if (referenceCount == 0)
-            {
-                LoadState = AssetLoadState.Unload;
-
-                if (Asset is GameObject == false)
-                    Resources.UnloadAsset(Asset);
-
-                Asset = null;
-
-                OnUnload?.Invoke(this);
-                OnUnload = null;
-            }
-        }
-
-    }
+    
 
     public class AssetBundleLoad : IAssetLoad
     {
@@ -263,16 +49,17 @@ namespace NullNamespace
 
         private string assetPath;
 
+        private int loadedDirectDependentCount;
         private string[] directDependentArray;
 
 
-        private System.Action<string> onLoadAssetAsync;
-        private System.Action<string, System.Action> onLoadAssetSync;
+        private System.Action<string> loadAssetAsync;
+        private System.Action<string, System.Action> loadAssetSync;
         private System.Action<string> unloadAsset;
 
         public AssetLoadState LoadState { get; private set; }
 
-        public AssetBundleLoad(string path, System.Action<string> onLoadAssetAsync, System.Action<string, System.Action> onLoadAssetSync, System.Action<string> unloadAsset)
+        public AssetBundleLoad(string path, System.Action<string> loadAssetAsync, System.Action<string, System.Action> loadAssetSync, System.Action<string> unloadAsset)
         {
             referenceCount = 0;
             assetPath = path;
@@ -281,8 +68,8 @@ namespace NullNamespace
 
             LoadState = AssetLoadState.NotLoad;
 
-            this.onLoadAssetAsync = onLoadAssetAsync;
-            this.onLoadAssetSync = onLoadAssetSync;
+            this.loadAssetAsync = loadAssetAsync;
+            this.loadAssetSync = loadAssetSync;
             this.unloadAsset = unloadAsset;
         }
 
@@ -299,7 +86,7 @@ namespace NullNamespace
                     directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
                     foreach (var directDependent in directDependentArray)
                     {
-                        onLoadAssetAsync?.Invoke($"{AssetBundleConfig.AssetBundleRoot}/{directDependent}");
+                        loadAssetAsync?.Invoke($"{AssetBundleConfig.AssetBundleRoot}/{directDependent}");
                     }
 
                     LoadState = AssetLoadState.Loaded;
@@ -318,7 +105,7 @@ namespace NullNamespace
             }
         }
 
-        public void LoadAsset(System.Action<Object> onLoaded)
+        public void LoadAssetSync(System.Action<Object> onLoaded)
         {
             switch (LoadState)
             {
@@ -329,6 +116,11 @@ namespace NullNamespace
                     assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(this.assetPath);
 
                     directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
+
+                    foreach (var directDependent in directDependentArray)
+                    {
+                        loadAssetSync?.Invoke(directDependent, DirectDependentCallback);
+                    }
 
                     assetBundleCreateRequest.completed += ResourceRequest_completed;
                     OnLoaded += onLoaded;
@@ -347,7 +139,17 @@ namespace NullNamespace
                     break;
             }
         }
-
+        private void DirectDependentCallback()
+        {
+            loadedDirectDependentCount++;
+            if (loadedDirectDependentCount == directDependentArray.Length)
+            {
+                assetBundleCreateRequest.completed += ResourceRequest_completed;
+                // 释放部分引用
+                loadAssetSync = null;
+                loadAssetAsync = null;
+            }
+        }
         private void ResourceRequest_completed(AsyncOperation obj)
         {
             assetBundle = assetBundleCreateRequest.assetBundle;
@@ -462,7 +264,7 @@ namespace NullNamespace
             }
         }
 
-        public void LoadAsset(System.Action<Object> onLoaded)
+        public void LoadAssetSync(System.Action<Object> onLoaded)
         {
             switch (LoadState)
             {
@@ -482,8 +284,6 @@ namespace NullNamespace
                     break;
                 case AssetLoadState.Loading:
                 case AssetLoadState.Loaded:
-
-                case AssetLoadState.LoadError:
 
                     OnLoaded += onLoaded;
 

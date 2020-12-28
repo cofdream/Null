@@ -22,7 +22,10 @@ namespace DA.Timer
             TotalTime = waitTime;
             ElapsedTime = useTime;
             Callback = callback;
+        }
 
+        public void Run()
+        {
             Timer.AddTimer(this);
         }
 
