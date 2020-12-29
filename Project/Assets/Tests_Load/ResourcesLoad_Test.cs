@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
-using NullNamespace;
+using DA.AssetLoad;
 
 namespace Tests
 {
@@ -14,7 +14,7 @@ namespace Tests
         [Test]
         public void ResourcesLoad()
         {
-            AssetLoader loader = new NullNamespace.AssetLoader();
+            AssetLoader loader = new AssetLoader();
 
             var sp = loader.LoadAsset<Sprite>("resources://img_icon_qq_Res");
             Assert.IsNotNull(sp);
@@ -25,7 +25,7 @@ namespace Tests
         [Test]
         public void ResLoadSync()
         {
-            var loader = new NullNamespace.AssetLoader();
+            var loader = new AssetLoader();
             loader.LoadAssetSync<Sprite>("resources://img_icon_qq_ResSync", (sp) =>
             {
                 Assert.IsNotNull(sp);
