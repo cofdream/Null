@@ -14,7 +14,7 @@ namespace DA
 #if UNITY_EDITOR
             AssetBundleRoot = $"{System.IO.Directory.GetParent(Application.dataPath).FullName}/AssetBundle/{AssetsBundle.AssetUtil.GetPlatform(Application.platform)}/";
 #else
-            assetBundleRoot = $"{Application.persistentDataPath}/AssetBundle/";
+            AssetBundleRoot = $"{Application.persistentDataPath}/AssetBundle/";
 #endif
 
             var ab = AssetBundle.LoadFromFile(AssetBundleRoot + AssetsBundle.AssetUtil.GetPlatform(Application.platform));

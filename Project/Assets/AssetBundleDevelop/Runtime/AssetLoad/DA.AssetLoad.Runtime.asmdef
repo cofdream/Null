@@ -1,12 +1,9 @@
 {
-    "name": "DA.AssetBundleLoad.Editor",
+    "name": "DA.AssetLoad.Runtime",
     "references": [
-        "GUID:b1c44d593726319419813ce72a7a5348",
-        "GUID:90974468d567b1b4bbc8f54523025435"
+        "GUID:fb668795079cfd24d83ce382722be9c5"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using NullNamespace;
 
-namespace DA.AssetsBundle
+namespace NullNamespace
 {
     internal static class AssetsBundleTool
     {
@@ -256,5 +256,16 @@ namespace DA.AssetsBundle
             return !Application.isPlaying;
         }
         #endregion
+
+        //[MenuItem("ABTest/BuildBundles")]
+        //private static void BuildBundles()
+        //{
+        //    var watch = new Stopwatch();
+        //    watch.Start();
+        //    BuildScript.BuildRules();
+        //    BuildScript.BuildAssetBundles();
+        //    watch.Stop();
+        //    Debug.Log("BuildBundles " + watch.ElapsedMilliseconds + " ms.");
+        //}
     }
 }
