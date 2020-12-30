@@ -6,8 +6,9 @@ namespace DA.AssetBuild
     [Serializable]
     public class AssetData
     {
-        public string AssetName;
         public string AssetBundleName;
+
+        public string[] AssetNames;
     }
 
     [Serializable]

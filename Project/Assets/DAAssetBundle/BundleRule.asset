@@ -12,13 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b42252e5f9d7844c8e9af2106c00fbf, type: 3}
   m_Name: BundleRule
   m_EditorClassIdentifier: 
-  BuildAseet:
-  - AssetName: Assets/Tests_BuildAssetBundle/Icons/img_icon_qq.png
-    AssetBundleName: icons_img_icon_qq.ab
-    DependencyBundleNames: []
-  - AssetName: Assets/Tests_BuildAssetBundle/Icons/img_icon_twitter.png
-    AssetBundleName: icons_img_icon_twitter.ab
-    DependencyBundleNames: []
-  - AssetName: Assets/Tests_BuildAssetBundle/Icons/img_icon_wechat.png
-    AssetBundleName: icons_img_icon_wechat.ab
-    DependencyBundleNames: []
+  BuildAssetDatas:
+  - AssetPath: Assets/Tests_BuildAssetBundle/Icons
+  - AssetPath: Assets/Tests_BuildAssetBundle/Materials
+  - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Cube.prefab
+  - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Images.prefab
+  BuildAseet: []
