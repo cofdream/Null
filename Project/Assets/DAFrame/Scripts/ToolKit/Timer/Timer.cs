@@ -16,12 +16,12 @@ namespace DA.Timer
         {
             timers = new List<ITimer>(minCapacity);
 
-            MonoController.UpdataAction += UpdateTime;
+            FrameUpdater.UpdataAction += UpdateTime;
         }
 
         public static void UpdateTime()
         {
-            var elapsedTime = MonoController.DelateTime;
+            var elapsedTime = FrameUpdater.DelateTime;
 
             int length = timers.Count;
             for (int i = 0; i < length; i++)

@@ -17,4 +17,22 @@ MonoBehaviour:
   - AssetPath: Assets/Tests_BuildAssetBundle/Materials
   - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Cube.prefab
   - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Images.prefab
-  BuildAseet: []
+  - AssetPath: Assets/Resources/Prefabs/UI/UI Root.prefab
+  BuildAseet:
+  - AssetBundleName: project_tests_buildassetbundle_icons.ab
+    AssetNames:
+    - Assets/Tests_BuildAssetBundle/Icons\img_icon_qq.png
+    - Assets/Tests_BuildAssetBundle/Icons\img_icon_twitter.png
+    - Assets/Tests_BuildAssetBundle/Icons\img_icon_wechat.png
+  - AssetBundleName: project_tests_buildassetbundle_materials.ab
+    AssetNames:
+    - Assets/Tests_BuildAssetBundle/Materials\CubeMat.mat
+  - AssetBundleName: project_prefabs_cube.ab
+    AssetNames:
+    - Assets/Tests_BuildAssetBundle/Prefabs/Cube.prefab
+  - AssetBundleName: project_prefabs_images.ab
+    AssetNames:
+    - Assets/Tests_BuildAssetBundle/Prefabs/Images.prefab
+  - AssetBundleName: project_ui_ui root.ab
+    AssetNames:
+    - Assets/Resources/Prefabs/UI/UI Root.prefab

@@ -7,14 +7,20 @@ namespace DA.UI
 {
     public class UIManager
     {
-        static Transform windowsTran = null;
+        private static Transform windowsTran = null;
 
-        static Dictionary<Type, UIWindowBase> windowCache = null;
+        private static Dictionary<Type, UIWindowBase> windowCache = null;
 
         public static DialogControll DialogManager { get; private set; }
 
+        private static GameObject uiRoot;
+
         static UIManager()
         {
+            uiRoot = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>("Assets/Resources/Prefabs/UI/UI Root.prefab");
+            uiRoot = GameObject.Instantiate(uiRoot);
+            UnityEngine.Object.DontDestroyOnLoad(uiRoot);
+
             //windowsTran = GameObject.Find("UIRoot/Canvas").transform;
             windowCache = new Dictionary<Type, UIWindowBase>(30);
 
@@ -84,7 +90,7 @@ namespace DA.UI
 
         private static GameObject CreateWindowPrefab(string path)
         {
-            GameObject win = Resources.Load<GameObject>(path);
+            GameObject win = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>("Assets/Resources/" + path + ".prefab");
             return win;
         }
 

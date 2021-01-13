@@ -145,5 +145,10 @@ namespace DA.AssetLoad
                     return item;
             return null;
         }
+
+        public static AssetLoader GetAssetLoader()
+        {
+            return new AssetLoader();
+        }
     }
 }

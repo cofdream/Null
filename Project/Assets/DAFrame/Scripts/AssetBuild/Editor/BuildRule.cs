@@ -91,6 +91,28 @@ namespace DA.AssetBuild
             }
         }
 
+        public static void GenerateAssetBundle()
+        {
+            string output = Directory.GetParent(Application.dataPath).FullName + "/BuildAssetBundle/Windows";
+            if (Directory.Exists(output) == false)
+            {
+                Directory.CreateDirectory(output);
+            }
+
+            var assetDatas = GetBundleRule().BuildAseet;
+            List<AssetBundleBuild> buildsList = new List<AssetBundleBuild>(assetDatas.Count);
+            foreach (var assetData in assetDatas)
+            {
+                buildsList.Add(new AssetBundleBuild()
+                {
+                    assetBundleName = assetData.AssetBundleName,
+                    assetNames = assetData.AssetNames,
+                });
+            }
+
+            BuildPipeline.BuildAssetBundles(output, buildsList.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
+        }
+
         public static void GenerateBuildRule()
         {
             var buildRule = GetBundleRule();
@@ -112,8 +134,5 @@ namespace DA.AssetBuild
             }
             return buildRule;
         }
-
-
     }
-
 }
