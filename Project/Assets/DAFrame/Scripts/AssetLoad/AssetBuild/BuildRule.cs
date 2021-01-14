@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 
+#if UNITY_EDITOR
 namespace DA.AssetBuild
 {
     public sealed class BuildRule : ScriptableObject
@@ -13,83 +14,6 @@ namespace DA.AssetBuild
 
         public List<AssetData> BuildAseet;
 
-
-        public void Run()
-        {
-            BuildAseet = new List<AssetData>();
-
-            foreach (var buildAssetData in BuildAssetDatas)
-            {
-                // 判断该路径是文件还是文件夹，如果是文件夹
-                if (File.GetAttributes(buildAssetData.AssetPath).CompareTo(FileAttributes.Directory) == 0)
-                {
-                    string[] files = Directory.GetFiles(buildAssetData.AssetPath);
-
-                    List<string> files_Asset = new List<string>();
-                    foreach (var file in files)
-                    {
-                        string extension = Path.GetExtension(file);
-                        if (extension != ".meta" && extension != ".cs" && extension != ".dll")
-                        {
-                            files_Asset.Add(file);
-                        }
-                    }
-                    if (files_Asset.Count > 0)
-                    {
-                        var assetData = new AssetData();
-
-                        assetData.AssetNames = files_Asset.ToArray();
-
-
-                        string tempPath = Directory.GetParent(buildAssetData.AssetPath).Name;
-                        if (tempPath != null)
-                        {
-                            string tempPath2 = Directory.GetParent(tempPath).Name;
-                            if (tempPath2 != null)
-                            {
-                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
-                            }
-                            else
-                            {
-                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
-                            }
-                        }
-
-                        BuildAseet.Add(assetData);
-                    }
-                }
-                else
-                {
-                    string file = buildAssetData.AssetPath;
-
-                    string extension = Path.GetExtension(file);
-
-                    if (extension != ".meta" && extension != ".cs" && extension != ".dll")
-                    {
-                        var assetData = new AssetData();
-
-                        assetData.AssetNames = new string[] { file };
-
-
-                        string tempPath = Directory.GetParent(file).Name;
-                        if (tempPath != null)
-                        {
-                            string tempPath2 = Directory.GetParent(tempPath).Name;
-                            if (tempPath2 != null)
-                            {
-                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(file) + ".ab").ToLower();
-                            }
-                            else
-                            {
-                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(file) + ".ab").ToLower();
-                            }
-                        }
-
-                        BuildAseet.Add(assetData);
-                    }
-                }
-            }
-        }
 
         public static void GenerateAssetBundle()
         {
@@ -117,7 +41,105 @@ namespace DA.AssetBuild
         {
             var buildRule = GetBundleRule();
 
-            buildRule.Run();
+            buildRule.BuildAseet = new List<AssetData>();
+
+            foreach (var buildAssetData in buildRule.BuildAssetDatas)
+            {
+                // 判断该路径是文件还是文件夹
+                if (File.GetAttributes(buildAssetData.AssetPath).CompareTo(FileAttributes.Directory) == 0)
+                {
+                    //是文件夹
+                    string[] files = Directory.GetFiles(buildAssetData.AssetPath);
+
+                    List<string> files_Asset = new List<string>();
+                    List<string> assetLoadPaths = new List<string>();
+                    foreach (var file in files)
+                    {
+                        string extension = Path.GetExtension(file);
+                        if (extension != ".meta" && extension != ".cs" && extension != ".dll")
+                        {
+                            files_Asset.Add(file.Replace("\\",@"/"));
+
+                            string loadPath;
+                            if (file.StartsWith("Assets/"))
+                            {
+                                loadPath = file.Replace("\\", @"/").Substring("Assets/".Length);
+                            }
+                            else
+                            {
+                                loadPath = file.Replace("\\", @"/");
+                            }
+                            loadPath = loadPath.Substring(0, loadPath.LastIndexOf("."));
+                            assetLoadPaths.Add(loadPath);
+                        }
+                    }
+                    if (files_Asset.Count > 0)
+                    {
+                        var assetData = new AssetData();
+
+                        assetData.AssetNames = files_Asset.ToArray();
+                        assetData.AssetLoadPaths = assetLoadPaths.ToArray();
+
+
+                        string tempPath = Directory.GetParent(buildAssetData.AssetPath).Name;
+                        if (tempPath != null)
+                        {
+                            string tempPath2 = Directory.GetParent(tempPath).Name;
+                            if (tempPath2 != null)
+                            {
+                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
+                            }
+                            else
+                            {
+                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
+                            }
+                        }
+
+                        buildRule.BuildAseet.Add(assetData);
+                    }
+                }
+                else
+                {
+                    string file = buildAssetData.AssetPath;
+
+                    string assetLoadPath;
+                    if (file.StartsWith("Assets/"))
+                    {
+                        assetLoadPath = file.Substring("Assets/".Length);
+                    }
+                    else
+                    {
+                        assetLoadPath = file;
+                    }
+                    assetLoadPath = assetLoadPath.Substring(0, assetLoadPath.LastIndexOf("."));
+
+                    string extension = Path.GetExtension(file);
+
+                    if (extension != ".meta" && extension != ".cs" && extension != ".dll")
+                    {
+                        var assetData = new AssetData();
+
+                        assetData.AssetNames = new string[] { file };
+                        assetData.AssetLoadPaths = new string[] { assetLoadPath };
+
+                        string tempPath = Directory.GetParent(file).Name;
+                        if (tempPath != null)
+                        {
+                            string tempPath2 = Directory.GetParent(tempPath).Name;
+                            if (tempPath2 != null)
+                            {
+                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(file) + ".ab").ToLower();
+                            }
+                            else
+                            {
+                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(file) + ".ab").ToLower();
+                            }
+                        }
+
+                        buildRule.BuildAseet.Add(assetData);
+                    }
+                }
+            }
 
             EditorUtility.SetDirty(buildRule);
             AssetDatabase.ImportAsset(BuildRulePath);
@@ -135,4 +157,5 @@ namespace DA.AssetBuild
             return buildRule;
         }
     }
-}
+} 
+#endif

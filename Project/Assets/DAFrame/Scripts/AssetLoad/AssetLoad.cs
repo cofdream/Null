@@ -58,12 +58,15 @@ namespace DA.AssetLoad
 
                     var assetBundle = AssetBundle.LoadFromFile(ABManifest.GetAssetBundleByAssetPath(assetPath));
 
-                    if (loadType.Equals(typeAB))
+                    if (loadType.Equals(typeAB) == false)
                     {
-                        asset = assetBundle.LoadAsset(this.assetPath, loadType);
+                        asset = assetBundle.LoadAsset(ABManifest.GetAssetNameByAssetPath(this.assetPath), loadType);
                     }
 
+
+
                     directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
+
                     foreach (var directDependent in directDependentArray)
                     {
                         loadAssetAsync?.Invoke(directDependent);
@@ -95,7 +98,7 @@ namespace DA.AssetLoad
 
                     assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(ABManifest.GetAssetBundleByAssetPath(assetPath));
 
-                    directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
+                    directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(ABManifest.GetAssetNameByAssetPath(assetPath));
 
                     foreach (var directDependent in directDependentArray)
                     {
@@ -132,9 +135,9 @@ namespace DA.AssetLoad
             LoadState = AssetLoadState.Loaded;
 
             var assetBundle = assetBundleCreateRequest.assetBundle;
-            if (loadType.Equals(typeAB))
+            if (loadType.Equals(typeAB) == false)
             {
-                asset = assetBundle.LoadAsset(this.assetPath, loadType);
+                asset = assetBundle.LoadAsset(System.IO.Path.GetFileName(this.assetPath), loadType);
             }
             assetBundleCreateRequest = null;
 

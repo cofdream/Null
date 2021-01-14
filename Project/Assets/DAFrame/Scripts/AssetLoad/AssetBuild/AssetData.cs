@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace DA.AssetBuild
 {
     [Serializable]
@@ -9,6 +10,8 @@ namespace DA.AssetBuild
         public string AssetBundleName;
 
         public string[] AssetNames;
+
+        public string[] AssetLoadPaths;
     }
 
     [Serializable]
@@ -16,4 +19,5 @@ namespace DA.AssetBuild
     {
         public string AssetPath;
     }
-}
+} 
+#endif

@@ -1,8 +1,6 @@
 {
     "name": "DA.AssetLoad.Runtime",
-    "references": [
-        "GUID:fb668795079cfd24d83ce382722be9c5"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

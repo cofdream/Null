@@ -36,23 +36,42 @@ namespace DA.AssetLoad
             {
                 if (assetBundleManifest == null)
                 {
-                    AssetBundle assetBundle = AssetBundle.LoadFromFile(AssetBundleConfig.AssetBundleRoot);
+                    AssetBundle assetBundle = AssetBundle.LoadFromFile(AssetBundleConfig.AssetBundleRoot + "Windows");
                     assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
                 }
                 return assetBundleManifest;
             }
         }
 
-        // 基于资源的名称去获取ab的包名
+        // 基于资源的路径去获取ab的包名
         public static string GetAssetBundleByAssetPath(string assetPath)
         {
-            throw new System.NotImplementedException();
+            var buildRule = AssetBuild.BuildRule.GetBundleRule();
+
+            foreach (var buildAsset in buildRule.BuildAseet)
+            {
+                foreach (var assetLoadPath in buildAsset.AssetLoadPaths)
+                {
+                    if (assetLoadPath == assetPath)
+                    {
+                        return AssetBundleConfig.AssetBundleRoot + buildAsset.AssetBundleName;
+                    }
+                }
+            }
+
+            return assetPath;
+        }
+        // 基于资源的路径去获取ab的资源名
+        public static string GetAssetNameByAssetPath(string assetPath)
+        {
+            // todo 改成读配置
+            return System.IO.Path.GetFileName(assetPath);
         }
     }
 
     public class AssetBundleConfig
     {
-        public static string AssetBundleRoot = $"{Application.dataPath}/Window/";
+        public static string AssetBundleRoot = $"{System.IO.Directory.GetParent(Application.dataPath)}/BuildAssetBundle/Windows/";
     }
 
 }

@@ -7,23 +7,24 @@ namespace DA.UI
 {
     public class UIManager
     {
-        private static Transform windowsTran = null;
-
         private static Dictionary<Type, UIWindowBase> windowCache = null;
 
         public static DialogControll DialogManager { get; private set; }
 
-        private static GameObject uiRoot;
+        private static UIRootBind uiRootBind;
 
+        private const string UIRootPath = "Resources/Prefabs/UI/UI Root";
         static UIManager()
         {
-            uiRoot = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>("Assets/Resources/Prefabs/UI/UI Root.prefab");
+            //#if UNITY_EDITOR
+            //            AssetLoad.AssetLoadManager.IsSimulationMode = false;
+            //#endif
+            var uiRoot = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>(UIRootPath);
             uiRoot = GameObject.Instantiate(uiRoot);
+            uiRootBind = uiRoot.GetComponent<UIRootBind>();
             UnityEngine.Object.DontDestroyOnLoad(uiRoot);
 
-            //windowsTran = GameObject.Find("UIRoot/Canvas").transform;
             windowCache = new Dictionary<Type, UIWindowBase>(30);
-
             DialogManager = new DialogControll();
         }
 
@@ -83,14 +84,14 @@ namespace DA.UI
         private static GameObject CreateWindowContext(string path)
         {
             var gameObject = CreateWindowPrefab(path);
-            gameObject = GameObject.Instantiate(gameObject, windowsTran);
+            gameObject = GameObject.Instantiate(gameObject, uiRootBind.UIFullScreenLayer);
             gameObject.transform.SetAsLastSibling();
             return gameObject;
         }
 
         private static GameObject CreateWindowPrefab(string path)
         {
-            GameObject win = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>("Assets/Resources/" + path + ".prefab");
+            GameObject win = AssetLoad.AssetLoader.GetAssetLoader().LoadAsset<GameObject>(path);
             return win;
         }
 
