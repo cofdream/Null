@@ -1,8 +1,6 @@
 {
-    "name": "DA.Networking.Runtime",
-    "references": [
-        "GUID:1f91b472cafded748a5ae051557bfa04"
-    ],
+    "name": "DA.Common.Runtime",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

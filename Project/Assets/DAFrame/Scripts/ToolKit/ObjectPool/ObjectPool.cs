@@ -1,134 +1,129 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace DA
+namespace DA.ObjectPool
 {
-
-    public class ObjectPool<T> : IObjectPool<T> where T : class, IPoolObject
+    public class ObjectPool<T> : IObjectPool<T> where T : class
     {
-        public int Count;
-        readonly List<T> objs = new List<T>();
+        public event Action<T> GetObjectAction;
+        public event Action<T> ReleaseObjectAction;
 
-        public ObjectPool(int count = 10)
+        private readonly Stack<T> objectStack = new Stack<T>();
+        private readonly Func<T> createObjectAction;
+        private readonly Action<T> destoryObjectAction;
+        private int poolMaxCount;
+
+        public ObjectPool(Func<T> createObjectAction = null, Action<T> destoryObjectAction = null, int capacity = 10, int poolMaxCount = 10)
         {
-            Count = count;
-            objs = new List<T>(Count);
+            this.poolMaxCount = poolMaxCount;
+
+            objectStack = new Stack<T>(capacity);
+
+            this.createObjectAction = createObjectAction;
+            this.destoryObjectAction = destoryObjectAction;
         }
-        public void Set(T t)
+        public T Allocate()
         {
-            if (objs.Count == Count)
-            {
-                t.Free();
-            }
+            T _object;
+            if (objectStack.Count == 0)
+                _object = this.createObjectAction.Invoke();
             else
+                _object = objectStack.Pop();
+
+            GetObjectAction?.Invoke(_object);
+            return _object;
+        }
+        public void Release(T _object)
+        {
+            ReleaseObjectAction?.Invoke(_object);
+
+            if (objectStack.Count < poolMaxCount)
             {
-                objs.Add(t);
+                objectStack.Push(_object);
             }
         }
-
-        public T Get()
+        public void ClearPool()
         {
-            int index = objs.Count - 1;
-            if (index == -1) return null;
-            T item = objs[index];
-            objs.RemoveAt(index);
-
-            return item;
-        }
-        public void Free()
-        {
-            foreach (var item in objs)
+            foreach (var _object in objectStack)
             {
-                item.Free();
+                destoryObjectAction?.Invoke(_object);
             }
-            objs.Clear();
+            objectStack.Clear();
         }
     }
-    public class ObjectPoolTimer<T> : IObjectPoolTime<T> where T : class, IPoolObjectTime
+
+    public class ObjectPoolTimer<T> : IObjectPool<T> where T : class
     {
+        public event Action<T> GetObjectAction;
+        public event Action<T> ReleaseObjectAction;
+
         public int Count;
         readonly List<T> objs;
 
-        public ObjectPoolTimer(int count = 10)
-        {
-            Count = count;
-            objs = new List<T>(Count);
-        }
+        private readonly Stack<T> objectStack = new Stack<T>();
+        private readonly Func<T> createObjectAction;
+        private readonly Action<T> destoryObjectAction;
+        private int poolMaxCount;
 
-        public void Set(T t)
+        public ObjectPoolTimer(Func<T> createObjectAction = null, Action<T> destoryObjectAction = null, int capacity = 10, int poolMaxCount = 10)
         {
-            if (objs.Count == Count)
+            this.poolMaxCount = poolMaxCount;
+
+            objectStack = new Stack<T>(capacity);
+
+            this.createObjectAction = createObjectAction;
+            this.destoryObjectAction = destoryObjectAction;
+
+
+            Timer.Timer.AddTimer(new Timer.TimerMulti()
             {
-                t.Free();
-            }
+                CallBack = Update,
+            });
+        }
+        public T Allocate()
+        {
+            T _object;
+            if (objectStack.Count == 0)
+                _object = this.createObjectAction.Invoke();
             else
+                _object = objectStack.Pop();
+
+            GetObjectAction?.Invoke(_object);
+            return _object;
+        }
+        public void Release(T _object)
+        {
+            ReleaseObjectAction?.Invoke(_object);
+
+            if (objectStack.Count < poolMaxCount)
             {
-                t.LeftCacheTime = 0;
-                objs.Add(t);
+                objectStack.Push(_object);
             }
         }
 
-        public T Get()
+        public void ClearPool()
         {
-            int index = objs.Count - 1;
-            if (index == -1) return null;
-            T item = objs[index];
-            objs.RemoveAt(index);
-
-            return item;
-        }
-        public void Free()
-        {
-            foreach (var item in objs)
+            foreach (var _object in objectStack)
             {
-                item.Free();
+                destoryObjectAction?.Invoke(_object);
             }
-            objs.Clear();
+            objectStack.Clear();
         }
 
-        void IObjectPoolTime<T>.Update(float time)
+        private void Update()
         {
-            int count = objs.Count - 1;
-            for (int i = 0; i <= count; i++)
-            {
-                var item = objs[i];
 
-                item.LeftCacheTime += time;
-                if (item.LeftCacheTime > item.CacheTime)
-                {
-                    item.Free();
-                    objs[i] = objs[count];
-                    objs.RemoveAt(count);
-                    count--;
-                }
-            }
         }
     }
 
 
-    public interface IObjectPool<T> where T : class, IPoolObject
+    public interface IObjectPool<T> where T : class
     {
-        T Get();
-        void Set(T t);
-        void Free();
-    }
+        event Action<T> GetObjectAction;
+        event Action<T> ReleaseObjectAction;
 
-    public interface IPoolObject
-    {
-        void Free();
-    }
-
-
-    public interface IObjectPoolTime<T> : IObjectPool<T> where T : class, IPoolObjectTime
-    {
-        void Update(float time);
-    }
-
-    public interface IPoolObjectTime : IPoolObject
-    {
-        float LeftCacheTime { get; set; }
-        float CacheTime { get; set; }
+        T Allocate();
+        void Release(T _object);
+        void ClearPool();
     }
 }

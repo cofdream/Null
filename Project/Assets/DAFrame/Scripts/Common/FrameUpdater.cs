@@ -22,7 +22,7 @@ namespace DA
         {
             private void Update()
             {
-                DelateTime = Time.deltaTime;
+                delateTime = Time.deltaTime;
 
                 UpdataAction?.Invoke();
             }

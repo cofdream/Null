@@ -46,8 +46,11 @@ namespace DA.AssetLoad
 
         public void LoadAssetSync(System.Action<Object> onLoaded)
         {
+            OnLoaded += onLoaded;
             LoadAsset();
-            onLoaded?.Invoke(Asset);
+
+            OnLoaded?.Invoke(Asset);
+            OnLoaded = null;
         }
 
         public void Retain()
