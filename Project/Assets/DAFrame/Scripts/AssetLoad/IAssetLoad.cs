@@ -15,13 +15,11 @@ namespace DA.AssetLoad
     {
         AssetLoadState LoadState { get; }
         string Name { get; }
-
         Object Asset { get; }
 
-        event System.Action<Object> OnLoaded;
-        event System.Action<string> OnUnload;
         void Retain();
         void Release();
+
         void LoadAsset();
         void LoadAssetSync(System.Action<Object> p);
     }

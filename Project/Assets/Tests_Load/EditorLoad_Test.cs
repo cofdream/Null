@@ -12,17 +12,20 @@ namespace Tests
         [Test]
         public void EditorLoad_Resources()
         {
-            AssetLoader loader = new AssetLoader();
+            AssetLoader loader = AssetLoader.GetAssetLoader();
 
             var sp = loader.LoadAsset<Sprite>("Assets/Resources/img_icon_qq_Editor.png");
             Assert.IsNotNull(sp);
 
             loader.Unload("Assets/Resources/img_icon_qq_Editor.png");
+
+            loader.UnloadAll();
+            loader.ReleaseAssetLoader();
         }
         [Test]
         public void EditorLoadSync_Resources()
         {
-            AssetLoader loader = new AssetLoader();
+            AssetLoader loader = AssetLoader.GetAssetLoader();
 
             loader.LoadAssetSync<Sprite>("Assets/Resources/img_icon_qq_EditorSync.png", (sp) =>
             {
@@ -31,12 +34,14 @@ namespace Tests
                 loader.Unload("Assets/Resources/img_icon_qq_EditorSync.png");
             });
 
+            loader.UnloadAll();
+            loader.ReleaseAssetLoader();
         }
 
         [Test]
         public void EditorLoad()
         {
-            AssetLoader loader = new AssetLoader();
+            AssetLoader loader = AssetLoader.GetAssetLoader();
 
             loader.LoadAssetSync<Sprite>("Assets/Tests_Load/img_icon_qq_EditorSync.png", (sp) =>
             {
@@ -45,19 +50,24 @@ namespace Tests
 
                 loader.Unload("Assets/Tests_Load/img_icon_qq_EditorSync.png");
             });
+
+            loader.UnloadAll();
+            loader.ReleaseAssetLoader();
         }
         [Test]
         public void EditorLoadSync()
         {
-            AssetLoader loader = new AssetLoader();
+            AssetLoader loader = AssetLoader.GetAssetLoader();
 
-            loader.LoadAssetSync<Sprite>("Assets/Tests_Load/img_icon_qq.png2", (sp) =>
+            loader.LoadAssetSync<Sprite>("Assets/Tests_Load/img_icon_qq.png", (sp) =>
             {
                 Assert.IsNotNull(sp);
 
-                loader.Unload("Assets/Tests_Load/img_icon_qq.png2");
+                loader.Unload("Assets/Tests_Load/img_icon_qq.png");
             });
 
+            loader.UnloadAll();
+            loader.ReleaseAssetLoader();
         }
     }
 }

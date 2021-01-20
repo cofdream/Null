@@ -5,7 +5,11 @@ namespace DA.AssetLoad
 {
     public class AssetLoader
     {
-        public List<IAssetLoad> allAssets = new List<IAssetLoad>();
+        private static ObjectPool.ObjectPool<AssetLoader> asserloaderPool;
+
+        private static List<IAssetLoad> sharedAssetLoadList = new List<IAssetLoad>();
+
+        private List<IAssetLoad> assetLoadList = new List<IAssetLoad>();
 
         public T LoadAsset<T>(string assetName) where T : UnityEngine.Object
         {
@@ -14,12 +18,13 @@ namespace DA.AssetLoad
             if (assetLoad == null)
             {
                 assetLoad = CreateIAssetLoad(assetName, typeof(T));
+                assetLoadList.Add(assetLoad);
             }
 
             assetLoad.Retain();
             assetLoad.LoadAsset();
 
-            return assetLoad.Asset as T; ;
+            return assetLoad.Asset as T;
         }
         public void LoadAssetSync<T>(string assetName, System.Action<T> onLoaded) where T : UnityEngine.Object
         {
@@ -28,6 +33,7 @@ namespace DA.AssetLoad
             if (assetLoad == null)
             {
                 assetLoad = CreateIAssetLoad(assetName, typeof(T));
+                assetLoadList.Add(assetLoad);
             }
 
             assetLoad.Retain();
@@ -35,107 +41,90 @@ namespace DA.AssetLoad
             {
                 onLoaded?.Invoke(asset as T);
             });
-
         }
-
-        private void LoadAsset(string assetName)
+        public void LoadAssetBundle(string assetName)
         {
             IAssetLoad assetLoad = GetIAssetLoad(assetName);
 
             if (assetLoad == null)
             {
                 assetLoad = CreateIAssetLoad(assetName, null);
+                assetLoadList.Add(assetLoad);
             }
 
             assetLoad.Retain();
             assetLoad.LoadAsset();
         }
-        private void LoadAssetSync(string assetName, System.Action onLoaded)
+        public void LoadAssetBundleSync(string assetName, System.Action<Object> onLoaded)
         {
             IAssetLoad assetLoad = GetIAssetLoad(assetName);
 
             if (assetLoad == null)
             {
                 assetLoad = CreateIAssetLoad(assetName, null);
+                assetLoadList.Add(assetLoad);
             }
 
             assetLoad.Retain();
-            assetLoad.LoadAssetSync((asset) =>
-            {
-                onLoaded?.Invoke();
-            });
+            assetLoad.LoadAssetSync(onLoaded);
         }
 
-
-        private IAssetLoad CreateIAssetLoad(string assetName, System.Type loadType)
-        {
-            IAssetLoad assetLoad = null;
-#if UNITY_EDITOR
-            if (assetName.StartsWith("resources://"))
-            {
-                assetLoad = new ResourcesrLoad(assetName, loadType);
-            }
-            else if (AssetLoadManager.IsSimulationMode)
-            {
-                assetLoad = new EditorLoad(assetName, loadType);
-            }
-            else
-#endif
-            {
-                if (assetName.EndsWith(".ab"))
-                {
-                    assetLoad = new AssetBundleLoad(assetName, LoadAsset, LoadAssetSync);
-                }
-                else
-                {
-                    assetLoad = new AssetLoad(assetName, LoadAsset, LoadAssetSync, loadType);
-                }
-            }
-            assetLoad.OnUnload += Unload;
-
-            allAssets.Add(assetLoad);
-            AssetLoadManager.AddIAssetLoad(assetLoad);
-
-            return assetLoad;
-        }
 
         private IAssetLoad GetIAssetLoad(string assetName)
         {
-            IAssetLoad assetLoad = GetIAssetLoad(allAssets, assetName);
+            IAssetLoad assetLoad = GetIAssetLoad(assetLoadList, assetName);
             if (assetLoad != null)
                 return assetLoad;
 
-
-            assetLoad = GetIAssetLoad(AssetLoadManager.AssetLoadList, assetName);
+            assetLoad = GetIAssetLoad(sharedAssetLoadList, assetName);
             if (assetLoad != null)
             {
-                assetLoad.Retain();
-                allAssets.Add(assetLoad);
-
+                assetLoadList.Add(assetLoad);
                 return assetLoad;
             }
 
             return null;
         }
-       
+
         public void Unload(string assetName)
         {
-            foreach (var item in allAssets)
-                if (item.Name == assetName)
+            for (int i = 0; i < assetLoadList.Count; i++)
+            {
+                if (assetLoadList[i].Name == assetName)
                 {
-                    item.Release();
+                    assetLoadList.RemoveAt(i);
                     return;
                 }
-            Debug.LogError("卸载失败," + assetName);
+            }
+
+            Debug.LogError("卸载资源失败:" + assetName);
         }
 
         public void UnloadAll()
         {
-            foreach (var item in allAssets)
+            foreach (var item in assetLoadList)
             {
                 item.Release();
             }
-            allAssets.Clear();
+            assetLoadList.Clear();
+        }
+
+        public void ReleaseAssetLoader()
+        {
+            asserloaderPool.Release(this);
+        }
+
+        static AssetLoader()
+        {
+            var pool = new ObjectPool.ObjectPool<AssetLoader>();
+            pool.Initialize(() => new AssetLoader());
+
+            asserloaderPool = pool;
+        }
+
+        public static AssetLoader GetAssetLoader()
+        {
+            return asserloaderPool.Allocate();
         }
 
         private static IAssetLoad GetIAssetLoad(IEnumerable<IAssetLoad> collection, string assetName)
@@ -145,10 +134,46 @@ namespace DA.AssetLoad
                     return item;
             return null;
         }
-
-        public static AssetLoader GetAssetLoader()
+        private static IAssetLoad CreateIAssetLoad(string assetName, System.Type loadType)
         {
-            return new AssetLoader();
+            IAssetLoad assetLoad = null;
+#if UNITY_EDITOR
+            if (assetName.StartsWith("resources://"))
+            {
+                assetLoad = ResourcesrLoad.GetLoad(assetName, loadType, RemoveSharedAssetLoad);
+            }
+            else if (AssetLoadManager.IsSimulationMode)
+            {
+                assetLoad = EditorLoad.GetEditorLoad(assetName, loadType, RemoveSharedAssetLoad);
+            }
+            else
+#endif
+            {
+                if (assetName.EndsWith(".ab"))
+                {
+                    assetLoad = AssetBundleLoad.GetAssetBundleLoad(assetName, RemoveSharedAssetLoad);
+                }
+                else
+                {
+                    assetLoad = AssetLoad.GetAssetLoad(assetName, loadType, RemoveSharedAssetLoad);
+                }
+            }
+
+            sharedAssetLoadList.Add(assetLoad);
+
+            return assetLoad;
+        }
+        private static void RemoveSharedAssetLoad(string assetName)
+        {
+            for (int i = 0; i < sharedAssetLoadList.Count; i++)
+            {
+                if (sharedAssetLoadList[i].Name == assetName)
+                {
+                    sharedAssetLoadList.RemoveAt(i);
+                    return;
+                }
+            }
+            Debug.LogError("卸载共享资源失败:" + assetName);
         }
     }
 }

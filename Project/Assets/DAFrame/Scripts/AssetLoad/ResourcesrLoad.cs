@@ -5,25 +5,38 @@ namespace DA.AssetLoad
 {
     public class ResourcesrLoad : IAssetLoad
     {
+        private static ObjectPool.ObjectPool<ResourcesrLoad> resourceLoadPool;
+        
         private string name;
         public string Name { get { return name; } }
-
         public Object Asset { get; private set; }
+        public AssetLoadState LoadState { get; private set; }
 
         private int referenceCount;
 
-        public event System.Action<Object> OnLoaded;
-        public event System.Action<string> OnUnload;
+        private System.Action<Object> onLoaded;
 
         private ResourceRequest resourceRequest;
 
         private string assetPath;
 
-        public AssetLoadState LoadState { get; private set; }
-
         private System.Type loadType;
 
-        public ResourcesrLoad(string path, System.Type loadType)
+        private System.Action<string> unloadCallback;
+
+        static ResourcesrLoad()
+        {
+            resourceLoadPool = new ObjectPool.ObjectPool<ResourcesrLoad>();
+            resourceLoadPool.Initialize(() => new ResourcesrLoad());
+        }
+        public static ResourcesrLoad GetLoad(string path, System.Type loadType, System.Action<string> unloadCallback)
+        {
+            var load = resourceLoadPool.Allocate();
+            load.Initialize(path, loadType, unloadCallback);
+            return load;
+        }
+
+        public void Initialize(string path, System.Type loadType, System.Action<string> unloadCallback)
         {
             referenceCount = 0;
 
@@ -33,6 +46,8 @@ namespace DA.AssetLoad
             LoadState = AssetLoadState.NotLoad;
 
             this.loadType = loadType;
+
+            this.unloadCallback = unloadCallback;
         }
         public void LoadAsset()
         {
@@ -52,12 +67,12 @@ namespace DA.AssetLoad
                 case AssetLoadState.NotLoad:
                     LoadState = AssetLoadState.Loading;
                     resourceRequest = Resources.LoadAsync(assetPath, loadType);
-                    resourceRequest.completed += ResourceRequest_completed;
+                    resourceRequest.completed += ResourceRequestCompleted;
 
-                    OnLoaded += onLoaded;
+                    this.onLoaded += onLoaded;
                     break;
                 case AssetLoadState.Loading:
-                    OnLoaded += onLoaded;
+                    this.onLoaded += onLoaded;
                     break;
                 case AssetLoadState.Loaded:
                     onLoaded?.Invoke(Asset);
@@ -65,15 +80,15 @@ namespace DA.AssetLoad
             }
         }
 
-        private void ResourceRequest_completed(AsyncOperation obj)
+        private void ResourceRequestCompleted(AsyncOperation obj)
         {
             LoadState = AssetLoadState.Loaded;
 
             Asset = resourceRequest.asset;
             resourceRequest = null;
 
-            OnLoaded?.Invoke(Asset);
-            OnLoaded = null;
+            onLoaded?.Invoke(Asset);
+            onLoaded = null;
         }
 
         public void Retain()
@@ -91,12 +106,22 @@ namespace DA.AssetLoad
                 if (Asset is GameObject == false)
                     Resources.UnloadAsset(Asset);
                 //Resources.UnloadUnusedAssets();
-                Asset = null;
 
-                OnUnload(name);
-                OnUnload = null;
+                unloadCallback?.Invoke(Name);
+
+                Clear();
+
+                resourceLoadPool.Release(this);
             }
         }
+        private void Clear()
+        {
+            name = null;
+            Asset = null;
+            assetPath = null;
+            loadType = null;
+            unloadCallback = null;
+        }
     }
-} 
+}
 #endif

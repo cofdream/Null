@@ -5,23 +5,36 @@ namespace DA.AssetLoad
 {
     public class EditorLoad : IAssetLoad
     {
+        private static ObjectPool.ObjectPool<EditorLoad> editorLoadPool;
+
         private string name;
         public string Name { get { return name; } }
-
         public Object Asset { get; private set; }
+        public AssetLoadState LoadState { get; private set; }
 
         private int referenceCount;
 
-        public event System.Action<Object> OnLoaded;
-        public event System.Action<string> OnUnload;
+        private System.Action<Object> onLoaded;
 
         private string assetPath;
 
-        public AssetLoadState LoadState { get; private set; }
-
         private System.Type loadType;
 
-        public EditorLoad(string path, System.Type loadType)
+        private System.Action<string> unloadCallback;
+
+        static EditorLoad()
+        {
+            editorLoadPool = new ObjectPool.ObjectPool<EditorLoad>();
+            editorLoadPool.Initialize(() => new EditorLoad());
+        }
+        public static EditorLoad GetEditorLoad(string path, System.Type loadType, System.Action<string> unloadCallback)
+        {
+            var editorLoad = editorLoadPool.Allocate();
+            editorLoad.Initialize(path, loadType, unloadCallback);
+            return editorLoad;
+        }
+
+        public void Initialize(string path, System.Type loadType, System.Action<string> unloadCallback)
         {
             referenceCount = 0;
 
@@ -31,6 +44,8 @@ namespace DA.AssetLoad
             LoadState = AssetLoadState.NotLoad;
 
             this.loadType = loadType;
+
+            this.unloadCallback = unloadCallback;
         }
         public void LoadAsset()
         {
@@ -46,11 +61,11 @@ namespace DA.AssetLoad
 
         public void LoadAssetSync(System.Action<Object> onLoaded)
         {
-            OnLoaded += onLoaded;
+            this.onLoaded += onLoaded;
             LoadAsset();
 
-            OnLoaded?.Invoke(Asset);
-            OnLoaded = null;
+            this.onLoaded?.Invoke(Asset);
+            this.onLoaded = null;
         }
 
         public void Retain()
@@ -68,11 +83,20 @@ namespace DA.AssetLoad
                 if (Asset is GameObject == false)
                     Resources.UnloadAsset(Asset);
 
-                Asset = null;
+                unloadCallback?.Invoke(Name);
 
-                OnUnload(name);
-                OnUnload = null;
+                Clear();
+
+                editorLoadPool.Release(this);
             }
+        }
+        private void Clear()
+        {
+            name = null;
+            Asset = null;
+            assetPath = null;
+            loadType = null;
+            unloadCallback = null;
         }
 
 

@@ -5,12 +5,10 @@ namespace DA.Timer
 {
     public static class Timer
     {
-        public static List<ITimer> timers;
-
+        private static List<ITimer> timers;
         private static int minCapacity = 20;
-        
-        private static float disposeCurrentTime;// 释放时间计时 单位：s
-        private static float disposeTotalTime = 3f;//60  // 释放时间 单位：s
+        private static float disposeCurrentTime;    // 释放时间计时 单位：s
+        private static float disposeTotalTime = 60; // 释放时间     单位：s
 
         static Timer()
         {
@@ -18,8 +16,7 @@ namespace DA.Timer
 
             FrameUpdater.UpdataAction += UpdateTime;
         }
-
-        public static void UpdateTime()
+        private static void UpdateTime()
         {
             var elapsedTime = FrameUpdater.DelateTime;
 
@@ -59,11 +56,12 @@ namespace DA.Timer
             }
         }
 
-        public static void AddTimer(ITimer timer)
+
+        public static void StartTimer(ITimer timer)
         {
             timers.Add(timer);
         }
-        public static void AddTimers(IEnumerable<ITimer> timer)
+        public static void StartTimer(IEnumerable<ITimer> timer)
         {
             timers.AddRange(timer);
         }

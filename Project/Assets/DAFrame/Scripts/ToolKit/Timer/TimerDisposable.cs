@@ -2,37 +2,28 @@
 
 namespace DA.Timer
 {
-    /// <summary>
-    /// 一次性计时器
-    /// </summary>
-    public struct TimerOnce : ITimer
+    public struct TimerDisposable : ITimer
     {
-        /// <summary>
-        /// 等待时间
-        /// </summary>
-        public float TotalTime;
-        /// <summary>
-        /// 流逝时间
-        /// </summary>
+        public float WaitingTime;
         public float ElapsedTime;
         public event Action Callback;
 
-        public TimerOnce(Action callback, float waitTime, float useTime = 0f)
+        public TimerDisposable(float waitingTime, Action callback, float useTime = 0f)
         {
-            TotalTime = waitTime;
+            WaitingTime = waitingTime;
             ElapsedTime = useTime;
             Callback = callback;
         }
 
-        public void Run()
+        public void Start()
         {
-            Timer.AddTimer(this);
+            Timer.StartTimer(this);
         }
 
         public bool Update(float time)
         {
             ElapsedTime += time;
-            if (TotalTime <= ElapsedTime)
+            if (WaitingTime <= ElapsedTime)
             {
                 Callback?.Invoke();
                 return true;
@@ -44,5 +35,4 @@ namespace DA.Timer
 
         }
     }
-
 }

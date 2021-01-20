@@ -6,34 +6,48 @@ namespace DA.AssetLoad
     {
         private static System.Type typeAB = typeof(AssetBundle);
 
+        private static ObjectPool.ObjectPool<AssetLoad> assetBundleLoadPool;
+
         private string name;
         public string Name { get { return name; } }
 
         private Object asset;
         public Object Asset { get { return asset; } }
 
+        public AssetLoadState LoadState { get; private set; }
+
         private int referenceCount;
 
-        public event System.Action<Object> OnLoaded;
-        public event System.Action<string> OnUnload;
+        private System.Action<Object> onLoaded;
 
         private AssetBundleCreateRequest assetBundleCreateRequest;
 
         private string assetPath;
 
         private int loadedDirectDependentCount;
-        private string[] directDependentArray;
-
-
-        private System.Action<string> loadAssetAsync;
-        private System.Action<string, System.Action> loadAssetSync;
+        private int totalDirectDependecntCount;
 
         private System.Type loadType;
 
+        private System.Action<string> unloadCallback;
 
-        public AssetLoadState LoadState { get; private set; }
 
-        public AssetLoad(string path, System.Action<string> loadAssetAsync, System.Action<string, System.Action> loadAssetSync, System.Type loadType)
+        private AssetLoader assetLoader;
+
+        static AssetLoad()
+        {
+            assetBundleLoadPool = new ObjectPool.ObjectPool<AssetLoad>();
+            assetBundleLoadPool.Initialize(() => new AssetLoad());
+        }
+
+        public static AssetLoad GetAssetLoad(string path, System.Type loadType, System.Action<string> unloadCallback)
+        {
+            var assetBundleLoad = assetBundleLoadPool.Allocate();
+            assetBundleLoad.Initialize(path, loadType, unloadCallback);
+            return assetBundleLoad;
+        }
+
+        public void Initialize(string path, System.Type loadType, System.Action<string> unloadCallback)
         {
             referenceCount = 0;
             assetPath = path;
@@ -42,10 +56,11 @@ namespace DA.AssetLoad
 
             LoadState = AssetLoadState.NotLoad;
 
-            this.loadAssetAsync = loadAssetAsync;
-            this.loadAssetSync = loadAssetSync;
-
             this.loadType = loadType;
+
+            this.unloadCallback = unloadCallback;
+
+            assetLoader = AssetLoader.GetAssetLoader();
         }
 
         public void LoadAsset()
@@ -63,13 +78,11 @@ namespace DA.AssetLoad
                         asset = assetBundle.LoadAsset(ABManifest.GetAssetNameByAssetPath(this.assetPath), loadType);
                     }
 
-
-
-                    directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
-
-                    foreach (var directDependent in directDependentArray)
+                    var directDependencies = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
+                    totalDirectDependecntCount = directDependencies.Length;
+                    foreach (var directDependent in directDependencies)
                     {
-                        loadAssetAsync?.Invoke(directDependent);
+                        assetLoader.LoadAssetBundle(directDependent);
                     }
 
                     LoadState = AssetLoadState.Loaded;
@@ -98,19 +111,19 @@ namespace DA.AssetLoad
 
                     assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(ABManifest.GetAssetBundleByAssetPath(assetPath));
 
-                    directDependentArray = ABManifest.AssetBundleManifest.GetDirectDependencies(ABManifest.GetAssetNameByAssetPath(assetPath));
-
-                    foreach (var directDependent in directDependentArray)
+                    var directDependencies = ABManifest.AssetBundleManifest.GetDirectDependencies(ABManifest.GetAssetNameByAssetPath(assetPath));
+                    totalDirectDependecntCount = directDependencies.Length;
+                    foreach (var directDependent in directDependencies)
                     {
-                        loadAssetSync.Invoke(directDependent, DirectDependentCallback);
+                        assetLoader.LoadAssetBundleSync(directDependent, DirectDependentCallback);
                     }
-                    OnLoaded += onLoaded;
+                    this.onLoaded += onLoaded;
 
                     break;
                 case AssetLoadState.Loading:
                 case AssetLoadState.Loaded:
 
-                    OnLoaded += onLoaded;
+                    this.onLoaded += onLoaded;
 
                     break;
                 case AssetLoadState.Unload:
@@ -119,18 +132,15 @@ namespace DA.AssetLoad
             }
         }
 
-        private void DirectDependentCallback()
+        private void DirectDependentCallback(Object loadAsstBundle)
         {
             loadedDirectDependentCount++;
-            if (loadedDirectDependentCount == directDependentArray.Length)
+            if (loadedDirectDependentCount == totalDirectDependecntCount)
             {
-                assetBundleCreateRequest.completed += ResourceRequest_completed;
-                // 释放部分引用
-                loadAssetSync = null;
-                loadAssetAsync = null;
+                assetBundleCreateRequest.completed += AssetBundleRequest_completed;
             }
         }
-        private void ResourceRequest_completed(AsyncOperation asyncOperation)
+        private void AssetBundleRequest_completed(AsyncOperation asyncOperation)
         {
             LoadState = AssetLoadState.Loaded;
 
@@ -141,8 +151,8 @@ namespace DA.AssetLoad
             }
             assetBundleCreateRequest = null;
 
-            OnLoaded?.Invoke(asset);
-            OnLoaded = null;
+            onLoaded?.Invoke(asset);
+            onLoaded = null;
         }
 
         public void Retain()
@@ -157,20 +167,25 @@ namespace DA.AssetLoad
             {
                 LoadState = AssetLoadState.Unload;
 
-                foreach (var item in directDependentArray)
-                {
-                    OnUnload(item);
-                }
-
-                OnUnload(name);
-                OnUnload = null;
+                //释放依赖
+                assetLoader.UnloadAll();
+                assetLoader.ReleaseAssetLoader();
 
                 var assetBundle = asset as AssetBundle;
                 if (assetBundle != null)
                     assetBundle.Unload(true);
 
-                asset = null;
+                unloadCallback?.Invoke(Name);
+
+                Clear();
+
+                assetBundleLoadPool.Release(this);
             }
+        }
+        private void Clear()
+        {
+
+            unloadCallback = null;
         }
     }
 }
