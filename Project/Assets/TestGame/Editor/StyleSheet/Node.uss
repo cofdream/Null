@@ -1,0 +1,6 @@
+﻿.node #title{
+	background-color: rgba(29, 115, 57, 0.91);
+}
+.node #contents{
+	background-color: rgba(63, 63, 63, 205);
+}
