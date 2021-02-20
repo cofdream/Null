@@ -3,37 +3,46 @@ using UnityEngine.Events;
 
 namespace RPG
 {
-    public enum StatusType : ushort
+    public interface State
     {
-        Idle,
-        Walk,
+        void Enter();
+        void Update();
+        void Exit();
     }
 
-    public class Status
+    public class WalkState : State
     {
-        public string Name;
-
-        protected StatusType statusType;
-        public virtual StatusType StatusType
+        public Animator animator;
+        public void Enter()
         {
-            get { return statusType; }
-            set { statusType = value; }
+            Debug.Log("Walk State.");
+            animator.SetInteger("Move", 1);
         }
+        public void Update()
+        {
 
-        public event UnityAction EnterAction;
-        public event UnityAction UpdateAction;
-        public event UnityAction ExitAction;
-    }
-
-    public class StatusController
-    {
-        public Status CurStatus;
-        public Status LastStatus;
-
-        public void Change(Status status)
+        }
+        public void Exit()
         {
 
         }
     }
 
+    public class IdleState : State
+    {
+        public Animator animator;
+        public void Enter()
+        {
+            Debug.Log("Idle State.");
+            animator.SetInteger("Move", 0);
+        }
+        public void Update()
+        {
+
+        }
+        public void Exit()
+        {
+
+        }
+    }
 }

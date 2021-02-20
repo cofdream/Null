@@ -1,7 +1,8 @@
 {
     "name": "DA.Node.Runtime",
     "references": [
-        "GUID:fb668795079cfd24d83ce382722be9c5"
+        "GUID:fb668795079cfd24d83ce382722be9c5",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
