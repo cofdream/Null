@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +28,7 @@ namespace RPG
         float horiazontal;
         float vertical;
         float moveAmount;
+        Vector3 targetDir;
 
         RotationType rotationType;
         enum RotationType
@@ -160,23 +162,47 @@ namespace RPG
             FSM.State stateRotation = new FSM.State()
             {
                 StateId = stateId++,
-                Enter = () => { rigidbody.drag = 0; Debug.Log("Rotation State Enter"); },
-                Update = () =>
+                Enter = () =>
                 {
+                    rigidbody.drag = 0;
+
+                    targetDir = transform.forward;
                     switch (rotationType)
                     {
                         case RotationType.Back:
-                            transform.Rotate(new Vector3(0, 180, 0));
+                            targetDir = new Vector3(0, 180, 0);
                             break;
                         case RotationType.Left:
-                            transform.Rotate(new Vector3(0, -90, 0));
+                            targetDir = new Vector3(0, -90, 0);
                             break;
                         case RotationType.Right:
-                            transform.Rotate(new Vector3(0, 90, 0));
+                            targetDir = new Vector3(0, 90, 0);
                             break;
                     }
 
-                    fsm.HandleEvent(3);
+                    Debug.Log("Rotation State Enter");
+                },
+                Update = () =>
+                {
+                    moveAmount = Mathf.Clamp01(Mathf.Abs(horiazontal) + Mathf.Abs(vertical));
+
+                    Quaternion tr = Quaternion.LookRotation(targetDir);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetDir), Time.deltaTime * moveAmount * cameraSpeed);
+
+                    transform.rotation = targetRotation;
+
+                    if (Math.Abs(Math.Abs(targetRotation.eulerAngles.y) - Math.Abs(targetDir.y)) <= 1f)
+                    {
+                        transform.eulerAngles = targetDir;
+                        fsm.HandleEvent(3);
+                        Debug.Log("Rotation end..." + Time.time);
+                    }
+                    else
+                    {
+                        Debug.Log("Rotationing...");
+                    }
+
+                    //StartCoroutine(coroutine());
                 }
             };
 
