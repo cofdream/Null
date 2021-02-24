@@ -35,6 +35,30 @@ namespace RPG
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""300fd707-d217-4d0e-bf19-20ad04370890"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LeftMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""659ee55c-f63a-4a0c-87c9-981158306cd7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""RightMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a26efb9-1b56-4910-83dc-76952177f820"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -103,55 +127,39 @@ namespace RPG
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Player2"",
-            ""id"": ""88b7f03c-6092-4171-9232-e266fd922822"",
-            ""actions"": [
+                },
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""629daa04-80d1-455d-b83e-fac6c4f481b7"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""76174369-3af3-4e56-8fcd-3c43e1f91760"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""7e6576ef-4aed-4bb6-bc03-38bad177a58a"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""66d81186-1cc2-4685-8a4d-773e7bc1c70e"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""name"": """",
+                    ""id"": ""4b85df21-b081-4ffd-a4c7-18f5f0404066"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""LeftMouse"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""d49cb248-714d-432b-9eb6-4d8b5a0f5062"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""name"": """",
+                    ""id"": ""e146d687-65d9-4697-b5dd-0a1e2a6612f1"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""RightMouse"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -223,9 +231,9 @@ namespace RPG
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-            // Player2
-            m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
-            m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
+            m_Player_MouseDelta = m_Player.FindAction("MouseDelta", throwIfNotFound: true);
+            m_Player_LeftMouse = m_Player.FindAction("LeftMouse", throwIfNotFound: true);
+            m_Player_RightMouse = m_Player.FindAction("RightMouse", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -277,12 +285,18 @@ namespace RPG
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Run;
+        private readonly InputAction m_Player_MouseDelta;
+        private readonly InputAction m_Player_LeftMouse;
+        private readonly InputAction m_Player_RightMouse;
         public struct PlayerActions
         {
             private @PlayerInput m_Wrapper;
             public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Run => m_Wrapper.m_Player_Run;
+            public InputAction @MouseDelta => m_Wrapper.m_Player_MouseDelta;
+            public InputAction @LeftMouse => m_Wrapper.m_Player_LeftMouse;
+            public InputAction @RightMouse => m_Wrapper.m_Player_RightMouse;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -298,6 +312,15 @@ namespace RPG
                     @Run.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                     @Run.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
                     @Run.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRun;
+                    @MouseDelta.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDelta;
+                    @MouseDelta.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDelta;
+                    @MouseDelta.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseDelta;
+                    @LeftMouse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMouse;
+                    @LeftMouse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMouse;
+                    @LeftMouse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeftMouse;
+                    @RightMouse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouse;
+                    @RightMouse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouse;
+                    @RightMouse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouse;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -308,43 +331,19 @@ namespace RPG
                     @Run.started += instance.OnRun;
                     @Run.performed += instance.OnRun;
                     @Run.canceled += instance.OnRun;
+                    @MouseDelta.started += instance.OnMouseDelta;
+                    @MouseDelta.performed += instance.OnMouseDelta;
+                    @MouseDelta.canceled += instance.OnMouseDelta;
+                    @LeftMouse.started += instance.OnLeftMouse;
+                    @LeftMouse.performed += instance.OnLeftMouse;
+                    @LeftMouse.canceled += instance.OnLeftMouse;
+                    @RightMouse.started += instance.OnRightMouse;
+                    @RightMouse.performed += instance.OnRightMouse;
+                    @RightMouse.canceled += instance.OnRightMouse;
                 }
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
-
-        // Player2
-        private readonly InputActionMap m_Player2;
-        private IPlayer2Actions m_Player2ActionsCallbackInterface;
-        private readonly InputAction m_Player2_Move;
-        public struct Player2Actions
-        {
-            private @PlayerInput m_Wrapper;
-            public Player2Actions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_Player2_Move;
-            public InputActionMap Get() { return m_Wrapper.m_Player2; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(Player2Actions set) { return set.Get(); }
-            public void SetCallbacks(IPlayer2Actions instance)
-            {
-                if (m_Wrapper.m_Player2ActionsCallbackInterface != null)
-                {
-                    @Move.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
-                }
-                m_Wrapper.m_Player2ActionsCallbackInterface = instance;
-                if (instance != null)
-                {
-                    @Move.started += instance.OnMove;
-                    @Move.performed += instance.OnMove;
-                    @Move.canceled += instance.OnMove;
-                }
-            }
-        }
-        public Player2Actions @Player2 => new Player2Actions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -394,10 +393,9 @@ namespace RPG
         {
             void OnMove(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
-        }
-        public interface IPlayer2Actions
-        {
-            void OnMove(InputAction.CallbackContext context);
+            void OnMouseDelta(InputAction.CallbackContext context);
+            void OnLeftMouse(InputAction.CallbackContext context);
+            void OnRightMouse(InputAction.CallbackContext context);
         }
     }
 }

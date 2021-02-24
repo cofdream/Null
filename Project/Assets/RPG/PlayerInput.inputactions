@@ -1,5 +1,5 @@
 {
-    "name": "DogPlayerInput",
+    "name": "PlayerInput",
     "maps": [
         {
             "name": "Player",
@@ -17,6 +17,30 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "53736fc7-8ead-4ff0-92cd-9f4eccee0739",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "300fd707-d217-4d0e-bf19-20ad04370890",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftMouse",
+                    "type": "Button",
+                    "id": "659ee55c-f63a-4a0c-87c9-981158306cd7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightMouse",
+                    "type": "Button",
+                    "id": "0a26efb9-1b56-4910-83dc-76952177f820",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -88,55 +112,39 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Player2",
-            "id": "88b7f03c-6092-4171-9232-e266fd922822",
-            "actions": [
+                },
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "629daa04-80d1-455d-b83e-fac6c4f481b7",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "1D Axis",
-                    "id": "76174369-3af3-4e56-8fcd-3c43e1f91760",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "7e6576ef-4aed-4bb6-bc03-38bad177a58a",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
+                    "groups": "Keyboard&Mouse",
+                    "action": "MouseDelta",
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "66d81186-1cc2-4685-8a4d-773e7bc1c70e",
-                    "path": "<Keyboard>/w",
+                    "name": "",
+                    "id": "4b85df21-b081-4ffd-a4c7-18f5f0404066",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "LeftMouse",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "d49cb248-714d-432b-9eb6-4d8b5a0f5062",
-                    "path": "<Keyboard>/s",
+                    "name": "",
+                    "id": "e146d687-65d9-4697-b5dd-0a1e2a6612f1",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "RightMouse",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }

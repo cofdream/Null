@@ -28,7 +28,7 @@ namespace RPG
         float horiazontal;
         float vertical;
         float moveAmount;
-        Vector3 targetDir;
+        Quaternion targetQuaternion;
 
         RotationType rotationType;
         enum RotationType
@@ -66,7 +66,91 @@ namespace RPG
             FSM.State stateMove = new FSM.State()
             {
                 StateId = stateId++,
-                Enter = () => { rigidbody.drag = 4; Debug.Log("Move State Enter"); },
+                Enter = () =>
+                {
+                    rigidbody.drag = 4;
+                    Debug.Log("Move State Enter");
+
+                    // enter move state or change rotation state
+                    {
+                        Vector2 move = inputActions.Player.Move.ReadValue<Vector2>();
+
+                        horiazontal = move.y;
+                        vertical = move.x;
+
+                        float up = 0;
+                        float back = 0;// not use
+                        float left = 0;// not use
+                        float right = 0;
+                        // 朝前
+                        if (transform.forward.z > 0.1f)
+                        {
+                            up = horiazontal;
+                            back = -horiazontal;
+                            left = -vertical;
+                            right = vertical;
+                        }
+                        // 朝brak
+                        else if (transform.forward.z < -0.1f)
+                        {
+                            up = -horiazontal;
+                            back = horiazontal;
+                            left = vertical;
+                            right = -vertical;
+                        }
+                        else if (transform.forward.x > 0.1f)
+                        {
+                            up = vertical;
+                            back = -vertical;
+                            left = horiazontal;
+                            right = -horiazontal;
+                        }
+                        else if (transform.forward.x < -0.1f)
+                        {
+                            up = -vertical;
+                            back = vertical;
+                            left = -horiazontal;
+                            right = horiazontal;
+                        }
+                        else
+                        {
+                            Debug.LogError($"{transform.forward}  not forward");
+                        }
+
+
+                        if (up >= 1)
+                        {
+                            // enter move state
+                        }
+                        else
+                        {
+                            if (up == 0)
+                            {
+                                if (right > 0)
+                                {
+                                    rotationType = RotationType.Right;
+                                    Debug.Log("Rotation Right");
+                                }
+                                else if (right < 0)
+                                {
+                                    rotationType = RotationType.Left;
+                                    Debug.Log("Rotation Left");
+                                }
+                                else
+                                {
+                                    Debug.LogError("Rotation");
+                                }
+                            }
+                            else
+                            {
+                                rotationType = RotationType.Back;
+                                Debug.Log("Rotation Back");
+                            }
+
+                            fsm.HandleEvent(2);
+                        }
+                    }
+                },
                 Update = () =>
                 {
                     Vector2 move = inputActions.Player.Move.ReadValue<Vector2>();
@@ -81,8 +165,8 @@ namespace RPG
                     vertical = move.x;
 
                     float up = 0;
-                    float back = 0;
-                    float left = 0;
+                    float back = 0;// not use
+                    float left = 0;// not use
                     float right = 0;
                     // 朝前
                     if (transform.forward.z > 0.1f)
@@ -158,51 +242,52 @@ namespace RPG
                 }
             };
 
-
+            float time = 0;
             FSM.State stateRotation = new FSM.State()
             {
                 StateId = stateId++,
                 Enter = () =>
                 {
-                    rigidbody.drag = 0;
-
-                    targetDir = transform.forward;
                     switch (rotationType)
                     {
                         case RotationType.Back:
-                            targetDir = new Vector3(0, 180, 0);
+                            targetQuaternion = Quaternion.Euler(new Vector3(0, 180, 0)) * transform.rotation;
                             break;
                         case RotationType.Left:
-                            targetDir = new Vector3(0, -90, 0);
+                            targetQuaternion = Quaternion.Euler(new Vector3(0, -90, 0)) * transform.rotation;
                             break;
                         case RotationType.Right:
-                            targetDir = new Vector3(0, 90, 0);
+                            targetQuaternion = Quaternion.Euler(new Vector3(0, 90, 0)) * transform.rotation;
+                            break;
+                        default:
+                            targetQuaternion = Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation;
                             break;
                     }
+
+                    Debug.LogWarning((transform.rotation * targetQuaternion).eulerAngles);
 
                     Debug.Log("Rotation State Enter");
                 },
                 Update = () =>
                 {
-                    moveAmount = Mathf.Clamp01(Mathf.Abs(horiazontal) + Mathf.Abs(vertical));
-
-                    Quaternion tr = Quaternion.LookRotation(targetDir);
-                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetDir), Time.deltaTime * moveAmount * cameraSpeed);
-
-                    transform.rotation = targetRotation;
-
-                    if (Math.Abs(Math.Abs(targetRotation.eulerAngles.y) - Math.Abs(targetDir.y)) <= 1f)
+                    time += Time.deltaTime * cameraSpeed;
+                    if (time >= 1)
                     {
-                        transform.eulerAngles = targetDir;
+                        time = 0;
+
+                        transform.rotation = targetQuaternion;
                         fsm.HandleEvent(3);
-                        Debug.Log("Rotation end..." + Time.time);
+
+                        Debug.Log("Rotation end...");
                     }
                     else
                     {
+                        // 需要反方向旋转，交换参数a，b的位置
+                        Quaternion targetRotation = Quaternion.Lerp(transform.rotation, targetQuaternion, time);
+                        transform.rotation = targetRotation;
+
                         Debug.Log("Rotationing...");
                     }
-
-                    //StartCoroutine(coroutine());
                 }
             };
 
@@ -230,6 +315,7 @@ namespace RPG
 
 
         }
+
         void Start()
         {
 
@@ -246,6 +332,7 @@ namespace RPG
         void Update()
         {
             fsm.Update();
+
             //else if (move.x != 0)
             //{
             //    Vector3 targetDir = transform.forward * move.y;
@@ -263,12 +350,6 @@ namespace RPG
 
             //    transform.rotation = targetRotation;
             //}
-        }
-
-
-        private void OnValidate()
-        {
-
         }
     }
 }
