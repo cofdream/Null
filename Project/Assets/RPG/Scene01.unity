@@ -160,6 +160,7 @@ MonoBehaviour:
   model: {fileID: 1908491734}
   cameraTranform: {fileID: 1349307597}
   cameraSpeed: 8
+  cameraTransform: {fileID: 1349307597}
 --- !u!4 &781855870
 Transform:
   m_ObjectHideFlags: 0

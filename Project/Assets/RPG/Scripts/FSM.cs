@@ -16,6 +16,12 @@ namespace RPG
             public Action Enter;
             public Action Update;
             public Action Exit;
+
+            public virtual void OnEnter() { }
+            public virtual void OnUpdate() { }
+            public virtual void OnExit() { }
+
+            public FSM fsm;
         }
 
         public class FSMTranslation
@@ -71,6 +77,9 @@ namespace RPG
                 CurrentState.Exit?.Invoke();
                 CurrentState = fsmTranslation.ToState;
                 CurrentState.Enter?.Invoke();
+
+                // 状态切换了就立刻调用一次更新
+                CurrentState.Update?.Invoke();
             }
         }
     }

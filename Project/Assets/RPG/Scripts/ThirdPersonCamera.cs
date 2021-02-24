@@ -47,7 +47,9 @@ namespace RPG
             var v = inputs.Player.RightMouse.ReadValue<float>();
             var v2 = inputs.Player.LeftMouse.ReadValue<float>();
 
-            if (v != 0 || v2 != 0)
+            transform.position = followTarget.position + offest;
+
+            if (v == 1 || v2 == 1)
             {
                 Vector2 mouseDelta = inputs.Player.MouseDelta.ReadValue<Vector2>();
                 if (mouseDelta.x == 0)
@@ -65,6 +67,8 @@ namespace RPG
                 }
 
                 transform.RotateAround(followTarget.position, followTarget.up, angle * 8);
+
+                offest = transform.position - followTarget.position;
             }
         }
     }
