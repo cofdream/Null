@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18372634, g: 0.2291358, b: 0.30473822, a: 1}
+  m_IndirectSpecularColor: {r: 0.45118695, g: 0.50093585, b: 0.57374775, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -158,9 +158,11 @@ MonoBehaviour:
   rotateSpeed: 10
   rigidbody: {fileID: 781855871}
   model: {fileID: 1908491734}
-  cameraTranform: {fileID: 1349307597}
-  cameraSpeed: 8
   cameraTransform: {fileID: 1349307597}
+  cameraSpeed: 8
+  horiazontal: 0
+  vertical: 0
+  rotationType: 0
 --- !u!4 &781855870
 Transform:
   m_ObjectHideFlags: 0

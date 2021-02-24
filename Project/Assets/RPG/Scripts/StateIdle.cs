@@ -1,0 +1,25 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace RPG
+{
+    public class StateIdle : FSM.State
+    {
+        public MoveController MoveController;
+        public override void OnEnter()
+        {
+            MoveController.rigidbody.drag = 0;
+            Debug.Log("Idle State Enter");
+        }
+        public override void OnUpdate()
+        {
+            Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
+
+            if (move.x != 0 || move.y != 0)
+            {
+                MoveController.FSM.HandleEvent((int)TranslationIdleType.Idle_To_Move);
+            }
+        }
+    }
+}

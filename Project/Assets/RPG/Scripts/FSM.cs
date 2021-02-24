@@ -8,20 +8,26 @@ namespace RPG
     {
         public delegate void TranslationAction();
 
-        public class State
+        public interface IState
         {
-            public ushort StateId;
-            public Dictionary<ushort, FSMTranslation> FSMTranslationDic = new Dictionary<ushort, FSMTranslation>();
+            ushort StateId { get; set; }
+            Dictionary<ushort, FSMTranslation> FSMTranslationDic { get; set; }
 
-            public Action Enter;
-            public Action Update;
-            public Action Exit;
-
+            void OnEnter();
+            void OnUpdate();
+            void OnExit();
+        }
+        public class State : IState
+        {
+            public virtual ushort StateId { get; set; }
+            public virtual Dictionary<ushort, FSMTranslation> FSMTranslationDic { get; set; } = new Dictionary<ushort, FSMTranslation>();
             public virtual void OnEnter() { }
             public virtual void OnUpdate() { }
             public virtual void OnExit() { }
 
-            public FSM fsm;
+            public Action Enter;
+            public Action Update;
+            public Action Exit;
         }
 
         public class FSMTranslation
@@ -33,10 +39,10 @@ namespace RPG
         }
 
 
-        public State CurrentState { get; private set; }
-        Dictionary<ushort, State> stateDic = new Dictionary<ushort, State>();
+        public IState CurrentState { get; private set; }
+        Dictionary<ushort, IState> stateDic = new Dictionary<ushort, IState>();
 
-        public void Add(State state)
+        public void Add(IState state)
         {
             stateDic[state.StateId] = state;
         }
@@ -45,17 +51,17 @@ namespace RPG
             stateDic[fsmTranslation.FromState.StateId].FSMTranslationDic[fsmTranslation.TranslationId] = fsmTranslation;
         }
 
-        public void Start(State state)
+        public void Start(IState state)
         {
             if (CurrentState == null)
             {
                 CurrentState = state;
-                CurrentState.Enter?.Invoke();
+                CurrentState.OnEnter();
             }
         }
         public void Update()
         {
-            CurrentState?.Update?.Invoke();
+            CurrentState?.OnUpdate();
         }
 
         public void HandleEvent(ushort translationId)
@@ -74,12 +80,12 @@ namespace RPG
             {
                 fsmTranslation.Callback?.Invoke();
 
-                CurrentState.Exit?.Invoke();
+                CurrentState.OnExit();
                 CurrentState = fsmTranslation.ToState;
-                CurrentState.Enter?.Invoke();
+                CurrentState.OnEnter();
 
                 // 状态切换了就立刻调用一次更新
-                CurrentState.Update?.Invoke();
+                CurrentState.OnUpdate();
             }
         }
     }

@@ -7,6 +7,21 @@ using static RPG.StateRotation;
 
 namespace RPG
 {
+    public enum StateIdType : int
+    {
+        None = 0,
+        Idle,
+        Move,
+        Rotation,
+    }
+    public enum TranslationIdleType : int
+    {
+        None = 0,
+        Idle_To_Move,
+        Move_To_Idle,
+        Move_To_Rotation,
+        Rotation_To_Idle,
+    }
     public class MoveController : MonoBehaviour
     {
         public float walkSpeed = 5f;
@@ -14,8 +29,7 @@ namespace RPG
         public float runSpeed = 10f;
         public float rotateSpeed = 10f;
 
-        PlayerInput inputActions;
-
+        public PlayerInput inputActions;
 
         public new Rigidbody rigidbody;
 
@@ -23,59 +37,49 @@ namespace RPG
         public Transform cameraTransform;
         public float cameraSpeed = 8;
 
+        public FSM FSM { get; private set; }
 
-        FSM fsm;
+        [HideInInspector] public RotationType rotationType;
+
         private void Awake()
         {
             inputActions = new PlayerInput();
 
-            fsm = new FSM();
+            FSM = new FSM();
 
-            ushort stateId = 0;
-
-            FSM.State stateIdle = new FSM.State()
+            var stateIdle = new StateIdle()
             {
-                StateId = stateId++,
-                Enter = StateIdle_OnEnter,
-                Update = StateIdle_OnUpdate,
+                StateId = (int)StateIdType.Idle,
+                MoveController = this,
+            };
+            var stateMove = new StateMove()
+            {
+                StateId = (int)StateIdType.Move,
+                MoveController = this,
             };
 
-            FSM.State stateMove = new FSM.State()
+            var stateRotation = new StateRotation()
             {
-                StateId = stateId++,
-                Enter = StateMove_OnEnter,
-                Update = StateMove_OnUpdate,
+                StateId = (int)StateIdType.Rotation,
+                MoveController = this,
             };
 
+            var fsmTranslationIdleToMove = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Idle_To_Move, FromState = stateIdle, ToState = stateMove, };
+            var fsmTranslationMoveToIdle = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Move_To_Idle, FromState = stateMove, ToState = stateIdle, };
+            var fsmTranslationMoveToRotation = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Move_To_Rotation, FromState = stateMove, ToState = stateRotation, };
+            var fsmTranslationRotationToIdle = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Rotation_To_Idle, FromState = stateRotation, ToState = stateIdle, };
 
-            FSM.State stateRotation = new FSM.State()
-            {
-                StateId = stateId++,
-                Enter = StateRotation_OnEnter,
-                Update = StateRotation_OnUpdate,
-            };
+            FSM.Add(stateIdle);
+            FSM.Add(stateMove);
+            FSM.Add(stateRotation);
 
-
-            ushort trabslationId = 0;
-            FSM.FSMTranslation fsmTranslationIdleToMove = new FSM.FSMTranslation() { TranslationId = trabslationId++, FromState = stateIdle, ToState = stateMove, };
-
-            FSM.FSMTranslation fsmTranslationMoveToIdle = new FSM.FSMTranslation() { TranslationId = trabslationId++, FromState = stateMove, ToState = stateIdle, };
-
-            FSM.FSMTranslation fsmTranslationMoveToRotation = new FSM.FSMTranslation() { TranslationId = trabslationId++, FromState = stateMove, ToState = stateRotation, };
-
-            FSM.FSMTranslation fsmTranslationRotationToIdle = new FSM.FSMTranslation() { TranslationId = trabslationId++, FromState = stateRotation, ToState = stateIdle, };
-
-            fsm.Add(stateIdle);
-            fsm.Add(stateMove);
-            fsm.Add(stateRotation);
-
-            fsm.Add(fsmTranslationIdleToMove);
-            fsm.Add(fsmTranslationMoveToIdle);
-            fsm.Add(fsmTranslationMoveToRotation);
-            fsm.Add(fsmTranslationRotationToIdle);
+            FSM.Add(fsmTranslationIdleToMove);
+            FSM.Add(fsmTranslationMoveToIdle);
+            FSM.Add(fsmTranslationMoveToRotation);
+            FSM.Add(fsmTranslationRotationToIdle);
 
 
-            fsm.Start(stateIdle);
+            FSM.Start(stateIdle);
         }
         private void OnEnable()
         {
@@ -88,7 +92,7 @@ namespace RPG
 
         void Update()
         {
-            fsm.Update();
+            FSM.Update();
 
             //else if (move.x != 0)
             //{
@@ -107,177 +111,6 @@ namespace RPG
 
             //    transform.rotation = targetRotation;
             //}
-        }
-
-        float horiazontal;
-        float vertical;
-        Quaternion targetQuaternion;
-
-        RotationType rotationType;
-        
-
-        private void StateIdle_OnEnter()
-        {
-            rigidbody.drag = 0;
-            Debug.Log("Idle State Enter");
-        }
-        private void StateIdle_OnUpdate()
-        {
-            Vector2 move = inputActions.Player.Move.ReadValue<Vector2>();
-
-            if (move.x != 0 || move.y != 0)
-            {
-                fsm.HandleEvent(0);
-            }
-        }
-
-        private void StateMove_OnEnter()
-        {
-            rigidbody.drag = 4;
-            Debug.Log("Move State Enter");
-        }
-        private void StateMove_OnUpdate()
-        {
-            Vector2 move = inputActions.Player.Move.ReadValue<Vector2>();
-
-            if (move.x == 0 && move.y == 0)
-            {
-                fsm.HandleEvent(1);
-                return;
-            }
-
-            horiazontal = move.y;
-            vertical = move.x;
-
-
-            float up = 0;
-            float back = 0;// not use
-            float left = 0;// not use
-            float right = 0;
-
-            //float offset = cameraTransform.eulerAngles.y;
-
-            //Debug.Log("Offset " + offset);
-            // 朝前
-            if ((int)transform.eulerAngles.y == 0)
-            {
-                up = horiazontal;
-                back = -horiazontal;
-                left = -vertical;
-                right = vertical;
-            }
-            // 朝brak
-            else if ((int)transform.eulerAngles.y == 180)
-            {
-                up = -horiazontal;
-                back = horiazontal;
-                left = vertical;
-                right = -vertical;
-            }
-            // 朝 Right
-            else if ((int)transform.eulerAngles.y == 90)
-            {
-                up = vertical;
-                back = -vertical;
-                left = horiazontal;
-                right = -horiazontal;
-            }
-            // 朝 Lefg
-            else if ((int)transform.eulerAngles.y == 270)
-            {
-                up = -vertical;
-                back = vertical;
-                left = -horiazontal;
-                right = horiazontal;
-            }
-            else
-            {
-                Debug.LogError($"{transform.forward}  not forward");
-            }
-
-
-            if (up >= 1)
-            {
-                float moveAmount = Mathf.Clamp01(Mathf.Abs(horiazontal) + Mathf.Abs(vertical));
-
-                Vector3 targetVelocity = transform.forward * moveAmount * walkSpeed;
-                targetVelocity.y = rigidbody.velocity.y;
-                rigidbody.velocity = targetVelocity;
-            }
-            else
-            {
-                if (up == 0)
-                {
-                    if (right > 0)
-                    {
-                        rotationType = RotationType.Right;
-                        Debug.Log("Rotation Right");
-                    }
-                    else if (right < 0)
-                    {
-                        rotationType = RotationType.Left;
-                        Debug.Log("Rotation Left");
-                    }
-                    else
-                    {
-                        Debug.LogError("Rotation");
-                    }
-                }
-                else
-                {
-                    rotationType = RotationType.Back;
-                    Debug.Log("Rotation Back");
-                }
-
-                fsm.HandleEvent(2);
-            }
-        }
-
-
-        float time = 0;
-        private void StateRotation_OnEnter()
-        {
-
-            switch (rotationType)
-            {
-                case RotationType.Back:
-                    targetQuaternion = Quaternion.Euler(new Vector3(0, 180, 0)) * transform.rotation;
-                    break;
-                case RotationType.Left:
-                    targetQuaternion = Quaternion.Euler(new Vector3(0, -90, 0)) * transform.rotation;
-                    break;
-                case RotationType.Right:
-                    targetQuaternion = Quaternion.Euler(new Vector3(0, 90, 0)) * transform.rotation;
-                    break;
-                default:
-                    targetQuaternion = Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation;
-                    break;
-            }
-
-            Debug.LogWarning((transform.rotation * targetQuaternion).eulerAngles);
-
-            Debug.Log("Rotation State Enter");
-        }
-        private void StateRotation_OnUpdate()
-        {
-            time += Time.deltaTime * cameraSpeed;
-            if (time >= 1)
-            {
-                time = 0;
-
-                transform.rotation = targetQuaternion;
-                fsm.HandleEvent(3);
-
-                Debug.Log("Rotation end...");
-            }
-            else
-            {
-                // 需要反方向旋转，交换参数a，b的位置
-                Quaternion targetRotation = Quaternion.Lerp(transform.rotation, targetQuaternion, time);
-                transform.rotation = targetRotation;
-
-                Debug.Log("Rotationing...");
-            }
         }
     }
 }
