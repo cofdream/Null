@@ -13,7 +13,7 @@ namespace RPG
 
         private void Awake()
         {
-            transform.position = followTarget.position + new Vector3(0f, 3.4f, -5.2f);
+            transform.position = followTarget.position + new Vector3(0f, 3.5f, -6.5f);
             transform.rotation = Quaternion.Euler(followTarget.eulerAngles + new Vector3(10f, 0f, 0f));
 
             offest = transform.position - followTarget.position;

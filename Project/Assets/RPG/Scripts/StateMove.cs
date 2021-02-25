@@ -1,117 +1,113 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static RPG.StateRotation;
 
 namespace RPG
 {
     public class StateMove : FSM.State
     {
-        float horiazontal;
-        float vertical;
+        private Transform roleTransform;
+        private Transform cameraTransform;
 
         public MoveController MoveController;
+
+        public bool isRotation;
+        private Quaternion _targetRotation;
         public override void OnEnter()
         {
             MoveController.rigidbody.drag = 4;
-            Debug.Log("Move State Enter");
+
+            roleTransform = MoveController.transform;
+            cameraTransform = MoveController.cameraTransform;
+
+            Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
+
+            float horiazontal = move.y;
+            float vertical = move.x;
+
+            Vector3 targetDir = cameraTransform.forward * horiazontal + cameraTransform.right * vertical;
+            targetDir.Normalize();
+            targetDir.y = 0;
+
+            if (targetDir == Vector3.zero)
+            {
+                targetDir = roleTransform.forward;
+            }
+
+            _targetRotation = Quaternion.LookRotation(targetDir);
+
+            if (_targetRotation != new Quaternion(0, 0, 0, 0))
+            {
+                isRotation = true;
+            }
+            else
+            {
+                isRotation = false;
+            }
         }
         public override void OnUpdate()
         {
+            if (isRotation)
+            {
+                Quaternion tr = Quaternion.Slerp(roleTransform.rotation, _targetRotation, MoveController.Delta * MoveController.rotateSpeed * 0.5f);
+                roleTransform.rotation = tr;
+
+                float dot = Quaternion.Dot(_targetRotation, tr);
+                float offest = 0.999999f;
+                if (dot < 0)
+                {
+                    offest = -0.999999f;
+                }
+                if (dot > offest)
+                {
+                    roleTransform.rotation = _targetRotation;
+                    isRotation = false;
+
+                    Debug.LogWarning(Time.time + $"原地旋转End _targetRotation {_targetRotation}   tr {tr} ");
+                }
+                else
+                    return;
+            }
+
             Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
 
-            if (move.x == 0 && move.y == 0)
+            float horiazontal = move.y;
+            float vertical = move.x;
+
+            if (horiazontal == 0 && vertical == 0)
             {
+                MoveController.rigidbody.drag = 0;
+
                 MoveController.FSM.HandleEvent((int)TranslationIdleType.Move_To_Idle);
                 return;
             }
-
-            horiazontal = move.y;
-            vertical = move.x;
-
-
-            float up = 0;
-            float back = 0;// not use
-            float left = 0;// not use
-            float right = 0;
-
-            //float offset = cameraTransform.eulerAngles.y;
-
-            //Debug.Log("Offset " + offset);
-
-            var value = (int)MoveController.transform.eulerAngles.y;
-            // 朝前
-            if (value == 0)
-            {
-                up = horiazontal;
-                back = -horiazontal;
-                left = -vertical;
-                right = vertical;
-            }
-            // 朝brak
-            else if (value == 180)
-            {
-                up = -horiazontal;
-                back = horiazontal;
-                left = vertical;
-                right = -vertical;
-            }
-            // 朝 Right
-            else if (value == 90)
-            {
-                up = vertical;
-                back = -vertical;
-                left = horiazontal;
-                right = -horiazontal;
-            }
-            // 朝 Lefg
-            else if (value == 270)
-            {
-                up = -vertical;
-                back = vertical;
-                left = -horiazontal;
-                right = horiazontal;
-            }
             else
             {
-                Debug.LogError($"{MoveController.transform.forward}  not forward");
+                MoveController.rigidbody.drag = 4;
             }
 
+            float moveAmount = Mathf.Clamp01(Mathf.Abs(horiazontal) + Mathf.Abs(vertical));
 
-            if (up >= 1)
+
+            // MovementForward
+            Vector3 targetVelocity = roleTransform.forward * moveAmount * MoveController.walkSpeed;
+            targetVelocity.y = MoveController.rigidbody.velocity.y;
+
+            MoveController.rigidbody.velocity = targetVelocity;
+
+
+            // RotationBasedOnCameraOrientation
+            Vector3 targetDir = cameraTransform.forward * horiazontal + cameraTransform.right * vertical;
+            targetDir.Normalize();
+            targetDir.y = 0;
+
+            if (targetDir == Vector3.zero)
             {
-                float moveAmount = Mathf.Clamp01(Mathf.Abs(horiazontal) + Mathf.Abs(vertical));
-
-                Vector3 targetVelocity = MoveController.transform.forward * moveAmount * MoveController.walkSpeed;
-                targetVelocity.y = MoveController.rigidbody.velocity.y;
-                MoveController.rigidbody.velocity = targetVelocity;
+                targetDir = roleTransform.forward;
             }
-            else
-            {
-                if (up == 0)
-                {
-                    if (right > 0)
-                    {
-                        MoveController.rotationType = RotationType.Right;
-                        Debug.Log("Rotation Right");
-                    }
-                    else if (right < 0)
-                    {
-                        MoveController.rotationType = RotationType.Left;
-                        Debug.Log("Rotation Left");
-                    }
-                    else
-                    {
-                        Debug.LogError("Rotation");
-                    }
-                }
-                else
-                {
-                    MoveController.rotationType = RotationType.Back;
-                    Debug.Log("Rotation Back");
-                }
 
-                MoveController.FSM.HandleEvent((int)TranslationIdleType.Move_To_Rotation);
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            targetRotation = Quaternion.Slerp(roleTransform.rotation, targetRotation, MoveController.Delta * MoveController.rotateSpeed * moveAmount);
+            roleTransform.rotation = targetRotation;
         }
     }
 }

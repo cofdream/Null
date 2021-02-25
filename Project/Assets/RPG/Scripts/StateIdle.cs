@@ -7,11 +7,7 @@ namespace RPG
     public class StateIdle : FSM.State
     {
         public MoveController MoveController;
-        public override void OnEnter()
-        {
-            MoveController.rigidbody.drag = 0;
-            Debug.Log("Idle State Enter");
-        }
+
         public override void OnUpdate()
         {
             Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
