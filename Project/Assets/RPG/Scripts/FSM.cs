@@ -10,7 +10,7 @@ namespace RPG
 
         public interface IState
         {
-            ushort StateId { get; set; }
+            ushort StateId { get; }
             Dictionary<ushort, FSMTranslation> FSMTranslationDic { get; set; }
 
             void OnEnter();
@@ -83,9 +83,6 @@ namespace RPG
                 CurrentState.OnExit();
                 CurrentState = fsmTranslation.ToState;
                 CurrentState.OnEnter();
-
-                // 状态切换了就立刻调用一次更新
-                CurrentState.OnUpdate();
             }
         }
     }
