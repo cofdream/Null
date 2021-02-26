@@ -51,16 +51,16 @@ namespace Server
 
     class Server
     {
-        public static int MaxConnectCount { get; private set; }
+        public static int MaxPlayers { get; private set; }
         public static int Port { get; private set; }
 
         private static TcpListener tcpListener;
 
         private static Dictionary<int, Client> clients;
 
-        public static void Start(int maxConnectCount, int port)
+        public static void Start(int maxPlayers, int port)
         {
-            MaxConnectCount = maxConnectCount;
+            MaxPlayers = maxPlayers;
             Port = port;
 
             Console.WriteLine("Starting server...");
@@ -81,7 +81,7 @@ namespace Server
 
             Console.WriteLine($"Incoming connection from {tcpClient.Client.RemoteEndPoint}...");
 
-            for (int i = 1; i <= MaxConnectCount; i++)
+            for (int i = 1; i <= MaxPlayers; i++)
             {
                 var _client = clients[i];
                 if (_client.tcp.socket == null)
@@ -95,9 +95,9 @@ namespace Server
 
         private static void InitializeServerData()
         {
-            clients = new Dictionary<int, Client>(MaxConnectCount);
+            clients = new Dictionary<int, Client>(MaxPlayers);
 
-            for (int i = 1; i <= MaxConnectCount; i++)
+            for (int i = 1; i <= MaxPlayers; i++)
             {
                 clients.Add(i, new Client(i));
             }
@@ -120,6 +120,7 @@ namespace Server
         public class Tcp
         {
             public TcpClient socket;
+
             private readonly int id;
             private NetworkStream stream;
             private byte[] receiveBuffer;
@@ -128,14 +129,14 @@ namespace Server
             {
                 this.id = id;
             }
-            public void Conntct(TcpClient client)
+            public void Conntct(TcpClient socket)
             {
-                socket = client;
-                socket.ReceiveBufferSize = dataBufferSize;
-                socket.SendBufferSize = dataBufferSize;
+                this.socket = socket;
+                this.socket.ReceiveBufferSize = dataBufferSize;
+                this.socket.SendBufferSize = dataBufferSize;
                 receiveBuffer = new byte[dataBufferSize];
 
-                stream = socket.GetStream();
+                stream = this.socket.GetStream();
 
 
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallBack, null);

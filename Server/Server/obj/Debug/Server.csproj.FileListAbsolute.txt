@@ -5,3 +5,10 @@ E:\Git\Server\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
 E:\Git\Server\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
 E:\Git\Server\Server\Server\obj\Debug\Server.exe
 E:\Git\Server\Server\Server\obj\Debug\Server.pdb
+E:\Git\Null\Server\Server\bin\Debug\Server.exe.config
+E:\Git\Null\Server\Server\bin\Debug\Server.exe
+E:\Git\Null\Server\Server\bin\Debug\Server.pdb
+E:\Git\Null\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+E:\Git\Null\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+E:\Git\Null\Server\Server\obj\Debug\Server.exe
+E:\Git\Null\Server\Server\obj\Debug\Server.pdb
