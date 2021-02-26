@@ -6,6 +6,7 @@ namespace RPG
     public class ThirdPersonCamera : MonoBehaviour
     {
         [SerializeField] private Transform followTarget;
+        public float speed;
 
         Vector3 offest;
 
@@ -19,19 +20,6 @@ namespace RPG
             offest = transform.position - followTarget.position;
 
             inputs = new PlayerInput();
-
-            //inputs.Player.LeftMouse.performed += (callback) =>
-            //{
-            //    //Debug.Log("performed");
-            //};
-            //inputs.Player.LeftMouse.started += (callback) =>
-            //{
-            //    //Debug.Log("started");
-            //};
-            //inputs.Player.LeftMouse.canceled += (callback) =>
-            //{
-            //    //Debug.Log("canceled");
-            //};
         }
         private void OnEnable()
         {
@@ -41,7 +29,7 @@ namespace RPG
         {
             inputs.Disable();
         }
-
+        float mousPositionX;
         private void LateUpdate()
         {
             var v = inputs.Player.RightMouse.ReadValue<float>();
@@ -52,21 +40,24 @@ namespace RPG
             if (v == 1 || v2 == 1)
             {
                 Vector2 mouseDelta = inputs.Player.MouseDelta.ReadValue<Vector2>();
+
                 if (mouseDelta.x == 0)
                 {
                     return;
                 }
-                float angle;
-                if (mouseDelta.x > 0)
-                {
-                    angle = 1;
-                }
-                else
-                {
-                    angle = -1;
-                }
 
-                transform.RotateAround(followTarget.position, followTarget.up, angle * 8);
+                float offset = mouseDelta.x * 360 / Screen.width;
+                mousPositionX += offset;
+
+                transform.RotateAround(followTarget.position, followTarget.up, offset);
+
+                offest = transform.position - followTarget.position;
+            }
+            else
+            {
+                // 还原之前的旋转量
+                transform.RotateAround(followTarget.position, followTarget.up, mousPositionX * -1);
+                mousPositionX = 0;
 
                 offest = transform.position - followTarget.position;
             }

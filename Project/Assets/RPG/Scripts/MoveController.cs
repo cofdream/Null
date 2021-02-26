@@ -20,18 +20,19 @@ namespace RPG
     }
     public class MoveController : MonoBehaviour
     {
-        public float walkSpeed = 5f;
-        public float backSpeed = 2.5f;
-        public float runSpeed = 10f;
-        public float rotateSpeed = 8;
+        public float walkSpeed;
+        public float rotateSpeed;
+        public float walkRotationSpeed;
+
+        public float runSpeed;
 
         public PlayerInput inputActions;
 
         public new Rigidbody rigidbody;
+        public Animator animator;
 
         public Transform model;
         public Transform cameraTransform;
-        public float cameraSpeed = 8;
 
         public float Delta { get { return Time.deltaTime; } }
 

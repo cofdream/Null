@@ -38,31 +38,37 @@ namespace RPG
             if (_targetRotation != new Quaternion(0, 0, 0, 0))
             {
                 isRotation = true;
+                Debug.Log("Play roatation animation");
             }
             else
             {
                 isRotation = false;
+
+                MoveController?.animator.SetBool("IsMoving", true);
             }
         }
         public override void OnUpdate()
         {
             if (isRotation)
             {
-                Quaternion tr = Quaternion.Slerp(roleTransform.rotation, _targetRotation, MoveController.Delta * MoveController.rotateSpeed * 0.5f);
+                Quaternion tr = Quaternion.Lerp(roleTransform.rotation, _targetRotation, MoveController.Delta * MoveController.rotateSpeed);
                 roleTransform.rotation = tr;
 
                 float dot = Quaternion.Dot(_targetRotation, tr);
-                float offest = 0.999999f;
+                float offset = 0.999999f;
                 if (dot < 0)
                 {
-                    offest = -0.999999f;
+                    offset = -0.999999f;
                 }
-                if (dot > offest)
+                if (dot > offset)
                 {
                     roleTransform.rotation = _targetRotation;
+
                     isRotation = false;
 
-                    Debug.LogWarning(Time.time + $"原地旋转End _targetRotation {_targetRotation}   tr {tr} ");
+                    MoveController?.animator.SetBool("IsMoving", true);
+
+                    Debug.LogWarning(Time.time + $"原地旋转End _targetRotation {_targetRotation}   tr {tr} " + (offset < 0 ? "offset < 0" : ""));
                 }
                 else
                     return;
@@ -106,8 +112,14 @@ namespace RPG
             }
 
             Quaternion targetRotation = Quaternion.LookRotation(targetDir);
-            targetRotation = Quaternion.Slerp(roleTransform.rotation, targetRotation, MoveController.Delta * MoveController.rotateSpeed * moveAmount);
+            targetRotation = Quaternion.Slerp(roleTransform.rotation, targetRotation, MoveController.Delta * MoveController.walkRotationSpeed * moveAmount);
             roleTransform.rotation = targetRotation;
+        }
+
+        public override void OnExit()
+        {
+
+            MoveController?.animator.SetBool("IsMoving", false);
         }
     }
 }

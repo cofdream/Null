@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45118695, g: 0.50093585, b: 0.57374775, a: 1}
+  m_IndirectSpecularColor: {r: 0.45118636, g: 0.500935, b: 0.57374656, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,14 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873e5c40ec3e0754eaa848269ec5e7e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  backSpeed: 2.5
+  walkSpeed: 2
+  rotateSpeed: 10
+  walkRotationSpeed: 6
   runSpeed: 10
-  rotateSpeed: 8
   rigidbody: {fileID: 781855871}
+  animator: {fileID: 1333217636}
   model: {fileID: 1908491734}
   cameraTransform: {fileID: 1349307597}
-  cameraSpeed: 8
 --- !u!4 &781855870
 Transform:
   m_ObjectHideFlags: 0
@@ -218,7 +218,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 443784299632c1f4182a1a3f3797aff1, type: 2}
+      objectReference: {fileID: 9100000, guid: 10531046230856740b47b1995bf0f439, type: 2}
     - target: {fileID: 6826090233292290522, guid: 0ea242c881d2bbc4baa93574ee67a379,
         type: 3}
       propertyPath: m_RootOrder
@@ -373,6 +373,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 32.546, y: -195.236, z: 9.319}
+--- !u!95 &1333217636 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5439422803339331627, guid: 0ea242c881d2bbc4baa93574ee67a379,
+    type: 3}
+  m_PrefabInstance: {fileID: 976192257}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349307592
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +390,7 @@ GameObject:
   - component: {fileID: 1349307597}
   - component: {fileID: 1349307596}
   - component: {fileID: 1349307593}
+  - component: {fileID: 1349307594}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -404,6 +411,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followTarget: {fileID: 1377058948}
+  speed: 6
+--- !u!114 &1349307594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349307592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!20 &1349307596
 Camera:
   m_ObjectHideFlags: 0
