@@ -123,7 +123,7 @@ namespace DA.ObjectPool
         }
         private void UpdateObjectPool()
         {
-            float time = FrameUpdater.DelateTime;
+            float time = FrameUpdater.DeltaTime;
             elapsedTime += time;
             if (WaitingTime <= elapsedTime)
             {
