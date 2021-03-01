@@ -3,26 +3,45 @@
 namespace DA.Timer
 {
     /// <summary>
-    /// 多次计时器
+    /// 可多次计时器
     /// </summary>
     public struct TimerMulti : ITimer
     {
-        public float TotalTime;
+        /// <summary>
+        /// 每次更新等待的时间
+        /// </summary>
+        public float WaitingTime;
+        /// <summary>
+        /// 已经过的时间
+        /// </summary>
         public float ElapsedTime;
-        public ushort Count;
-        public Action CallBack;
+        /// <summary>
+        /// 剩余需要计时间的次数
+        /// </summary>
+        public ushort Number;
+        /// <summary>
+        /// 计时回调
+        /// </summary>
+        public Action Callback;
 
+        public TimerMulti(float waitingTime, Action callback, ushort number = 1, float useTime = 0f)
+        {
+            WaitingTime = waitingTime;
+            ElapsedTime = useTime;
+            Number = number;
+            Callback = callback;
+        }
         public bool Update(float time)
         {
             ElapsedTime += time;
-            if (TotalTime <= ElapsedTime)
+            if (WaitingTime <= ElapsedTime)
             {
-                CallBack?.Invoke();
-                Count--;
-                if (Count == 0)
+                Callback?.Invoke();
+                Number--;
+                if (Number == 0)
                 {
                     // 暂时保留插值
-                    ElapsedTime = TotalTime - ElapsedTime;
+                    ElapsedTime = WaitingTime - ElapsedTime;
                     return true;
                 }
                 return false;
@@ -31,7 +50,7 @@ namespace DA.Timer
         }
         public void Dispose()
         {
-            
+
         }
     }
 }

@@ -9,22 +9,25 @@ namespace DA.Timer
         private static int minCapacity = 20;
         private static float disposeCurrentTime;    // 释放时间计时 单位：s
         private static float disposeTotalTime = 60; // 释放时间     单位：s
-
+        public static bool TimerState { get; set; }
         static Timer()
         {
             timers = new List<ITimer>(minCapacity);
 
+            TimerState = true;
             FrameUpdater.UpdataAction += UpdateTime;
         }
         private static void UpdateTime()
         {
-            var elapsedTime = FrameUpdater.DelateTime;
+            if (!TimerState) return;
+            
+            var delta = FrameUpdater.DeltaTime;
 
             int length = timers.Count;
             for (int i = 0; i < length; i++)
             {
                 var timer = timers[i];
-                bool isRemove = timer.Update(elapsedTime);
+                bool isRemove = timer.Update(delta);
                 if (isRemove)
                 {
                     timer.Dispose();
@@ -42,7 +45,7 @@ namespace DA.Timer
             int capacity = timers.Capacity;
             if (length < capacity * 0.25f)
             {
-                disposeCurrentTime += elapsedTime;
+                disposeCurrentTime += delta;
                 if (disposeCurrentTime > disposeTotalTime)
                 {
                     disposeCurrentTime = 0;
@@ -56,14 +59,13 @@ namespace DA.Timer
             }
         }
 
-
-        public static void StartTimer(ITimer timer)
+        public static void StartTimer(this ITimer timer)
         {
             timers.Add(timer);
         }
-        public static void StartTimer(IEnumerable<ITimer> timer)
+        public static void StartTimer(this IEnumerable<ITimer> timers)
         {
-            timers.AddRange(timer);
+            Timer.timers.AddRange(timers);
         }
     }
 }
