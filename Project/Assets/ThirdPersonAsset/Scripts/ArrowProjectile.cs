@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArrowProjectile : MonoBehaviour
 {
     public float force;
-    public Rigidbody rigidbody;
+    public new Rigidbody rigidbody;
     Cinemachine.CinemachineImpulseSource source;
     private void Awake()
     {
