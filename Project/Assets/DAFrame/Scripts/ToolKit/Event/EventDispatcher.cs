@@ -8,17 +8,23 @@ namespace DA.Event
     public class EventDispatcher : IDispatcher
     {
         private readonly Dictionary<short, List<Delegate>> events = null;
+        private readonly Dictionary<short, List<Delegate>> eventsArg = null;
         private readonly List<List<Delegate>> removeHandles = null;
-        public EventDispatcher(int count = 10)
+        public EventDispatcher(int count = 10, int argCount = 10)
         {
             events = new Dictionary<short, List<Delegate>>(count);
+            eventsArg = new Dictionary<short, List<Delegate>>(argCount);
             removeHandles = new List<List<Delegate>>(count);
         }
 
         public void ClearAllHandle()
         {
-            var allHandle = events.GetEnumerator();
             foreach (var delegates in events.Values)
+            {
+                delegates.Clear();
+            }
+
+            foreach (var delegates in eventsArg.Values)
             {
                 delegates.Clear();
             }
@@ -59,12 +65,12 @@ namespace DA.Event
         public void Subscribe<T>(short type, EventHandler<T> handler)
         {
             Delegate @delegate = handler;
-            AddHandle(events, type, @delegate);
+            AddHandle(eventsArg, type, @delegate);
         }
         public void Unsubscribe<T>(short type, EventHandler<T> handler)
         {
             Delegate @delegate = handler;
-            RemoveHandle(events, type, @delegate);
+            RemoveHandle(eventsArg, type, @delegate);
         }
         public void SendEvent(short type)
         {
@@ -72,9 +78,10 @@ namespace DA.Event
         }
         public void SendEvent<T>(short type, T msg)
         {
-            Send(events, type, msg);
+            Send(eventsArg, type, msg);
         }
-        private void AddHandle(Dictionary<short, List<Delegate>> dic, short type, Delegate handle)
+
+        private static void AddHandle(Dictionary<short, List<Delegate>> dic, short type, Delegate handle)
         {
             List<Delegate> delegates = null;
             if (dic.TryGetValue(type, out delegates))
