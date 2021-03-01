@@ -4,14 +4,6 @@ using UnityEngine;
 
 namespace DA.Singleton
 {
-    /// <summary>
-    /// Singleton Util
-    /// Use tip
-    /// private static SingletonA instance = DA.Singleton.SingletonUtil.QuickCreateSingleton<SingletonA>();
-    /// public static SingletonA Instance { get { return instance; } }
-    /// [System.Obsolete("Not Use", true)]
-    /// public SingletonA() { }
-    /// </summary>
     public static class SingletonUtil
     {
         public static T CreateSingleton<T>() where T : class
@@ -26,13 +18,7 @@ namespace DA.Singleton
             }
             return ctor.Invoke(null) as T;
         }
-
-        /// <summary>
-        /// 快速创建单例
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static T QuickCreateSingleton<T>() where T : class, new()
+        public static T CreateSingletonNew<T>() where T : class, new()
         {
             var instance = new T();
             return instance;

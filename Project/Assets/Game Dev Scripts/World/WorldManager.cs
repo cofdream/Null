@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class WorldManager
 {
-    private static WorldManager instance = DA.Singleton.SingletonUtil.QuickCreateSingleton<WorldManager>();
+    private static WorldManager instance = DA.Singleton.SingletonUtil.CreateSingletonNew<WorldManager>();
     public static WorldManager Instance { get { return instance; } }
     [System.Obsolete("Not Use", true)]
     public WorldManager() { }
