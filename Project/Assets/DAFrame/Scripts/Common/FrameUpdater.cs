@@ -6,8 +6,8 @@ namespace DA
     [DisallowMultipleComponent]
     public static class FrameUpdater
     {
-        private static float delateTime;
-        public static float DelateTime { get => delateTime; private set => delateTime = value; }
+        private static float deltaTime;
+        public static float DeltaTime { get => deltaTime; private set => deltaTime = value; }
 
         public static event Action UpdataAction;
 
@@ -22,11 +22,10 @@ namespace DA
         {
             private void Update()
             {
-                delateTime = Time.deltaTime;
+                deltaTime = Time.deltaTime;
 
                 UpdataAction?.Invoke();
             }
         }
-
     }
 }
