@@ -24,8 +24,7 @@ namespace Tests
             ObjectPool<AssertObjectPoolItem> itemObjectPool = new ObjectPool<AssertObjectPoolItem>();
             itemObjectPool.Initialize(
                 () => new AssertObjectPoolItem(), null, null, null,
-                5, 15,
-                true);
+                5, 15);
 
             List<AssertObjectPoolItem> items = new List<AssertObjectPoolItem>(100);
             for (int i = 0; i < 100; i++)
@@ -48,7 +47,6 @@ namespace Tests
             itemObjectPool.Initialize(
                 () => new AssertObjectPoolItem(), null, null, null,
                 5, 5,
-                true,
                 3, 10);
 
             List<AssertObjectPoolItem> items = new List<AssertObjectPoolItem>(100);
@@ -82,7 +80,6 @@ namespace Tests
             ObjectPoolTimer<AssertObjectPoolItem> itemObjectPool = new ObjectPoolTimer<AssertObjectPoolItem>();
             itemObjectPool.Initialize(() => new AssertObjectPoolItem(), null, null, null,
                                         5, 5,
-                                        true,
                                         3, 10);
 
             List<AssertObjectPoolItem> items = new List<AssertObjectPoolItem>(100);

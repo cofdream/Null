@@ -5,22 +5,15 @@ namespace DA.ObjectPool
 {
     // TODO 释放策略修改
 
-    /// <summary>
-    /// 对象池 
-    /// 定时自动释放多余占用（基于引用计数）
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class ObjectPoolTimer<T> : IObjectPool<T>
     {
-        private Stack<T> objectStack = new Stack<T>();
+        private Stack<T> objectStack;
 
-        public Func<T> CreateObjectAction { private get; set; }
-        public Action<T> DestoryObjectAction { private get; set; }
-        public Action<T> GetObjectAction { private get; set; }
-        public Action<T> ReleaseObjectAction { private get; set; }
+        public Func<T> CreateObjectAction;
+        public Action<T> DestoryObjectAction;
 
-
-        public bool BeyondPoolMaxCountImmediateDestory { get; set; }
+        public Action<T> GetObjectAction;
+        public Action<T> ReleaseObjectAction;
 
         private int poolMaxCount;
 
@@ -45,7 +38,6 @@ namespace DA.ObjectPool
         /// <param name="waitingTime">池自动释放的等待时间（优化池）</param>
         public void Initialize(Func<T> createObjectAction, Action<T> destoryObjectAction = null, Action<T> getObjectAction = null, Action<T> releaseObjectAction = null
                                 , int capacity = 10, int poolMaxCount = 10,
-                                bool beyondPoolMaxCountImmediateDestory = true,
                                 int poolMinCount = 10, float waitingTime = 60)
         {
             CreateObjectAction = createObjectAction;
@@ -55,8 +47,6 @@ namespace DA.ObjectPool
 
             objectStack = new Stack<T>(capacity);
             this.poolMaxCount = poolMaxCount;
-
-            BeyondPoolMaxCountImmediateDestory = beyondPoolMaxCountImmediateDestory;
 
             PoolMinCount = poolMinCount;
             WaitingTime = waitingTime;
@@ -70,9 +60,13 @@ namespace DA.ObjectPool
             else
             {
                 if (CreateObjectAction == null)
+                {
                     _object = default(T);
+                }
                 else
+                {
                     _object = this.CreateObjectAction.Invoke();
+                }
             }
 
             GetObjectAction?.Invoke(_object);
@@ -92,15 +86,12 @@ namespace DA.ObjectPool
 
             if (objectStack.Count >= poolMaxCount)
             {
-                if (BeyondPoolMaxCountImmediateDestory)
-                {
-                    DestoryObjectAction?.Invoke(_object);
-                }
-                else
-                    objectStack.Push(_object);
+                DestoryObjectAction?.Invoke(_object);
             }
             else
+            {
                 objectStack.Push(_object);
+            }
 
             objectReferenceCount--;
             if (objectReferenceCount == 0 && objectStack.Count > PoolMinCount && autoReleaseObjectPoolState == false)

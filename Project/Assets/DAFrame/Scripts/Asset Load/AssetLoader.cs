@@ -117,7 +117,7 @@ namespace DA.AssetLoad
         static AssetLoader()
         {
             var pool = new ObjectPool.ObjectPool<AssetLoader>();
-            pool.Initialize(() => new AssetLoader());
+            pool.Initialize(() => new AssetLoader(), null, null, null);
 
             asserloaderPool = pool;
         }

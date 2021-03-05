@@ -3,10 +3,10 @@
 #if UNITY_EDITOR
 namespace DA.AssetLoad
 {
-    public class ResourcesrLoad : IAssetLoad
+    public class EditorLoad : IAssetLoad
     {
-        private static ObjectPool.ObjectPool<ResourcesrLoad> resourceLoadPool;
-        
+        private static ObjectPool.ObjectPool<EditorLoad> editorLoadPool;
+
         private string name;
         public string Name { get { return name; } }
         public Object Asset { get; private set; }
@@ -16,24 +16,22 @@ namespace DA.AssetLoad
 
         private System.Action<Object> onLoaded;
 
-        private ResourceRequest resourceRequest;
-
         private string assetPath;
 
         private System.Type loadType;
 
         private System.Action<string> unloadCallback;
 
-        static ResourcesrLoad()
+        static EditorLoad()
         {
-            resourceLoadPool = new ObjectPool.ObjectPool<ResourcesrLoad>();
-            resourceLoadPool.Initialize(() => new ResourcesrLoad());
+            editorLoadPool = new ObjectPool.ObjectPool<EditorLoad>();
+            editorLoadPool.Initialize(() => new EditorLoad(), null, null, null);
         }
-        public static ResourcesrLoad GetLoad(string path, System.Type loadType, System.Action<string> unloadCallback)
+        public static EditorLoad GetEditorLoad(string path, System.Type loadType, System.Action<string> unloadCallback)
         {
-            var load = resourceLoadPool.Allocate();
-            load.Initialize(path, loadType, unloadCallback);
-            return load;
+            var editorLoad = editorLoadPool.Allocate();
+            editorLoad.Initialize(path, loadType, unloadCallback);
+            return editorLoad;
         }
 
         public void Initialize(string path, System.Type loadType, System.Action<string> unloadCallback)
@@ -41,7 +39,7 @@ namespace DA.AssetLoad
             referenceCount = 0;
 
             name = path;
-            assetPath = path.Substring("resources://".Length);
+            assetPath = path;
 
             LoadState = AssetLoadState.NotLoad;
 
@@ -55,40 +53,19 @@ namespace DA.AssetLoad
             {
                 LoadState = AssetLoadState.Loading;
 
-                Asset = Resources.Load(this.assetPath, loadType);
+                Asset = UnityEditor.AssetDatabase.LoadAssetAtPath(AssetPathConvertEditoPath(this.assetPath, loadType), loadType);
+
                 LoadState = AssetLoadState.Loaded;
             }
         }
 
         public void LoadAssetSync(System.Action<Object> onLoaded)
         {
-            switch (LoadState)
-            {
-                case AssetLoadState.NotLoad:
-                    LoadState = AssetLoadState.Loading;
-                    resourceRequest = Resources.LoadAsync(assetPath, loadType);
-                    resourceRequest.completed += ResourceRequestCompleted;
+            this.onLoaded += onLoaded;
+            LoadAsset();
 
-                    this.onLoaded += onLoaded;
-                    break;
-                case AssetLoadState.Loading:
-                    this.onLoaded += onLoaded;
-                    break;
-                case AssetLoadState.Loaded:
-                    onLoaded?.Invoke(Asset);
-                    break;
-            }
-        }
-
-        private void ResourceRequestCompleted(AsyncOperation obj)
-        {
-            LoadState = AssetLoadState.Loaded;
-
-            Asset = resourceRequest.asset;
-            resourceRequest = null;
-
-            onLoaded?.Invoke(Asset);
-            onLoaded = null;
+            this.onLoaded?.Invoke(Asset);
+            this.onLoaded = null;
         }
 
         public void Retain()
@@ -105,13 +82,12 @@ namespace DA.AssetLoad
 
                 if (Asset is GameObject == false)
                     Resources.UnloadAsset(Asset);
-                //Resources.UnloadUnusedAssets();
 
                 unloadCallback?.Invoke(Name);
 
                 Clear();
 
-                resourceLoadPool.Release(this);
+                editorLoadPool.Release(this);
             }
         }
         private void Clear()
@@ -121,6 +97,26 @@ namespace DA.AssetLoad
             assetPath = null;
             loadType = null;
             unloadCallback = null;
+        }
+
+
+        private static string AssetPathConvertEditoPath(string path, System.Type assetType)
+        {
+            var buildRule = AssetBuild.BuildRule.GetBundleRule();
+
+            foreach (var buildAsset in buildRule.BuildAseet)
+            {
+                int index = 0;
+                foreach (var assetLoadPath in buildAsset.AssetLoadPaths)
+                {
+                    if (assetLoadPath == path)
+                    {
+                        return buildAsset.AssetNames[index];
+                    }
+                    index++;
+                }
+            }
+            return path;
         }
     }
 }

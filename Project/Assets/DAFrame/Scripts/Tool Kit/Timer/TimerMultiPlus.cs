@@ -3,9 +3,9 @@
 namespace DA.Timer
 {
     /// <summary>
-    /// 可多次计时器
+    /// 可多次计时器Plus
     /// </summary>
-    public struct TimerMulti : ITimer
+    public struct TimerMultiPlus : ITimer
     {
         /// <summary>
         /// 每次更新等待的时间
@@ -23,16 +23,24 @@ namespace DA.Timer
         /// 计时回调
         /// </summary>
         public Action Callback;
+        /// <summary>
+        /// 暂停
+        /// </summary>
+        public bool IsPause;
 
-        public TimerMulti(float waitingTime, Action callback, ushort number = 1, float useTime = 0f)
+        public TimerMultiPlus(float waitingTime, Action callback, ushort number = 1, float useTime = 0f)
         {
             WaitingTime = waitingTime;
             ElapsedTime = useTime;
             Number = number;
             Callback = callback;
+
+            IsPause = false;
         }
         public bool Update(float time)
         {
+            if (IsPause) return false;
+
             ElapsedTime += time;
             if (WaitingTime <= ElapsedTime)
             {

@@ -5,7 +5,7 @@ namespace DA.ObjectPool
 {
     public class ObjectPool<T> : IObjectPool<T>
     {
-        private Stack<T> objectStack = new Stack<T>();
+        private Stack<T> objectStack;
 
         public event Func<T> CreateObjectAction;
         public event Action<T> DestoryObjectAction;
@@ -13,13 +13,10 @@ namespace DA.ObjectPool
         public event Action<T> GetObjectAction;
         public event Action<T> ReleaseObjectAction;
 
-        public bool BeyondPoolMaxCountImmediateDestory;
-
         private int poolMaxCount;
 
-        public void Initialize(Func<T> createObjectAction = null, Action<T> destoryObjectAction = null, Action<T> getObjectAction = null, Action<T> releaseObjectAction = null,
-                          int capacity = 10, int poolMaxCount = 10,
-                          bool beyondPoolMaxCountImmediateDestory = true)
+        public void Initialize(Func<T> createObjectAction, Action<T> destoryObjectAction, Action<T> getObjectAction, Action<T> releaseObjectAction,
+                          int capacity = 10, int poolMaxCount = int.MaxValue)
         {
             CreateObjectAction = createObjectAction;
             DestoryObjectAction = destoryObjectAction;
@@ -28,20 +25,24 @@ namespace DA.ObjectPool
 
             objectStack = new Stack<T>(capacity);
             this.poolMaxCount = poolMaxCount;
-
-            BeyondPoolMaxCountImmediateDestory = beyondPoolMaxCountImmediateDestory;
         }
         public T Allocate()
         {
             T _object;
             if (objectStack.Count != 0)
+            {
                 _object = objectStack.Pop();
+            }
             else
             {
                 if (CreateObjectAction == null)
+                {
                     _object = default;
+                }
                 else
+                {
                     _object = this.CreateObjectAction.Invoke();
+                }
             }
 
             GetObjectAction?.Invoke(_object);
@@ -53,15 +54,12 @@ namespace DA.ObjectPool
 
             if (objectStack.Count >= poolMaxCount)
             {
-                if (BeyondPoolMaxCountImmediateDestory)
-                {
-                    DestoryObjectAction?.Invoke(_object);
-                }
-                else
-                    objectStack.Push(_object);
+                DestoryObjectAction?.Invoke(_object);
             }
             else
+            {
                 objectStack.Push(_object);
+            }
         }
         public void ClearPool()
         {
