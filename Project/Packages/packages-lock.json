@@ -8,11 +8,11 @@
       "hash": "e2686263b5af5414efdb26d7f71249895ec459a4"
     },
     "com.devilangel.datools": {
-      "version": "https://github.com/cofdream/DATools.git#upm",
+      "version": "https://github.com/cofdream/DATools.git#v0.0.1",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3e237a282dae1f7f02c9e7a4e8e8ade3c7a186c9"
+      "hash": "c37be2e30c7e23eafd86141e0ba4a7348af55aac"
     },
     "com.devilangel.iconkit": {
       "version": "https://github.com/cofdream/IconKit.git#upm",

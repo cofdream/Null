@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.devilangel.daprototool": "https://github.com/cofdream/DAProtoBufer.git#upm",
-    "com.devilangel.datools": "https://github.com/cofdream/DATools.git#upm",
+    "com.devilangel.datools": "https://github.com/cofdream/DATools.git#v0.0.1",
     "com.devilangel.iconkit": "https://github.com/cofdream/IconKit.git#upm",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ide.visualstudio": "1.0.11",
