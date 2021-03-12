@@ -4,40 +4,31 @@ using UnityEngine;
 
 namespace RPG
 {
+    public delegate void TranslationAction();
+
     public class FSM
     {
-        public delegate void TranslationAction();
+    public interface IState
+    {
+        ushort StateId { get; }
+        Dictionary<ushort, Conditions> FSMTranslationDic { get; set; }
 
-        public interface IState
-        {
-            ushort StateId { get; }
-            Dictionary<ushort, FSMTranslation> FSMTranslationDic { get; set; }
+        void OnEnter();
+        void OnUpdate();
+        void OnExit();
+    }
+    public class State : IState
+    {
+        public virtual ushort StateId { get; set; }
+        public virtual Dictionary<ushort, Conditions> FSMTranslationDic { get; set; } = new Dictionary<ushort, Conditions>();
+        public virtual void OnEnter() { }
+        public virtual void OnUpdate() { }
+        public virtual void OnExit() { }
 
-            void OnEnter();
-            void OnUpdate();
-            void OnExit();
-        }
-        public class State : IState
-        {
-            public virtual ushort StateId { get; set; }
-            public virtual Dictionary<ushort, FSMTranslation> FSMTranslationDic { get; set; } = new Dictionary<ushort, FSMTranslation>();
-            public virtual void OnEnter() { }
-            public virtual void OnUpdate() { }
-            public virtual void OnExit() { }
-
-            public Action Enter;
-            public Action Update;
-            public Action Exit;
-        }
-
-        public class FSMTranslation
-        {
-            public ushort TranslationId;
-            public State FromState;
-            public State ToState;
-            public TranslationAction Callback;
-        }
-
+        public Action Enter;
+        public Action Update;
+        public Action Exit;
+    }
 
         public IState CurrentState { get; private set; }
         Dictionary<ushort, IState> stateDic = new Dictionary<ushort, IState>();
@@ -46,7 +37,7 @@ namespace RPG
         {
             stateDic[state.StateId] = state;
         }
-        public void Add(FSMTranslation fsmTranslation)
+        public void Add(Conditions fsmTranslation)
         {
             stateDic[fsmTranslation.FromState.StateId].FSMTranslationDic[fsmTranslation.TranslationId] = fsmTranslation;
         }
@@ -71,7 +62,7 @@ namespace RPG
                 Debug.Log("CurrentState == Null,Please call Start Func");
                 return;
             }
-            if (CurrentState.FSMTranslationDic.TryGetValue(translationId, out FSMTranslation fsmTranslation) == false)
+            if (CurrentState.FSMTranslationDic.TryGetValue(translationId, out Conditions fsmTranslation) == false)
             {
                 Debug.LogError($"FSMTranslation id:{translationId} not find");
                 return;

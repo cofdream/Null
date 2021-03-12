@@ -56,8 +56,8 @@ namespace RPG
             };
 
 
-            var fsmTranslationIdleToMove = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Idle_To_Move, FromState = stateIdle, ToState = stateMove, };
-            var fsmTranslationMoveToIdle = new FSM.FSMTranslation() { TranslationId = (int)TranslationIdleType.Move_To_Idle, FromState = stateMove, ToState = stateIdle, };
+            var fsmTranslationIdleToMove = new Conditions() { TranslationId = (int)TranslationIdleType.Idle_To_Move, FromState = stateIdle, ToState = stateMove, };
+            var fsmTranslationMoveToIdle = new Conditions() { TranslationId = (int)TranslationIdleType.Move_To_Idle, FromState = stateMove, ToState = stateIdle, };
 
             FSM.Add(stateIdle);
             FSM.Add(stateMove);
