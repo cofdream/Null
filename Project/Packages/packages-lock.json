@@ -8,11 +8,11 @@
       "hash": "e2686263b5af5414efdb26d7f71249895ec459a4"
     },
     "com.devilangel.datools": {
-      "version": "https://github.com/cofdream/DATools.git#v0.0.1",
+      "version": "https://github.com/cofdream/DATools.git#upm",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c37be2e30c7e23eafd86141e0ba4a7348af55aac"
+      "hash": "6c8df7014d8efe25e64ede5759d57208d26c5539"
     },
     "com.devilangel.iconkit": {
       "version": "https://github.com/cofdream/IconKit.git#upm",
@@ -35,21 +35,16 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.ide.visualstudio": {
-      "version": "1.0.11",
+      "version": "2.0.7",
       "depth": 0,
       "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.cn"
-    },
-    "com.unity.inputsystem": {
-      "version": "1.0.2",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
       "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
-      "version": "1.1.22",
+      "version": "1.1.24",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -201,6 +196,18 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.uielementsnative": "1.0.0"
+      }
+    },
+    "com.unity.modules.uielementsnative": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       }

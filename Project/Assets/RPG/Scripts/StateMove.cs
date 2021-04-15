@@ -19,7 +19,7 @@ namespace RPG
             roleTransform = MoveController.transform;
             cameraTransform = MoveController.cameraTransform;
 
-            Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
+            Vector2 move = Vector2.zero; //MoveController.inputActions.Player.Move.ReadValue<Vector2>();
 
             float horiazontal = move.y;
             float vertical = move.x;
@@ -74,7 +74,7 @@ namespace RPG
                     return;
             }
 
-            Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
+            Vector2 move = Vector2.zero; ;// MoveController.inputActions.Player.Move.ReadValue<Vector2>();
 
             float horiazontal = move.y;
             float vertical = move.x;

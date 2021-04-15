@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RPG
 {
     public class ThirdPersonCamera : MonoBehaviour
     {
         [SerializeField] private Transform followTarget;
-        public float speed;
 
+        public float speed;
         Vector3 offest;
 
-        PlayerInput inputs;
+        public float moveDistance = 3;
+        private float startDistance;
+
+        float deltaX;
+        float deltaY;
+        Vector3 startPosition;
+        private bool isDown;
 
         private void Awake()
         {
@@ -18,48 +23,64 @@ namespace RPG
             transform.rotation = Quaternion.Euler(followTarget.eulerAngles + new Vector3(10f, 0f, 0f));
 
             offest = transform.position - followTarget.position;
+            startDistance = Vector3.Distance(transform.position, followTarget.position);
+        }
 
-            inputs = new PlayerInput();
-        }
-        private void OnEnable()
-        {
-            inputs.Enable();
-        }
-        private void OnDisable()
-        {
-            inputs.Disable();
-        }
-        float mousPositionX;
         private void LateUpdate()
         {
-            var v = inputs.Player.RightMouse.ReadValue<float>();
-            var v2 = inputs.Player.LeftMouse.ReadValue<float>();
+            RotateCamera();
 
-            transform.position = followTarget.position + offest;
-
-            if (v == 1 || v2 == 1)
+            MouveCamera();
+        }
+        private void RotateCamera()
+        {
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                Vector2 mouseDelta = inputs.Player.MouseDelta.ReadValue<Vector2>();
+                isDown = false;
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                isDown = true;
+                deltaX = 0;
+                deltaY = 0;
+                startPosition = Input.mousePosition;
+            }
+            if (isDown == false)
+            {
+                return;
+            }
 
-                if (mouseDelta.x == 0)
-                {
-                    return;
-                }
+            var mousePosition = Input.mousePosition;
+            deltaX = mousePosition.x - startPosition.x;
+            deltaY = mousePosition.y - startPosition.y;
 
-                float offset = mouseDelta.x * 360 / Screen.width;
-                mousPositionX += offset;
+            startPosition = mousePosition;
 
-                transform.RotateAround(followTarget.position, followTarget.up, offset);
+            transform.Rotate(Vector3.up, deltaX, Space.World);
+            transform.Rotate(Vector3.left, deltaY, Space.Self);
+        }
 
-                offest = transform.position - followTarget.position;
+        private void MouveCamera()
+        {
+            var position = followTarget.position + offest;
+
+            float distance = Vector3.Distance(transform.position, position);
+
+            if (distance > moveDistance)
+            {
+                transform.position = Vector3.Lerp(transform.position, position, distance * Time.deltaTime);
             }
             else
             {
-                // 还原之前的旋转量
-                transform.RotateAround(followTarget.position, followTarget.up, mousPositionX * -1);
-                mousPositionX = 0;
-
-                offest = transform.position - followTarget.position;
+                if (distance < 0.01)
+                {
+                    //transform.position = followTarget.position + offest;
+                }
+                else
+                {
+                }
+                    transform.position = Vector3.Lerp(transform.position, position, speed * 0.5f * Time.deltaTime);
             }
         }
     }

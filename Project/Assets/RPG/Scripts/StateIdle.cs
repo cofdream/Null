@@ -10,7 +10,7 @@ namespace RPG
 
         public override void OnUpdate()
         {
-            Vector2 move = MoveController.inputActions.Player.Move.ReadValue<Vector2>();
+            Vector2 move = Vector2.zero;//MoveController.inputActions.Player.Move.ReadValue<Vector2>();
 
             if (move.x != 0 || move.y != 0)
             {

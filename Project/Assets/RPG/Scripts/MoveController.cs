@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RPG
 {
@@ -26,8 +25,6 @@ namespace RPG
 
         public float runSpeed;
 
-        public PlayerInput inputActions;
-
         public new Rigidbody rigidbody;
         public Animator animator;
 
@@ -40,8 +37,6 @@ namespace RPG
 
         private void Awake()
         {
-            inputActions = new PlayerInput();
-
             FSM = new FSM();
 
             var stateIdle = new StateIdle()
@@ -66,14 +61,6 @@ namespace RPG
             FSM.Add(fsmTranslationMoveToIdle);
 
             FSM.Start(stateIdle);
-        }
-        private void OnEnable()
-        {
-            inputActions.Enable();
-        }
-        private void OnDisable()
-        {
-            inputActions.Disable();
         }
 
         void Update()
