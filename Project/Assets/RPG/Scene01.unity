@@ -123,6 +123,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &122601936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 122601938}
+  - component: {fileID: 122601937}
+  m_Layer: 0
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &122601937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122601936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f842e7080dd46248970c4aa3838cc9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTarget: {fileID: 781855870}
+  smoothSpeed: 0.35
+--- !u!4 &122601938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122601936}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.78, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1349307597}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &781855868
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,11 +262,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781855868}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8078b05272fee184683ac903d452f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: {x: 0, y: 0, z: 1}
+  speed: 1
 --- !u!1 &1214307013
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349307597}
   - component: {fileID: 1349307596}
-  - component: {fileID: 1349307593}
+  - component: {fileID: 1349307594}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -332,7 +380,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1349307593
+--- !u!114 &1349307594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -341,12 +389,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1349307592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55ca558ad82473b49819bdbcde9c8828, type: 3}
+  m_Script: {fileID: 11500000, guid: f2b480e55f11ebb46b54a78d8d288e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followTarget: {fileID: 1377058948}
-  speed: 1
-  moveDistance: 1
+  followTarget: {fileID: 122601938}
+  rotateSpeed: 8
 --- !u!20 &1349307596
 Camera:
   m_ObjectHideFlags: 0
@@ -398,11 +445,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349307592}
   m_LocalRotation: {x: 0.08710269, y: 0.03476669, z: -0.0030416925, w: 0.9955878}
-  m_LocalPosition: {x: 0, y: 3.4, z: -5.2}
+  m_LocalPosition: {x: 0, y: 1.6200001, z: -5.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 122601938}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 10, y: 4, z: 0}
 --- !u!1 &1377058947
 GameObject:

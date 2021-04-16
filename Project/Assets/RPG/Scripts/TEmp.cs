@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class TEmp : MonoBehaviour
 {
+    public Vector3 direction;
     public float speed;
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position += Vector3.forward * Time.deltaTime * speed;
+        gameObject.transform.position += direction * Time.deltaTime * speed;
     }
 }
