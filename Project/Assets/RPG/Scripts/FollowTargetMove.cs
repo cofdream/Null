@@ -8,8 +8,10 @@ namespace RPG
     {
         [SerializeField] Transform followTarget;
         [SerializeField] float smoothSpeed = 0.35f;
+        [SerializeField] float maxSpeed = 1f;
         Vector3 offest;
         Vector3 currentVelocity;
+        private Vector3 lastPosition;
         private void Awake()
         {
             offest = transform.position - followTarget.position;
@@ -21,17 +23,25 @@ namespace RPG
 
             float distance = Vector3.Distance(transform.localPosition, position);
 
-            if (distance.Equals(0))
+            //if (distance.Equals(0))
+            //{
+            //    return;
+            //}
+
+            //transform.localPosition = SmoothDamp(transform.localPosition, position, ref currentVelocity, smoothSpeed, maxSpeed, Time.deltaTime);
+
+            //Debug.Log("last " + distance);
+
+            //Debug.Log( "new " + Vector3.Distance(position, currentVelocity));
+
+            if (lastPosition == position)
             {
-                return;
+                //Mathf.Clamp()
             }
 
-            transform.localPosition = SmoothDamp(transform.localPosition, position, ref currentVelocity, smoothSpeed, 1, Time.deltaTime);
-
-            Debug.Log(Vector3.Distance(position, currentVelocity));
-
-            //t += Time.deltaTime;
-            //transform.localPosition = Vector3.Lerp(transform.position, position, t);
+            t += Time.deltaTime;
+            transform.localPosition = Vector3.Lerp(transform.position, position, t);
+            lastPosition = position;
         }
         public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
         {
