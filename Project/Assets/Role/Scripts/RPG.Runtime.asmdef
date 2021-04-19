@@ -1,7 +1,9 @@
 {
     "name": "RPG.Runtime",
+    "rootNamespace": "",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:74104110f7154b7418300cfb792d3bb0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

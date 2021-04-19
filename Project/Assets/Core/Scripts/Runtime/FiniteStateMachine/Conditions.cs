@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static RPG.FSM;
+using static RPG.FiniteStateMachine;
 
 namespace RPG
 {

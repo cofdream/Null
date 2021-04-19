@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 122601938}
   - component: {fileID: 122601937}
+  - component: {fileID: 122601939}
   m_Layer: 0
   m_Name: Point
   m_TagString: Untagged
@@ -153,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followTarget: {fileID: 781855870}
-  smoothSpeed: 0.35
 --- !u!4 &122601938
 Transform:
   m_ObjectHideFlags: 0
@@ -169,6 +169,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &122601939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122601936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b480e55f11ebb46b54a78d8d288e39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTarget: {fileID: 122601938}
+  rotateSpeed: 8
 --- !u!1 &781855868
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +195,7 @@ GameObject:
   - component: {fileID: 781855869}
   - component: {fileID: 781855872}
   - component: {fileID: 781855871}
-  - component: {fileID: 781855873}
+  - component: {fileID: 781855874}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -255,7 +269,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &781855873
+--- !u!114 &781855874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,11 +278,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 781855868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8078b05272fee184683ac903d452f17e, type: 3}
+  m_Script: {fileID: 11500000, guid: 66c0cd912cf75a348ba4db1bd851d4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 0, y: 0, z: 1}
-  speed: 1
+  fsm:
+    CurrentState:
+      EnterAction: []
+      UpdateAction:
+      - {fileID: 0}
+      ExitAction: []
+      conditions: []
+    Rigidbody: {fileID: 781855871}
 --- !u!1 &1214307013
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +392,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1349307597}
   - component: {fileID: 1349307596}
-  - component: {fileID: 1349307594}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -380,20 +399,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1349307594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1349307592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2b480e55f11ebb46b54a78d8d288e39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followTarget: {fileID: 122601938}
-  rotateSpeed: 8
 --- !u!20 &1349307596
 Camera:
   m_ObjectHideFlags: 0

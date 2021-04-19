@@ -6,29 +6,29 @@ namespace RPG
 {
     public delegate void TranslationAction();
 
-    public class FSM
+    public class FiniteStateMachine
     {
-    public interface IState
-    {
-        ushort StateId { get; }
-        Dictionary<ushort, Conditions> FSMTranslationDic { get; set; }
+        public interface IState
+        {
+            ushort StateId { get; }
+            Dictionary<ushort, Conditions> FSMTranslationDic { get; set; }
 
-        void OnEnter();
-        void OnUpdate();
-        void OnExit();
-    }
-    public class State : IState
-    {
-        public virtual ushort StateId { get; set; }
-        public virtual Dictionary<ushort, Conditions> FSMTranslationDic { get; set; } = new Dictionary<ushort, Conditions>();
-        public virtual void OnEnter() { }
-        public virtual void OnUpdate() { }
-        public virtual void OnExit() { }
+            void OnEnter();
+            void OnUpdate();
+            void OnExit();
+        }
+        public class State : IState
+        {
+            public virtual ushort StateId { get; set; }
+            public virtual Dictionary<ushort, Conditions> FSMTranslationDic { get; set; } = new Dictionary<ushort, Conditions>();
+            public virtual void OnEnter() { }
+            public virtual void OnUpdate() { }
+            public virtual void OnExit() { }
 
-        public Action Enter;
-        public Action Update;
-        public Action Exit;
-    }
+            public Action Enter;
+            public Action Update;
+            public Action Exit;
+        }
 
         public IState CurrentState { get; private set; }
         Dictionary<ushort, IState> stateDic = new Dictionary<ushort, IState>();
