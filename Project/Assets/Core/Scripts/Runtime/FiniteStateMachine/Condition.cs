@@ -7,6 +7,5 @@ namespace Core
     {
         public State<T> TargetState;
         public abstract bool Update(T fsm);
-
     }
 }

@@ -16,7 +16,12 @@ namespace Core
             direction.x = movementVariable.InputVertical > 0 ? 1 : -1;
             direction.z = movementVariable.InputHorizontal > 0 ? 1 : -1;
 
-            return direction != fsm.Transform.forward;
+            if (direction == fsm.Transform.forward)
+            {
+                Debug.Log("跳转移动状态");
+            }
+
+            return direction == fsm.Transform.forward;
         }
     }
 }

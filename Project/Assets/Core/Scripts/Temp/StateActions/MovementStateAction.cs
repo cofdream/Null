@@ -8,12 +8,18 @@ namespace Temp2
     public class MovementStateAction : StateAction<FiniteStateMachinePlayer>
     {
         public MovementVariable variable;
+
+        private float drag = 4;
+        private float movementSpeed = 2;
+
+        private float movementLastValue;
+
         public override void Execute(FiniteStateMachinePlayer fsm)
         {
-
-            if (Mathf.Approximately(variable.MovementValue, 0) && Mathf.Approximately(variable.MovementLastValue, variable.MovementValue))
+            Debug.Log("Update MovementStateAction");
+            if (Mathf.Approximately(variable.MovementValue, 0) && Mathf.Approximately(movementLastValue, variable.MovementValue))
             {
-                Debug.Log("Stop Movement");
+                fsm.CurrentState.BackLastState(fsm);
                 return;
             }
             if (Mathf.Approximately(variable.MovementValue, 0))
@@ -22,14 +28,14 @@ namespace Temp2
             }
             else
             {
-                fsm.Rigidbody.drag = variable.Drag;
+                fsm.Rigidbody.drag = drag;
             }
 
-            Vector3 targetVelocity = fsm.Transform.forward * variable.MovementValue * variable.MovementSpeed;
+            Vector3 targetVelocity = fsm.Transform.forward * variable.MovementValue * movementSpeed;
 
             fsm.Rigidbody.velocity = targetVelocity;
 
-            variable.MovementLastValue = variable.MovementValue;
+            movementLastValue = variable.MovementValue;
         }
     }
 }

@@ -20,23 +20,34 @@ namespace Temp2
             var casualVariable = new CasualVariable();
             movementVariable = new MovementVariable();
 
+            var inSituRotationCondition = new InSituRotationCondition() { TargetState = InSituRotationState, movementVariable = movementVariable };
+            var movementCondition = new MovementCondition() { TargetState = LocomotionState, movementVariable = movementVariable };
 
             IdleState.UpdateActions = new StateAction<FiniteStateMachinePlayer>[]
             {
-                new Casual() { variable = casualVariable},
+                new CasualStateAction() { variable = casualVariable},
             };
 
             IdleState.ConditionActions = new Condition<FiniteStateMachinePlayer>[]
             {
-                new InSituRotationCondition(){ TargetState = LocomotionState, movementVariable = movementVariable },
-                new MovementCondition(){ TargetState = LocomotionState, movementVariable = movementVariable },
+                inSituRotationCondition,
+                movementCondition
             };
+
+
 
 
             LocomotionState.FixUpdateActions = new StateAction<FiniteStateMachinePlayer>[]
             {
-               new MovementStateAction(),
-               new RotationBaseOnCameraOrientation(),
+               new MovementStateAction(){ variable = movementVariable },
+               //new RotationBaseOnCameraOrientation(){ variable = movementVariable },
+            };
+
+
+
+            InSituRotationState.UpdateActions = new StateAction<FiniteStateMachinePlayer>[]
+            {
+                new InSituRotationAction(){ },
             };
 
 

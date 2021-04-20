@@ -18,7 +18,7 @@ namespace Core
 
             if (direction != fsm.Transform.forward)
             {
-                Debug.Log("原地转");
+                Debug.Log("跳转 原地转向状态");
             }
 
             return direction != fsm.Transform.forward;

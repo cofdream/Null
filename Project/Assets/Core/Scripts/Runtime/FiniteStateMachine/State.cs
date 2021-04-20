@@ -52,12 +52,16 @@ namespace Core
                     if (condition.Update(fsm))
                     {
                         fsm.CurrentState.Exit(fsm);
+
+                        fsm.LastState = fsm.CurrentState;
+
                         fsm.CurrentState = condition.TargetState;
                         fsm.CurrentState.Enter(fsm);
                     }
                 }
             }
         }
+
         public virtual void FixUpdate(T fsm)
         {
             if (FixUpdateActions != null)
@@ -67,6 +71,13 @@ namespace Core
                     action.Execute(fsm);
                 }
             }
+        }
+
+        public virtual void BackLastState(T fsm)
+        {
+            fsm.CurrentState.Exit(fsm);
+            fsm.CurrentState = lastState;
+            lastState.Enter(fsm);
         }
     }
 }
