@@ -5,17 +5,19 @@ namespace Core
     [Serializable]
     public class State<T> where T : FiniteStateMachineBase<T>
     {
-        public StateAction<T>[] EnterAction;
-        public StateAction<T>[] UpdateAction;
-        public StateAction<T>[] ExitAction;
+        public StateAction<T>[] EnterActions;
+        public StateAction<T>[] UpdateActions;
+        public StateAction<T>[] ExitActions;
 
-        public Condition<T>[] conditions;
+        public Condition<T>[] ConditionActions;
+
+        public StateAction<T>[] FixUpdateActions;
 
         public virtual void Enter(T fsm)
         {
-            if (EnterAction != null)
+            if (EnterActions != null)
             {
-                foreach (var action in EnterAction)
+                foreach (var action in EnterActions)
                 {
                     action.Execute(fsm);
                 }
@@ -24,9 +26,9 @@ namespace Core
 
         public virtual void Exit(T fsm)
         {
-            if (ExitAction != null)
+            if (ExitActions != null)
             {
-                foreach (var action in ExitAction)
+                foreach (var action in ExitActions)
                 {
                     action.Execute(fsm);
                 }
@@ -35,24 +37,34 @@ namespace Core
 
         public virtual void Update(T fsm)
         {
-            if (UpdateAction != null)
+            if (UpdateActions != null)
             {
-                foreach (var action in UpdateAction)
+                foreach (var action in UpdateActions)
                 {
                     action.Execute(fsm);
                 }
             }
 
-            if (conditions != null)
+            if (ConditionActions != null)
             {
-                foreach (var condition in conditions)
+                foreach (var condition in ConditionActions)
                 {
                     if (condition.Update(fsm))
                     {
                         fsm.CurrentState.Exit(fsm);
                         fsm.CurrentState = condition.TargetState;
-                        condition.TargetState.Enter(fsm);
+                        fsm.CurrentState.Enter(fsm);
                     }
+                }
+            }
+        }
+        public virtual void FixUpdate(T fsm)
+        {
+            if (FixUpdateActions != null)
+            {
+                foreach (var action in FixUpdateActions)
+                {
+                    action.Execute(fsm);
                 }
             }
         }

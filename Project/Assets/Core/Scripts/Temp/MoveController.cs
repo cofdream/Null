@@ -9,21 +9,51 @@ namespace Temp2
     {
         [SerializeField] FiniteStateMachinePlayer fsm;
 
+        [SerializeField] MovementVariable movementVariable;
         void Start()
         {
-            var state = new State<FiniteStateMachinePlayer>();
-            fsm.CurrentState = state;
+            var IdleState = new State<FiniteStateMachinePlayer>();
+            var LocomotionState = new State<FiniteStateMachinePlayer>();
+            var RoatationState = new State<FiniteStateMachinePlayer>();
+            var InSituRotationState = new State<FiniteStateMachinePlayer>();
 
-            state.UpdateAction = new StateAction<FiniteStateMachinePlayer>[]
+            var casualVariable = new CasualVariable();
+            movementVariable = new MovementVariable();
+
+
+            IdleState.UpdateActions = new StateAction<FiniteStateMachinePlayer>[]
             {
-               new MovementState(),
+                new Casual() { variable = casualVariable},
             };
+
+            IdleState.ConditionActions = new Condition<FiniteStateMachinePlayer>[]
+            {
+                new InSituRotationCondition(){ TargetState = LocomotionState, movementVariable = movementVariable },
+                new MovementCondition(){ TargetState = LocomotionState, movementVariable = movementVariable },
+            };
+
+
+            LocomotionState.FixUpdateActions = new StateAction<FiniteStateMachinePlayer>[]
+            {
+               new MovementStateAction(),
+               new RotationBaseOnCameraOrientation(),
+            };
+
+
+            fsm.CurrentState = IdleState;
         }
 
 
         void Update()
         {
+            movementVariable.UpdateVariable();
+
+            fsm.deltaTime = Time.deltaTime;
             fsm.CurrentState.Update(fsm);
+        }
+        private void FixedUpdate()
+        {
+            fsm.CurrentState.FixUpdate(fsm);
         }
     }
 }

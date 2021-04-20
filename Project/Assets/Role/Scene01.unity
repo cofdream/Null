@@ -282,13 +282,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fsm:
-    CurrentState:
-      EnterAction: []
-      UpdateAction:
-      - {fileID: 0}
-      ExitAction: []
-      conditions: []
+    deltaTime: 0
     Rigidbody: {fileID: 781855871}
+    Transform: {fileID: 781855870}
+    CameraTransform: {fileID: 122601938}
 --- !u!1 &1214307013
 GameObject:
   m_ObjectHideFlags: 0
