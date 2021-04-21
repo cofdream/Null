@@ -4,14 +4,18 @@ namespace Core
 {
     public class CasualStateAction : StateAction<FiniteStateMachinePlayer>
     {
-        public CasualVariable variable;
+        public float time;
+        public float ChangTime = 60f;
+
         public override void Execute(FiniteStateMachinePlayer fsm)
         {
-            variable.time += fsm.deltaTime;
+            //fsm.MovementVariable.UpdateVariable();
 
-            if (variable.time > variable.ChangTime)
+            time += fsm.deltaTime;
+
+            if (time > ChangTime)
             {
-                variable.time -= variable.ChangTime;
+                time -= ChangTime;
 
                 switch (Random.Range(0, 3))
                 {
@@ -22,6 +26,8 @@ namespace Core
                         break;
                 };
             }
+
+            Debug.Log("Idle Update");
         }
     }
 }

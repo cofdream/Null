@@ -3,7 +3,7 @@ using System;
 namespace Core
 {
     [Serializable]
-    public class State<T> where T : FiniteStateMachineBase<T>
+    public class State<T> where T : FiniteStateMachine<T>
     {
         public StateAction<T>[] EnterActions;
         public StateAction<T>[] UpdateActions;
@@ -51,12 +51,7 @@ namespace Core
                 {
                     if (condition.Update(fsm))
                     {
-                        fsm.CurrentState.Exit(fsm);
-
-                        fsm.LastState = fsm.CurrentState;
-
-                        fsm.CurrentState = condition.TargetState;
-                        fsm.CurrentState.Enter(fsm);
+                        FiniteStateMachine<T>.EnterNextState(condition.TargetState, fsm);
                     }
                 }
             }
@@ -71,13 +66,6 @@ namespace Core
                     action.Execute(fsm);
                 }
             }
-        }
-
-        public virtual void BackLastState(T fsm)
-        {
-            fsm.CurrentState.Exit(fsm);
-            fsm.CurrentState = lastState;
-            lastState.Enter(fsm);
         }
     }
 }

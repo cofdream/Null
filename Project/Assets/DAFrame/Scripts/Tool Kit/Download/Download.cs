@@ -28,7 +28,7 @@ namespace DA
 
         public int id { get; set; }
 
-        public string error { get; private set; }
+        public new string error { get; private set; }
 
         public long len { get; set; }
 

@@ -2,6 +2,7 @@
 
 namespace Core
 {
+    [System.Serializable]
     public class MovementVariable
     {
         public float InputHorizontal;

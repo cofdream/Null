@@ -5,19 +5,20 @@ namespace Core
 {
     public class RotationBaseOnCameraOrientation : StateAction<FiniteStateMachinePlayer>
     {
-        public MovementVariable variable;
         float t;
         public override void Execute(FiniteStateMachinePlayer fsm)
         {
-            if (variable.InputHorizontal == 0 || variable.InputVertical == 0)
-            {
-                return;
-            }
+            var movementVariable = fsm.MovementVariable;
 
-            Vector3 targetDirection = fsm.CameraTransform.right * variable.InputHorizontal + fsm.CameraTransform.forward * variable.InputVertical;
+            Vector3 targetDirection = fsm.CameraTransform.right * movementVariable.InputHorizontal + fsm.CameraTransform.forward * movementVariable.InputVertical;
 
             targetDirection.Normalize();
             targetDirection.y = 0;
+
+            if (targetDirection == Vector3.zero)
+            {
+                targetDirection = fsm.Transform.forward;
+            }
 
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 

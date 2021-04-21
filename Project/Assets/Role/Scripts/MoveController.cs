@@ -1,71 +1,67 @@
-﻿using System;
+using Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG
+namespace Temp2
 {
-    public enum StateIdType : int
-    {
-        None = 0,
-        Idle,
-        Move,
-    }
-    public enum TranslationIdleType : int
-    {
-        None = 0,
-        Idle_To_Move,
-        Move_To_Idle,
-    }
     public class MoveController : MonoBehaviour
     {
-        public float walkSpeed;
-        public float rotateSpeed;
-        public float walkRotationSpeed;
+        [SerializeField] FiniteStateMachinePlayer fsm;
 
-        public float runSpeed;
-
-        public new Rigidbody rigidbody;
-        public Animator animator;
-
-        public Transform model;
-        public Transform cameraTransform;
-
-        public float Delta { get { return Time.deltaTime; } }
-
-        public FiniteStateMachine FSM { get; private set; }
-
-        private void Awake()
+        void Start()
         {
-            FSM = new FiniteStateMachine();
+            var IdleState = new State<FiniteStateMachinePlayer>();
+            var LocomotionState = new State<FiniteStateMachinePlayer>();
+            var RoatationState = new State<FiniteStateMachinePlayer>();
+            var InSituRotationState = new State<FiniteStateMachinePlayer>();
 
-            var stateIdle = new StateIdle()
+            fsm.MovementVariable = new MovementVariable();
+
+            var inSituRotationCondition = new InSituRotationCondition() { TargetState = InSituRotationState };
+            var movementCondition = new MovementCondition() { TargetState = LocomotionState };
+
+
+
+            IdleState.UpdateActions = new StateAction<FiniteStateMachinePlayer>[]
             {
-                StateId = (int)StateIdType.Idle,
-                MoveController = this,
+                new CasualStateAction(),
             };
-            var stateMove = new StateMove()
+            IdleState.ConditionActions = new Condition<FiniteStateMachinePlayer>[]
             {
-                StateId = (int)StateIdType.Move,
-                MoveController = this,
+                inSituRotationCondition,
+                movementCondition
             };
 
 
-            var fsmTranslationIdleToMove = new Conditions() { TranslationId = (int)TranslationIdleType.Idle_To_Move, FromState = stateIdle, ToState = stateMove, };
-            var fsmTranslationMoveToIdle = new Conditions() { TranslationId = (int)TranslationIdleType.Move_To_Idle, FromState = stateMove, ToState = stateIdle, };
 
-            FSM.Add(stateIdle);
-            FSM.Add(stateMove);
+            LocomotionState.FixUpdateActions = new StateAction<FiniteStateMachinePlayer>[]
+            {
+               new MovementStateAction(),
+               new RotationBaseOnCameraOrientation(),
+            };
 
-            FSM.Add(fsmTranslationIdleToMove);
-            FSM.Add(fsmTranslationMoveToIdle);
 
-            FSM.Start(stateIdle);
+
+            InSituRotationState.UpdateActions = new StateAction<FiniteStateMachinePlayer>[]
+            {
+                new InSituRotationAction(){ },
+            };
+
+            fsm.Init(IdleState);
         }
+
 
         void Update()
         {
-            FSM.Update();
+            fsm.MovementVariable.UpdateVariable();
+
+            fsm.deltaTime = Time.deltaTime;
+            fsm.CurrentState.Update(fsm);
+        }
+        private void FixedUpdate()
+        {
+            fsm.CurrentState.FixUpdate(fsm);
         }
     }
 }
