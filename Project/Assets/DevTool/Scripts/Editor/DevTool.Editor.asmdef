@@ -1,0 +1,18 @@
+{
+    "name": "DevTool.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7577e9bfa1eda274da6d8b9f28dd8d01"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

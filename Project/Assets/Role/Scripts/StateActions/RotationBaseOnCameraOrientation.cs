@@ -1,7 +1,7 @@
-﻿using Core;
+﻿using DevTool;
 using UnityEngine;
 
-namespace Core
+namespace DevTool
 {
     public class RotationBaseOnCameraOrientation : StateAction<FiniteStateMachinePlayer>
     {

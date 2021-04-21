@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Core
+namespace DevTool
 {
     [System.Serializable]
     public class FiniteStateMachinePlayer : FiniteStateMachine<FiniteStateMachinePlayer>

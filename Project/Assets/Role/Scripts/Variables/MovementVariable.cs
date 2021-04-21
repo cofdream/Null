@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Core
+namespace DevTool
 {
     [System.Serializable]
     public class MovementVariable

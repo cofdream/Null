@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Core
+namespace DevTool
 {
     public class InSituRotationAction : StateAction<FiniteStateMachinePlayer>
     {
