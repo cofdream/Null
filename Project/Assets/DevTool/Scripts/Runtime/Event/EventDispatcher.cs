@@ -83,8 +83,7 @@ namespace DA.Event
 
         private static void AddHandle(Dictionary<short, List<Delegate>> dic, short type, Delegate handle)
         {
-            List<Delegate> delegates = null;
-            if (dic.TryGetValue(type, out delegates))
+            if (dic.TryGetValue(type, out List<Delegate> delegates))
             {
                 delegates.Add(handle);
             }
@@ -95,8 +94,7 @@ namespace DA.Event
         }
         private void RemoveHandle(Dictionary<short, List<Delegate>> dic, short type, Delegate handle)
         {
-            List<Delegate> delegates = null;
-            if (dic.TryGetValue(type, out delegates))
+            if (dic.TryGetValue(type, out List<Delegate> delegates))
             {
                 if (delegates != null)
                 {
@@ -116,13 +114,12 @@ namespace DA.Event
 
         private void Send(Dictionary<short, List<Delegate>> dic, short type)
         {
-            List<Delegate> delegates = null;
-            if (dic.TryGetValue(type, out delegates))
+            if (dic.TryGetValue(type, out List<Delegate> delegates))
             {
                 int length = delegates.Count;
                 for (int i = 0; i < length; i++)
                 {
-                    var handler = delegates[i] as EventHandler;
+                    EventHandler handler = delegates[i] as EventHandler;
                     if (handler != null)
                     {
                         handler.Invoke(type);
@@ -132,13 +129,12 @@ namespace DA.Event
         }
         private void Send<T>(Dictionary<short, List<Delegate>> dic, short type, T msg)
         {
-            List<Delegate> delegates = null;
-            if (dic.TryGetValue(type, out delegates))
+            if (dic.TryGetValue(type, out List<Delegate> delegates))
             {
                 int length = delegates.Count;
                 for (int i = 0; i < length; i++)
                 {
-                    var handler = delegates[i] as EventHandler<T>;
+                    EventHandler<T> handler = delegates[i] as EventHandler<T>;
                     if (handler != null)
                     {
                         handler.Invoke(type, msg);

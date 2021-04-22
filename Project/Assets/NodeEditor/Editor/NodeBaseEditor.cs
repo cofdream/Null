@@ -63,7 +63,7 @@ namespace DA.Node
             DrawConnectionLine(_event);
 
             ProcessNodeEvent(_event);
-            processEvents(_event);
+            ProcessEvents(_event);
 
             if (GUI.changed)
             {
@@ -144,7 +144,7 @@ namespace DA.Node
             }
         }
 
-        private void processEvents(UnityEngine.Event _event)
+        private void ProcessEvents(UnityEngine.Event _event)
         {
             drag = Vector2.zero;
 
@@ -274,8 +274,6 @@ namespace DA.Node
                 {
                     connectionList.Remove(connectionsToRemove[i]);
                 }
-
-                connectionsToRemove = null;
             }
 
             nodeList.Remove(node);

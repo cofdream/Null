@@ -61,7 +61,7 @@ namespace DA.ObjectPool
             {
                 if (CreateObjectAction == null)
                 {
-                    _object = default(T);
+                    _object = default;
                 }
                 else
                 {
