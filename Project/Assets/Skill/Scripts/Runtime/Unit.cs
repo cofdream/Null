@@ -1,28 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NullNamespace
+namespace Test
 {
     [DisallowMultipleComponent]
     public class Unit : MonoBehaviour
     {
-        public int HP;
-        public int Atk;
+        public int HP = 100;
+        public int Atk = 5;
 
-        public void Initialize()
+        public List<Func<int, int>> HpBuffFunc = new List<Func<int, int>>();
+        public List<Func<int, int>> AtkBuffFunc = new List<Func<int, int>>();
+
+
+        private void Update()
         {
-            HP = 100;
-            Atk = 5; 
+            Debug.Log(gameObject.name +
+                " ATK: " + CalculateATK() +
+                " Hp:  " + CalculateHP()
+                );
         }
 
-        public void AddHp(int value)
+        public int CalculateATK()
         {
-            HP += value;
+            int value = Atk;
+            foreach (var item in AtkBuffFunc)
+            {
+                if (item != null)
+                {
+                    value += item(Atk);
+                }
+            }
+
+            return value;
         }
-        public void AddAtK(int value)
+        public int CalculateHP()
         {
-            Atk += value;
+            int value = HP;
+            foreach (var item in HpBuffFunc)
+            {
+                if (item != null)
+                {
+                    value += item(HP);
+                }
+            }
+
+            return value;
         }
     }
 }

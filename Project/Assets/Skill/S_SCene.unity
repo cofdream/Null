@@ -157,8 +157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   Atk: 10
-  targetUnits: []
-  Damage: 0
 --- !u!65 &964456325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -233,54 +231,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1082984537
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1082984539}
-  - component: {fileID: 1082984538}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1082984538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082984537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8873ee592d57d8d4199c031a3c22d0d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  units:
-  - {fileID: 1501490303}
-  - {fileID: 964456324}
-  - {fileID: 1841676939}
---- !u!4 &1082984539
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082984537}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3175396, y: 3.5843537, z: -1.3292487}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1249061551
 GameObject:
@@ -388,6 +339,9 @@ GameObject:
   - component: {fileID: 1501490305}
   - component: {fileID: 1501490304}
   - component: {fileID: 1501490303}
+  - component: {fileID: 1501490309}
+  - component: {fileID: 1501490308}
+  - component: {fileID: 1501490310}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -409,8 +363,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   Atk: 10
-  targetUnits: []
-  Damage: 0
 --- !u!65 &1501490304
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -485,8 +437,56 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1501490308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501490302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a380579d7dadf5d44beadced7f0d1cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roleAttributeType: 0
+  unit: {fileID: 0}
+  isPercentage: 0
+  addValue: 1
+--- !u!114 &1501490309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501490302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a380579d7dadf5d44beadced7f0d1cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roleAttributeType: 1
+  unit: {fileID: 0}
+  isPercentage: 0
+  addValue: 1
+--- !u!114 &1501490310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501490302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a380579d7dadf5d44beadced7f0d1cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roleAttributeType: 1
+  unit: {fileID: 0}
+  isPercentage: 1
+  addValue: 10
 --- !u!1 &1719761579
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,8 +604,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   Atk: 10
-  targetUnits: []
-  Damage: 0
 --- !u!65 &1841676940
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -680,5 +678,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
