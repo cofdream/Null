@@ -1,3 +1,5 @@
+using Sirenix.OdinInspector;
+using Skill;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +15,27 @@ namespace Test
 
         public List<Func<int, int>> HpBuffFunc = new List<Func<int, int>>();
         public List<Func<int, int>> AtkBuffFunc = new List<Func<int, int>>();
+
+        public List<SKillBase> SKills;
+
+        public Coroutine SkillCoroutine;
+
+        [Button]
+       public void AddSkill(SKillBase sKillBase)
+        {
+            SKills.Add(sKillBase);
+        }
+
+        [Button]
+        public void CastSkill(int index)
+        {
+            SkillCoroutine = StartCoroutine(SKills[index].Cast());
+        }
+        [Button]
+        public void StopSkill()
+        {
+            StopCoroutine(SkillCoroutine);
+        }
 
 
         private void Update()

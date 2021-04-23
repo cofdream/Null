@@ -3,22 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class NodeManager : MonoBehaviour
+namespace DA.Node
 {
-    public static NodeManager Instance { get; private set; }
-
-    [SerializeField] private EventTrigger eventTrigger;
-
-    private void Awake()
+    public class NodeManager : MonoBehaviour
     {
-        Instance = this;
+        public static NodeManager Instance { get; private set; }
 
-        eventTrigger.triggers.Add(new EventTrigger.Entry() { eventID = EventTriggerType.PointerDown, callback = new EventTrigger.TriggerEvent(), });
-    }
+        [SerializeField] private EventTrigger eventTrigger;
 
-    private void OnValidate()
-    {
-        eventTrigger = GetComponent<EventTrigger>();
+        private void Awake()
+        {
+            Instance = this;
+
+            eventTrigger.triggers.Add(new EventTrigger.Entry() { eventID = EventTriggerType.PointerDown, callback = new EventTrigger.TriggerEvent(), });
+        }
+
+        private void OnValidate()
+        {
+            eventTrigger = GetComponent<EventTrigger>();
+        }
+
     }
 
 }

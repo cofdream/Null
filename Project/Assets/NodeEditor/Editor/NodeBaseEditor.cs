@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace DA.Node
 {
-    public class NodeBaseEditor : EditorWindow
+    public class NodeBaseEditor : EditorWindow, IHasCustomMenu
     {
+
         [MenuItem("NodeTool/OpenWindow")]
         private static void OpemWindow()
         {
@@ -13,6 +14,21 @@ namespace DA.Node
             window.titleContent = new GUIContent("Node Based Editor", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png"));
             window.Show();
         }
+        public void AddItemsToMenu(GenericMenu menu)
+        {
+            menu.AddItem(new GUIContent("Reset", EditorGUIUtility.FindTexture("Refresh")), false, Refresh_Menu);
+        }
+        private void Refresh_Menu()
+        {
+            if (nodeList != null) nodeList.Clear();
+            else nodeList = new List<Node>();
+
+            if (connectionList != null) connectionList.Clear();
+            else connectionList = new List<Connection>();
+
+            OnEnable();
+        }
+
 
         private List<Node> nodeList;
         private List<Connection> connectionList;
@@ -26,6 +42,8 @@ namespace DA.Node
 
         private Vector2 offset;
         private Vector2 drag;
+
+        private float grdidSpacing = 2;
 
         private void Awake()
         {
@@ -52,10 +70,12 @@ namespace DA.Node
 
         private void OnGUI()
         {
+            if (nodeList == null || connectionList == null) return;
+
             var _event = UnityEngine.Event.current;
 
-            DrawGrid(20, 0.2f, Color.gray);
-            DrawGrid(100, 0.4f, Color.gray);
+            DrawGrid(5 * grdidSpacing, 0.35f, Color.black);
+            DrawGrid(50 * grdidSpacing, 0.8f, Color.black);
 
             DrawNodes();
             DrawConnections();
@@ -68,15 +88,16 @@ namespace DA.Node
             if (GUI.changed)
             {
                 base.Repaint();
-                Debug.Log("Repaint.");
             }
         }
+
         private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
         {
             int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
             int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
 
             Handles.BeginGUI();
+            Color oldColor = Handles.color;
             Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
 
             offset += drag * 0.5f;
@@ -92,7 +113,7 @@ namespace DA.Node
                 Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width, gridSpacing * j, 0f) + newOffset);
             }
 
-            Handles.color = Color.white;
+            Handles.color = oldColor;
             Handles.EndGUI();
         }
 
@@ -162,6 +183,9 @@ namespace DA.Node
                         OnDrag(_event.delta);
                     }
                     break;
+                case EventType.ScrollWheel:
+                    OnGridSizeChange(_event);
+                    break;
                 default:
                     break;
             }
@@ -200,6 +224,12 @@ namespace DA.Node
             {
                 node.Drag(delta);
             }
+            if (!GUI.changed) GUI.changed = true;
+        }
+        private void OnGridSizeChange(UnityEngine.Event _event)
+        {
+            grdidSpacing = Mathf.Clamp(grdidSpacing + (_event.delta.y * 0.1f), 1f, 6f);
+
             if (!GUI.changed) GUI.changed = true;
         }
 

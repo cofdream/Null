@@ -1,7 +1,7 @@
 {
     "name": "DA.Node.Runtime",
+    "rootNamespace": "",
     "references": [
-        "GUID:fb668795079cfd24d83ce382722be9c5",
         "GUID:2bafac87e7f4b9b418d9448d219b01ab"
     ],
     "includePlatforms": [],
@@ -9,7 +9,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
