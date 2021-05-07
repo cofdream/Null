@@ -13,6 +13,10 @@ namespace Test
         public int HP = 100;
         public int Atk = 5;
 
+        public IntNumeric hp;
+        public IntNumeric atk;
+        public IntNumeric speed;
+
         public List<Func<int, int>> HpBuffFunc = new List<Func<int, int>>();
         public List<Func<int, int>> AtkBuffFunc = new List<Func<int, int>>();
 

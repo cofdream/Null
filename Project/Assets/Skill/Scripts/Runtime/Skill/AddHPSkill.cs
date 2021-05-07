@@ -1,16 +1,34 @@
-﻿using System.Collections;
-using Test;
-using UnityEngine;
+﻿using DA.Timer;
 
 namespace Skill
 {
-    public class AddHPSkill : SKillBase
+    public class SkillTimer : SKillBase
     {
-        public Unit unit;
-        public override void DoSomething()
+        public float SkillCD;
+        private bool isInCD;
+        
+        public bool Cast()
         {
-            unit.HP += 10;
-            Debug.Log("add Hp");
+            if (!isInCD)
+            {
+                isInCD = true;
+                Timer.GetTimer().Run(SkillCD, UpdateCD);
+
+                Cast3();
+
+                return true;
+            }
+            return false;
+        }
+
+        private void UpdateCD()
+        {
+            isInCD = false;
+        }
+
+        public void Cast3()
+        {
+
         }
     }
 }
