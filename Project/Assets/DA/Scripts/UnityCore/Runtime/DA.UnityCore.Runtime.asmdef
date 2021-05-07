@@ -1,0 +1,16 @@
+{
+    "name": "DA.UnityCore.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5df9e93fd04e98448831700326264988"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
