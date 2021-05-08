@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Test
+namespace Skill
 {
     public class UpgradeUnitAttribute : BuffBase
     {
