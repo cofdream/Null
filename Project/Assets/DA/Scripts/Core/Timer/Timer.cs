@@ -36,9 +36,15 @@ namespace DA.Timer
         }
         public static Timer GetTimer()
         {
+            var timer = pool.Allocate();
+            timer.WaitingTime = 0;
+            timer.ElapsedTime = 0;
+            timer.Number = 1;
+            timer.Callback = null;
+            timer.IsPause = true;
+
             return pool.Allocate();
         }
-
 
         public void Run(float waitingTime, Action callback, ushort number = 1, float useTime = 0f)
         {
@@ -48,6 +54,7 @@ namespace DA.Timer
             Callback = callback;
 
             IsPause = false;
+
             TimerManager.StartTimer(this);
         }
         public bool Update(float time)
@@ -57,7 +64,9 @@ namespace DA.Timer
             ElapsedTime += time;
             if (WaitingTime <= ElapsedTime)
             {
-                Callback?.Invoke();
+                if (Callback == null) return true;
+
+                Callback.Invoke();
                 ElapsedTime = WaitingTime - ElapsedTime;
                 Number--;
                 if (Number == 0)
