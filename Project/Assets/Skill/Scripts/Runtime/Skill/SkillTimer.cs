@@ -13,11 +13,14 @@ namespace Skill
         public float SkillCD;
 
         private bool isInCD;
-        public bool Cast()
+
+        private Unit castUnit;
+        public override bool Cast(Unit castUnit)
         {
             if (!isInCD)
             {
                 isInCD = true;
+                this.castUnit = castUnit;
 
                 Timer.GetTimer().Run(SkillCD, UpdateCD);
 
@@ -47,9 +50,16 @@ namespace Skill
 
         protected void Execute()
         {
+            Unit[] targetUnits = null;
+            if (GetTargetUnitType == GetTargetUnitType.Self)
+            {
+                targetUnits = new Unit[] { castUnit };
+            }
             foreach (var command in Commands)
             {
-                command.Execute();
+                command.Targets = targetUnits;
+                command.Execute(castUnit);
+                command.Targets = null;
             }
         }
     }

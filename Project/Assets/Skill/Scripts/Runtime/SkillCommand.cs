@@ -6,8 +6,6 @@ namespace Skill
     [System.Serializable]
     public class SkillCommand
     {
-        //public Unit CastUnit;
-
         public Unit[] Targets;
 
         public UnitAttributeChange[] unitAttributeChanges;
@@ -21,8 +19,10 @@ namespace Skill
             Targets = targets;
         }
 
-        public void Execute()
+        public void Execute(Unit castUnit)
         {
+            if (Targets == null) return;
+
             foreach (var target in Targets)
             {
                 foreach (var item in unitAttributeChanges)

@@ -12,5 +12,12 @@ namespace Skill
         public string Introduction;
 
         public SkillCommand[] Commands;
+
+        public GetTargetUnitType GetTargetUnitType;
+
+        public virtual bool Cast(Unit castUnit)
+        {
+            return true;
+        }
     }
 }

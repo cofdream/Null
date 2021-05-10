@@ -3,7 +3,7 @@
 namespace Skill
 {
     [System.Serializable]
-    public class UnitBaseAttribute 
+    public class UnitBaseAttribute
     {
         public IntNumeric health;
         public IntNumeric atk;
@@ -12,5 +12,14 @@ namespace Skill
 
         //public IntNumeric attackDamage;
         //public IntNumeric abilityPower;
+
+        public void HealthRestore()
+        {
+
+        }
+        public void HealthLoss()
+        {
+
+        }
     }
 }
