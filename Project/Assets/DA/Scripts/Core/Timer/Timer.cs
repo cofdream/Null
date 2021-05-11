@@ -30,9 +30,13 @@ namespace DA.Timer
         static Timer()
         {
             ObjectPool<Timer> objectPool = new ObjectPool<Timer>();
-            objectPool.Initialize(null, null, null, null, 20);
+            objectPool.Initialize(Create, null, null, null, 20);
 
             pool = objectPool;
+        }
+        static Timer Create()
+        {
+            return new Timer();
         }
         public static Timer GetTimer()
         {

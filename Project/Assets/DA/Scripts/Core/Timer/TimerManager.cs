@@ -24,7 +24,7 @@ namespace DA.Timer
 
             var delta = FrameUpdater.DeltaTime;
 
-            int length = timers.Count;
+            int length = timerCount;
             for (int i = 0; i < length; i++)
             {
                 var timer = timers[i];
@@ -60,6 +60,7 @@ namespace DA.Timer
             {
                 disposeCurrentTime = 0f;
             }
+            timerCount = length;
         }
 
 

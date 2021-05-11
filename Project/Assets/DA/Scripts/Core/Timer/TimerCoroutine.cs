@@ -26,9 +26,13 @@ namespace DA.Timer
         static TimerCoroutine()
         {
             ObjectPool<TimerCoroutine> objectPool = new ObjectPool<TimerCoroutine>();
-            objectPool.Initialize(null, null, null, null, 20);
+            objectPool.Initialize(Create, null, null, null, 20);
 
             pool = objectPool;
+        }
+        static TimerCoroutine Create()
+        {
+            return new TimerCoroutine();
         }
         public static TimerCoroutine GetTimer()
         {

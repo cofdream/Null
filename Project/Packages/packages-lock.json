@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "d865866c9d6ff82e06c40ecb53dc6d8fbdc5a18a"
+      "hash": "c9567b818b58d1287362b927934b394deee7329f"
     },
     "com.devilangel.iconkit": {
       "version": "https://github.com/cofdream/IconKit.git#upm",
