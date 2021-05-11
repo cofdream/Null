@@ -5,7 +5,8 @@ namespace Skill
     [System.Serializable]
     public class UnitBaseAttribute
     {
-        public NumericCompose health;
+        public Numeric health;
+        public Numeric maxHealth;
 
         public Numeric atk;
         public Numeric def;
@@ -33,14 +34,27 @@ namespace Skill
         {
             if (isBaseBalue)
             {
-                health.AddBaseValue_Max(value);
+                health.AddBaseValue(value);
             }
             else
             {
-                health.AddBaseValuePercentage_Max(value);
+                health.AddBaseValuePercentage(value);
+            }
+        }
+
+        public void AtkChange(int value, bool isBaseBalue)
+        {
+            if (isBaseBalue)
+            {
+                atk.AddBaseValue(value);
+            }
+            else
+            {
+                atk.AddBaseValuePercentage(value);
             }
         }
     }
+
     public class NumericChange
     {
         public bool IsPercentage = false;
