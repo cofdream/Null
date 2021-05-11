@@ -47,7 +47,7 @@ namespace Skill
 
                 Instance.InitSkill(selectUnit);
 
-                Instance.drawUnitBaseAttribute.Unit = unit;
+                Instance.drawUnitBaseAttribute.Unit = selectUnit;
             }
         }
 

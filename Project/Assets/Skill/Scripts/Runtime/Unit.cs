@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Skill
 {
-    [CreateAssetMenu(menuName = "Temp/Unit")]
-    public class Unit : ScriptableObject
+    //[CreateAssetMenu(menuName = "Temp/Unit")]
+    public class Unit /*: ScriptableObject*/
     {
         public UnitBaseAttribute unitBaseAttribute;
 

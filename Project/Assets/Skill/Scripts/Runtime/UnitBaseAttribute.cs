@@ -17,15 +17,14 @@ namespace Skill
 
         public UnitBaseAttribute()
         {
-            health = new NumericMax();
-            maxHealth = new Numeric();
-            atk = new Numeric();
-            def = new Numeric();
-            moveSpeed = new Numeric();
+            health = new NumericMax() { Dirty = true };
+            maxHealth = new Numeric() { Dirty = true };
+            atk = new Numeric() { Dirty = true };
+            def = new Numeric() { Dirty = true };
+            moveSpeed = new Numeric() { Dirty = true };
 
             health.Max = maxHealth;
         }
-
 
         public void HealthRestore()
         {

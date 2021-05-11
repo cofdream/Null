@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -375,8 +375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f42645b24a85b44a9351671ce051dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllUnit:
-  - {fileID: 11400000, guid: 5ca8bcfbac8bea441af66e9841567e22, type: 2}
+  AllSkills:
+  - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
+  - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
   TestUIManager: {fileID: 2071270330}
 --- !u!4 &456368486
 Transform:
@@ -871,7 +872,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 990061798}
   m_HandleRect: {fileID: 990061797}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1480,7 +1481,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 220, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1333441416
@@ -1754,7 +1755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b2861d33f23346a0c1b8ade175d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 0}
   helath: {fileID: 1104893337}
   maxhelath: {fileID: 511177983}
   atk: {fileID: 56468741}
@@ -1857,7 +1857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0006325157}
+  m_AnchoredPosition: {x: 0, y: 0.000010073185}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1688112656
@@ -2319,4 +2319,4 @@ MonoBehaviour:
   unitsScrollView: {fileID: 1333441416}
   uiSkill: {fileID: 6483358064026674471, guid: 47086eed6e568214ea5926c14e756907, type: 3}
   skillsScrollView: {fileID: 195989015}
-  drawUnitBaseAttribute: {fileID: 0}
+  drawUnitBaseAttribute: {fileID: 1674607376}

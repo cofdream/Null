@@ -22,6 +22,6 @@ MonoBehaviour:
       isBaseValue: 1
       valueInt: 10
   GetTargetUnitType: 0
-  CastStartWait: 0
-  CastEndWait: 0
-  SkillCD: 0.35
+  CastStartWait: 0.5
+  CastEndWait: 0.5
+  SkillCD: 3
