@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cf31d5aff859214e862298f9161540d, type: 3}
-  m_Name: NormalAtk_Skill
+  m_Name: HealthRestore_Skill
   m_EditorClassIdentifier: 
   Id: 0
   Name: 
@@ -19,13 +19,9 @@ MonoBehaviour:
   - Targets: []
     unitAttributeChanges:
     - changType: 0
-      isBaseBalue: 1
+      isBaseValue: 1
       valueInt: 20
-      valueFlot: 0
-    - changType: 1
-      isBaseBalue: 1
-      valueInt: 10
-      valueFlot: 0
+  GetTargetUnitType: 0
   CastStartWait: 0
   CastEndWait: 0
   SkillCD: 0.35

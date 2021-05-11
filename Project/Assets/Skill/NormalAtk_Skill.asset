@@ -18,14 +18,10 @@ MonoBehaviour:
   Commands:
   - Targets: []
     unitAttributeChanges:
-    - changType: 0
-      isBaseBalue: 1
-      valueInt: 20
-      valueFlot: 0
-    - changType: 1
-      isBaseBalue: 1
+    - changType: 2
+      isBaseValue: 1
       valueInt: 10
-      valueFlot: 0
+  GetTargetUnitType: 0
   CastStartWait: 0
   CastEndWait: 0
   SkillCD: 0.35

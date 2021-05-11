@@ -5,6 +5,7 @@ namespace Skill
     public enum AttributeChangeType
     {
         Healtgh,
+        MaxHealtgh,
         Atk,
         Def,
         MoveSpeed,

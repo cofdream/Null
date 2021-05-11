@@ -14,15 +14,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitBaseAttribute:
     health:
-      value: 0
+      Value: 0
+      Dirty: 0
+      BaseValue: 0
+      AdditionBaseValue: 0
+      AdditionBaseValuePercentage: 0
+    maxHealth:
+      Value: 0
+      Dirty: 0
+      BaseValue: 0
+      AdditionBaseValue: 0
+      AdditionBaseValuePercentage: 0
     atk:
-      value: 0
+      Value: 0
+      Dirty: 0
+      BaseValue: 0
+      AdditionBaseValue: 0
+      AdditionBaseValuePercentage: 0
     def:
-      value: 0
+      Value: 0
+      Dirty: 0
+      BaseValue: 0
+      AdditionBaseValue: 0
+      AdditionBaseValuePercentage: 0
     moveSpeed:
-      value: 0
+      Value: 0
+      Dirty: 0
+      BaseValue: 0
+      AdditionBaseValue: 0
+      AdditionBaseValuePercentage: 0
   sKills:
   - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
+  - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
   HP: 100
   Atk: 5
   SKills: []
