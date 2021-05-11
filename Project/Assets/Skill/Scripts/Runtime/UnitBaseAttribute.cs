@@ -5,8 +5,7 @@ namespace Skill
     [System.Serializable]
     public class UnitBaseAttribute
     {
-        public Numeric health;
-        public Numeric health_Max;
+        public NumericCompose health;
 
         public Numeric atk;
         public Numeric def;
@@ -14,6 +13,11 @@ namespace Skill
 
         //public IntNumeric attackDamage;
         //public IntNumeric abilityPower;
+
+        public UnitBaseAttribute()
+        {
+
+        }
 
 
         public void HealthRestore()
@@ -29,18 +33,20 @@ namespace Skill
         {
             if (isBaseBalue)
             {
-                health.BaseValue += value;
+                health.AddBaseValue_Max(value);
             }
             else
             {
-                health.BaseValue = PercentageCalculation(health.BaseValue, value);
+                health.AddBaseValuePercentage_Max(value);
             }
-            //todo 溢出
         }
+    }
+    public class NumericChange
+    {
+        public bool IsPercentage = false;
+        public int ChangeValue;
 
-        public static int PercentageCalculation(int value, int percentage)
-        {
-            return value + (int)(value * ( percentage / 100f + 0.005f));
-        }
+
+        public string description;
     }
 }
