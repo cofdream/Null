@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: NormalAtk_Skill
   m_EditorClassIdentifier: 
   Id: 0
-  Name: 
-  Introduction: 
+  Name: NormalAtk_Skill
+  Introduction: NormalAtk_Skill
   Commands:
   - Targets: []
     unitAttributeChanges:

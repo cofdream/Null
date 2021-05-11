@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf31d5aff859214e862298f9161540d, type: 3}
   m_Name: HealthRestore_Skill
   m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  Introduction: 
+  Id: 1
+  Name: HealthRestore_Skill
+  Introduction: HealthRestore_Skill
   Commands:
   - Targets: []
     unitAttributeChanges:

@@ -16,36 +16,34 @@ MonoBehaviour:
     health:
       Value: 0
       Dirty: 0
-      BaseValue: 0
+      BaseValue: 50
       AdditionBaseValue: 0
       AdditionBaseValuePercentage: 0
     maxHealth:
       Value: 0
       Dirty: 0
-      BaseValue: 0
+      BaseValue: 100
       AdditionBaseValue: 0
       AdditionBaseValuePercentage: 0
     atk:
       Value: 0
       Dirty: 0
-      BaseValue: 0
+      BaseValue: 10
       AdditionBaseValue: 0
       AdditionBaseValuePercentage: 0
     def:
       Value: 0
       Dirty: 0
-      BaseValue: 0
+      BaseValue: 10
       AdditionBaseValue: 0
       AdditionBaseValuePercentage: 0
     moveSpeed:
       Value: 0
       Dirty: 0
-      BaseValue: 0
+      BaseValue: 10
       AdditionBaseValue: 0
       AdditionBaseValuePercentage: 0
   sKills:
   - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
   - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
-  HP: 100
-  Atk: 5
-  SKills: []
+  Name: Unit 001

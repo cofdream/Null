@@ -5,8 +5,8 @@ namespace Skill
     [System.Serializable]
     public class UnitBaseAttribute
     {
-        public Numeric health;
         public Numeric maxHealth;
+        public NumericMax health;
 
         public Numeric atk;
         public Numeric def;
@@ -17,7 +17,13 @@ namespace Skill
 
         public UnitBaseAttribute()
         {
+            health = new NumericMax();
+            maxHealth = new Numeric();
+            atk = new Numeric();
+            def = new Numeric();
+            moveSpeed = new Numeric();
 
+            health.Max = maxHealth;
         }
 
 

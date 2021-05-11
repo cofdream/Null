@@ -19,5 +19,10 @@ namespace Skill
         {
             return true;
         }
+
+        public virtual void Init()
+        {
+
+        }
     }
 }

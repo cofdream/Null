@@ -15,6 +15,11 @@ namespace Skill
         private bool isInCD;
 
         private Unit castUnit;
+
+        public override void Init()
+        {
+            isInCD = false;
+        }
         public override bool Cast(Unit castUnit)
         {
             if (!isInCD)

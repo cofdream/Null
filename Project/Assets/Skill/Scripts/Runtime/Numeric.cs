@@ -8,7 +8,8 @@ namespace Skill
         /// <summary>
         /// 最终计算的值
         /// </summary>
-        [UnityEngine.HideInInspector] public int Value;
+        /*[UnityEngine.HideInInspector]*/
+        public int Value;
         /// <summary>
         /// 值改变标记
         /// </summary>
@@ -28,20 +29,20 @@ namespace Skill
         [UnityEngine.HideInInspector] public int AdditionBaseValuePercentage;
 
 
-        public int GetValue()
+        public virtual int GetValue()
         {
             Calculate();
             return Value;
         }
-        public int GetValue(int max)
-        {
-            Calculate();
-            if (Value > max)
-            {
-                Value = max;
-            }
-            return Value;
-        }
+        //public int GetValue(int max)
+        //{
+        //    Calculate();
+        //    if (Value > max)
+        //    {
+        //        Value = max;
+        //    }
+        //    return Value;
+        //}
         public void AddBaseValue(int value)
         {
             AdditionBaseValue += value;
@@ -54,7 +55,7 @@ namespace Skill
         }
         // todo Remove
 
-        private void Calculate()
+        protected void Calculate()
         {
             if (Dirty)
             {
