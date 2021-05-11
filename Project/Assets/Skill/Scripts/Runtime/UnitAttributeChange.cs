@@ -15,33 +15,30 @@ namespace Skill
     {
         public AttributeChangeType changType;
 
-        public bool isBaseBalue = true;
+        public bool isBaseValue = true;
         public int valueInt;
-        public float valueFlot;
+
         public void Change(UnitBaseAttribute attribute)
         {
             switch (changType)
             {
                 case AttributeChangeType.Healtgh:
-                    if (isBaseBalue)
-                        attribute.health.AddBaseValue(valueInt);
-                    else
-                        attribute.health.AddBaseValuePercentage(valueInt);
+                    attribute.HealthChange(valueInt, isBaseValue);
                     break;
                 case AttributeChangeType.Atk:
-                    if (isBaseBalue)
+                    if (isBaseValue)
                         attribute.atk.AddBaseValue(valueInt);
                     else
                         attribute.atk.AddBaseValuePercentage(valueInt);
                     break;
                 case AttributeChangeType.Def:
-                    if (isBaseBalue)
+                    if (isBaseValue)
                         attribute.def.AddBaseValue(valueInt);
                     else
                         attribute.def.AddBaseValuePercentage(valueInt);
                     break;
                 case AttributeChangeType.MoveSpeed:
-                    if (isBaseBalue)
+                    if (isBaseValue)
                         attribute.moveSpeed.AddBaseValue(valueInt);
                     else
                         attribute.moveSpeed.AddBaseValuePercentage(valueInt);

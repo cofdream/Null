@@ -2,10 +2,29 @@
 namespace Skill
 {
     [System.Serializable]
-    public class IntNumeric
+    public struct Numeric
     {
         [Sirenix.OdinInspector.ReadOnly, UnityEngine.SerializeField]
-        protected int value;
+        private int value;
+        /// <summary>
+        /// 值改变标记
+        /// </summary>
+        private bool dirty;
+
+        /// <summary>
+        /// 基础值
+        /// </summary>
+        public int BaseValue;
+        /// <summary>
+        /// 增加的基础值
+        /// </summary>
+        public int AdditionBaseValue;
+        /// <summary>
+        /// 增加的基础百分比值
+        /// </summary>
+        public int AdditionBaseValuePercentage;
+
+
         /// <summary>
         /// 最终计算的值
         /// </summary>
@@ -13,32 +32,10 @@ namespace Skill
         {
             get
             {
-                if (dirty)
-                {
-                    Calculate();
-                }
+                Calculate();
                 return value;
             }
-            protected set => this.value = value;
         }
-        /// <summary>
-        /// 基础值
-        /// </summary>
-        public int BaseValue { get; protected set; }
-        /// <summary>
-        /// 增加的基础值
-        /// </summary>
-        public int AdditionBaseValue { get; protected set; }
-        /// <summary>
-        /// 增加的基础百分比值
-        /// </summary>
-        public int AdditionBaseValuePercentage { get; protected set; }
-
-
-        /// <summary>
-        /// 值改变标记
-        /// </summary>
-        protected bool dirty;
 
 
         public void Init(int value)
@@ -57,12 +54,19 @@ namespace Skill
             AdditionBaseValuePercentage += value;
             dirty = true;
         }
-        protected virtual void Calculate()
-        {
-            var allBaseValue = BaseValue + AdditionBaseValue;
-            value = allBaseValue + allBaseValue * AdditionBaseValuePercentage / 100;
+        // todo Remove
 
-            dirty = false;
+        public void Calculate()
+        {
+            if (dirty)
+            {
+                int allBaseValue = BaseValue + AdditionBaseValue;
+                int percentageValue = (int)(allBaseValue * (AdditionBaseValuePercentage / 100f + 0.005f));
+
+                value = allBaseValue + percentageValue;
+
+                dirty = false;
+            }
         }
     }
 }
