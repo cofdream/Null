@@ -9,7 +9,7 @@ namespace Skill
     [System.Serializable]
     public class Unit /*: ScriptableObject*/
     {
-        public UnitBaseAttribute unitBaseAttribute;
+        public UnitAttribute unitAttribute;
 
         public SKillBase[] sKills;
 

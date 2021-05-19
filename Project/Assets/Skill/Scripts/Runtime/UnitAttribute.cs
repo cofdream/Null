@@ -1,7 +1,7 @@
 ﻿namespace Skill
 {
     [System.Serializable]
-    public class UnitBaseAttribute
+    public class UnitAttribute
     {
         [UnityEngine.SerializeField]
         private Numeric maxHealth;

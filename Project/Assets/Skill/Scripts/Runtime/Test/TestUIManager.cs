@@ -14,7 +14,7 @@ namespace Skill
         public UISkill uiSkill;
         public ScrollRect skillsScrollView;
 
-        public DrawUnitBaseAttribute drawUnitBaseAttribute;
+        public DrawUnitAttribute drawUnitAttribute;
 
         public TestManager TestManager;
 
@@ -51,7 +51,7 @@ namespace Skill
 
                 Instance.InitSkill(selectUnit);
 
-                Instance.drawUnitBaseAttribute.Unit = selectUnit;
+                Instance.drawUnitAttribute.Unit = selectUnit;
             }
         }
 

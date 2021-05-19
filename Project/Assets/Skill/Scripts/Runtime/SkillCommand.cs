@@ -27,7 +27,7 @@ namespace Skill
             {
                 foreach (var item in unitAttributeChanges)
                 {
-                    item.Change(target.unitBaseAttribute);
+                    item.Change(target.unitAttribute);
                 }
             }
         }

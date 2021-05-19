@@ -19,7 +19,7 @@ namespace Skill
         public bool isBaseValue = true;
         public int valueInt;
 
-        public void Change(UnitBaseAttribute attribute)
+        public void Change(UnitAttribute attribute)
         {
             switch (changType)
             {
