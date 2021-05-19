@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -375,9 +375,130 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f42645b24a85b44a9351671ce051dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllSkills:
-  - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
-  - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
+  AllUnit:
+  - unitBaseAttribute:
+      maxHealth:
+        Value: 0
+        Dirty: 1
+        BaseValue: 100
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      health:
+        Value: 0
+        Dirty: 1
+        BaseValue: 50
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+        Max:
+          Value: 0
+          Dirty: 1
+          BaseValue: 100
+          AdditionBaseValue: 0
+          AdditionBaseValuePercentage: 0
+      atk:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      def:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      moveSpeed:
+        Value: 0
+        Dirty: 1
+        BaseValue: 8
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+    sKills:
+    - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
+    - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
+    Name: 001
+  - unitBaseAttribute:
+      maxHealth:
+        Value: 0
+        Dirty: 1
+        BaseValue: 100
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      health:
+        Value: 0
+        Dirty: 1
+        BaseValue: 50
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+        Max:
+          Value: 0
+          Dirty: 1
+          BaseValue: 100
+          AdditionBaseValue: 0
+          AdditionBaseValuePercentage: 0
+      atk:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      def:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      moveSpeed:
+        Value: 0
+        Dirty: 1
+        BaseValue: 8
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+    sKills:
+    - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
+    - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
+    Name: 002
+  - unitBaseAttribute:
+      maxHealth:
+        Value: 0
+        Dirty: 1
+        BaseValue: 100
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      health:
+        Value: 0
+        Dirty: 1
+        BaseValue: 50
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+        Max:
+          Value: 0
+          Dirty: 1
+          BaseValue: 100
+          AdditionBaseValue: 0
+          AdditionBaseValuePercentage: 0
+      atk:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      def:
+        Value: 0
+        Dirty: 1
+        BaseValue: 10
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      moveSpeed:
+        Value: 0
+        Dirty: 1
+        BaseValue: 8
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+    sKills:
+    - {fileID: 11400000, guid: 3acb89d34fe25684ea34091ab5ac90e3, type: 2}
+    - {fileID: 11400000, guid: 1e97255e83450d24688dabe46f51f43f, type: 2}
+    Name: 003
   TestUIManager: {fileID: 2071270330}
 --- !u!4 &456368486
 Transform:
@@ -447,7 +568,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 0
+  m_Spacing: 3
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -872,8 +993,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 990061798}
   m_HandleRect: {fileID: 990061797}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.9944865
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1399,7 +1520,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1112144565}
   m_HandleRect: {fileID: 1112144564}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1755,6 +1876,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b2861d33f23346a0c1b8ade175d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Unit:
+    unitBaseAttribute:
+      maxHealth:
+        Value: 0
+        Dirty: 1
+        BaseValue: 0
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      health:
+        Value: 0
+        Dirty: 1
+        BaseValue: 0
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+        Max:
+          Value: 0
+          Dirty: 1
+          BaseValue: 0
+          AdditionBaseValue: 0
+          AdditionBaseValuePercentage: 0
+      atk:
+        Value: 0
+        Dirty: 1
+        BaseValue: 0
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      def:
+        Value: 0
+        Dirty: 1
+        BaseValue: 0
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+      moveSpeed:
+        Value: 0
+        Dirty: 1
+        BaseValue: 0
+        AdditionBaseValue: 0
+        AdditionBaseValuePercentage: 0
+    sKills: []
+    Name: 
   helath: {fileID: 1104893337}
   maxhelath: {fileID: 511177983}
   atk: {fileID: 56468741}
@@ -1857,7 +2018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000010073185}
+  m_AnchoredPosition: {x: 0, y: 0.0002489552}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1688112656
@@ -2320,3 +2481,4 @@ MonoBehaviour:
   uiSkill: {fileID: 6483358064026674471, guid: 47086eed6e568214ea5926c14e756907, type: 3}
   skillsScrollView: {fileID: 195989015}
   drawUnitBaseAttribute: {fileID: 1674607376}
+  TestManager: {fileID: 0}

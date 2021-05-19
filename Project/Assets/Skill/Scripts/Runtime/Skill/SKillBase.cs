@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace Skill
 {
+    [System.Serializable]
     public class SKillBase : ScriptableObject
     {
         public int Id;

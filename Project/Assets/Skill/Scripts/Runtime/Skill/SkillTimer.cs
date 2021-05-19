@@ -33,6 +33,9 @@ namespace Skill
 
                 return true;
             }
+
+            Debug.Log("CD ..");
+
             return false;
         }
 
@@ -60,6 +63,7 @@ namespace Skill
             {
                 targetUnits = new Unit[] { castUnit };
             }
+
             foreach (var command in Commands)
             {
                 command.Targets = targetUnits;

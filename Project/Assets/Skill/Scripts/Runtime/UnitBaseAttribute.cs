@@ -1,30 +1,27 @@
-﻿using UnityEngine;
-
-namespace Skill
+﻿namespace Skill
 {
     [System.Serializable]
     public class UnitBaseAttribute
     {
-        public Numeric maxHealth;
-        public NumericMax health;
+        [UnityEngine.SerializeField]
+        private Numeric maxHealth;
+        [UnityEngine.SerializeField]
+        private Numeric health;
 
-        public Numeric atk;
-        public Numeric def;
-        public Numeric moveSpeed;
+        [UnityEngine.SerializeField]
+        private Numeric atk;
+        [UnityEngine.SerializeField]
+        private Numeric def;
+        [UnityEngine.SerializeField]
+        private Numeric moveSpeed;
 
-        //public IntNumeric attackDamage;
-        //public IntNumeric abilityPower;
 
-        public UnitBaseAttribute()
-        {
-            health = new NumericMax() { Dirty = true };
-            maxHealth = new Numeric() { Dirty = true };
-            atk = new Numeric() { Dirty = true };
-            def = new Numeric() { Dirty = true };
-            moveSpeed = new Numeric() { Dirty = true };
+        public int Health => health.GetValue(maxHealth.GetValue());
+        public int MaxHealth => maxHealth.GetValue();
+        public int Atk => atk.GetValue();
+        public int Def => def.GetValue();
+        public int MoveSpeed => moveSpeed.GetValue();
 
-            health.Max = maxHealth;
-        }
 
         public void HealthRestore()
         {
@@ -58,14 +55,5 @@ namespace Skill
                 atk.AddBaseValuePercentage(value);
             }
         }
-    }
-
-    public class NumericChange
-    {
-        public bool IsPercentage = false;
-        public int ChangeValue;
-
-
-        public string description;
     }
 }

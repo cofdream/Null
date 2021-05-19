@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Skill
 {
     //[CreateAssetMenu(menuName = "Temp/Unit")]
+    [System.Serializable]
     public class Unit /*: ScriptableObject*/
     {
         public UnitBaseAttribute unitBaseAttribute;

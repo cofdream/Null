@@ -1,4 +1,5 @@
 ﻿using DA.Singleton;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +16,18 @@ namespace Skill
 
         public DrawUnitBaseAttribute drawUnitBaseAttribute;
 
+        public TestManager TestManager;
 
         public static Unit selectUnit;
         public static TestUIManager Instance;
+
         private void Awake()
         {
             Instance = this;
         }
 
-        public void InitUnits(List<Unit> allUnit)
+
+        public void ReLoadUnits(List<Unit> allUnit)
         {
             foreach (Transform item in unitsScrollView.content.transform)
             {

@@ -29,18 +29,18 @@ namespace Skill
                 case AttributeChangeType.Atk:
                     attribute.AtkChange(valueInt, isBaseValue);
                     break;
-                case AttributeChangeType.Def:
-                    if (isBaseValue)
-                        attribute.def.AddBaseValue(valueInt);
-                    else
-                        attribute.def.AddBaseValuePercentage(valueInt);
-                    break;
-                case AttributeChangeType.MoveSpeed:
-                    if (isBaseValue)
-                        attribute.moveSpeed.AddBaseValue(valueInt);
-                    else
-                        attribute.moveSpeed.AddBaseValuePercentage(valueInt);
-                    break;
+                //case AttributeChangeType.Def:
+                //    if (isBaseValue)
+                //        attribute.def.AddBaseValue(valueInt);
+                //    else
+                //        attribute.def.AddBaseValuePercentage(valueInt);
+                //    break;
+                //case AttributeChangeType.MoveSpeed:
+                //    if (isBaseValue)
+                //        attribute.moveSpeed.AddBaseValue(valueInt);
+                //    else
+                //        attribute.moveSpeed.AddBaseValuePercentage(valueInt);
+                //    break;
             }
         }
     }

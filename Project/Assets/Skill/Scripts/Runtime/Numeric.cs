@@ -2,47 +2,46 @@
 namespace Skill
 {
     [System.Serializable]
-    public class Numeric
+    public struct Numeric
     {
-
-        /// <summary>
-        /// 最终计算的值
-        /// </summary>
-        /*[UnityEngine.HideInInspector]*/
-        public int Value;
-        /// <summary>
-        /// 值改变标记
-        /// </summary>
-        [UnityEngine.HideInInspector] public bool Dirty;
+        [UnityEngine.SerializeField]
+        private int Value;
+        [UnityEngine.SerializeField]
+        private bool Dirty;
 
         /// <summary>
         /// 基础值
         /// </summary>
-        public int BaseValue;
+        [UnityEngine.SerializeField]
+        private int BaseValue;
         /// <summary>
         /// 增加的基础值
         /// </summary>
-        [UnityEngine.HideInInspector] public int AdditionBaseValue;
+        private int AdditionBaseValue;
         /// <summary>
         /// 增加的基础百分比值
         /// </summary>
-        [UnityEngine.HideInInspector] public int AdditionBaseValuePercentage;
+        private int AdditionBaseValuePercentage;
 
-
-        public virtual int GetValue()
+        public int GetValue()
         {
-            Calculate();
+            if (Dirty)
+            {
+                Calculate();
+                Dirty = false;
+            }
             return Value;
         }
-        //public int GetValue(int max)
-        //{
-        //    Calculate();
-        //    if (Value > max)
-        //    {
-        //        Value = max;
-        //    }
-        //    return Value;
-        //}
+        public int GetValue(int maxValue)
+        {
+            if (Dirty)
+            {
+                Calculate(maxValue);
+                Dirty = false;
+            }
+            return Value;
+        }
+
         public void AddBaseValue(int value)
         {
             AdditionBaseValue += value;
@@ -53,19 +52,35 @@ namespace Skill
             AdditionBaseValuePercentage += value;
             Dirty = true;
         }
-        // todo Remove
-
-        protected void Calculate()
+        public void RemoveBaseValue(int value)
         {
-            if (Dirty)
-            {
-                int allBaseValue = BaseValue + AdditionBaseValue;
-                int percentageValue = (int)(allBaseValue * (AdditionBaseValuePercentage / 100f + 0.005f));
+            AdditionBaseValue -= value;
+            Dirty = true;
+        }
+        public void RemoveBaseValuePercentage(int value)
+        {
+            AdditionBaseValuePercentage -= value;
+            Dirty = true;
+        }
 
-                Value = allBaseValue + percentageValue;
+        private void Calculate()
+        {
+            int allBaseValue = BaseValue + AdditionBaseValue;
+            int percentageValue = (int)(allBaseValue * (AdditionBaseValuePercentage / 100f + 0.005f));
 
-                Dirty = false;
-            }
+            Value = allBaseValue + percentageValue;
+        }
+
+        private void Calculate(int maxValue)
+        {
+            int allBaseValue = BaseValue + AdditionBaseValue;
+            int percentageValue = (int)(allBaseValue * (AdditionBaseValuePercentage / 100f + 0.005f));
+
+            int curValue = allBaseValue + percentageValue;
+            if (curValue > maxValue)
+                Value = maxValue;
+            else
+                Value = curValue;
         }
 
 

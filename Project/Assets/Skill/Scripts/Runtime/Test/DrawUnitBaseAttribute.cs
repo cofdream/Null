@@ -20,11 +20,11 @@ public class DrawUnitBaseAttribute : MonoBehaviour
     {
         if (Unit != null)
         {
-            helath    .text = "helath    :" + Unit.unitBaseAttribute.health     .GetValue().ToString();
-            maxhelath .text = "maxhelath :" + Unit.unitBaseAttribute.maxHealth  .GetValue().ToString();
-            atk       .text = "atk       :" + Unit.unitBaseAttribute.atk        .GetValue().ToString();
-            def       .text = "def       :" + Unit.unitBaseAttribute.def        .GetValue().ToString();
-            moveSpeed .text = "moveSpeed :" + Unit.unitBaseAttribute.moveSpeed  .GetValue().ToString();
+            helath    .text = "helath    :" + Unit.unitBaseAttribute.Health     .ToString();
+            maxhelath .text = "maxhelath :" + Unit.unitBaseAttribute.MaxHealth  .ToString();
+            atk       .text = "atk       :" + Unit.unitBaseAttribute.Atk        .ToString();
+            def       .text = "def       :" + Unit.unitBaseAttribute.Def        .ToString();
+            moveSpeed .text = "moveSpeed :" + Unit.unitBaseAttribute.MoveSpeed  .ToString();
         }
     }
 }

@@ -23,14 +23,14 @@ public class UISkill : MonoBehaviour
 
     public void CastSkill()
     {
-        skillTimer.Cast(TestUIManager.selectUnit);
+        bool iscd = skillTimer.Cast(TestUIManager.selectUnit);
     }
 
     public void Update()
     {
-        //if (skillTimer != null)
-        //{
-        //    CD.text = 
-        //}
+        if (skillTimer != null)
+        {
+            CD.text = skillTimer.SkillCD.ToString();
+        }
     }
 }
