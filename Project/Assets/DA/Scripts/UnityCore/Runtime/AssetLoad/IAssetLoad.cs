@@ -42,8 +42,10 @@ namespace DA.AssetLoad
         }
 
         // 基于资源的路径去获取ab的包名
+
         public static string GetAssetBundleByAssetPath(string assetPath)
         {
+#if UNITY_EDITOR
             var buildRule = AssetBuild.BuildRule.GetBundleRule();
 
             foreach (var buildAsset in buildRule.BuildAseet)
@@ -58,7 +60,11 @@ namespace DA.AssetLoad
             }
 
             return assetPath;
+#else
+            return null;
+#endif
         }
+
         // 基于资源的路径去获取ab的资源名
         public static string GetAssetNameByAssetPath(string assetPath)
         {

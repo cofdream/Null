@@ -13,44 +13,10 @@ MonoBehaviour:
   m_Name: BundleRule
   m_EditorClassIdentifier: 
   BuildAssetDatas:
-  - AssetPath: Assets/Tests_BuildAssetBundle/Icons
-  - AssetPath: Assets/Tests_BuildAssetBundle/Materials
-  - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Cube.prefab
-  - AssetPath: Assets/Tests_BuildAssetBundle/Prefabs/Images.prefab
-  - AssetPath: Assets/Resources/Prefabs/UI/UI Root.prefab
-  - AssetPath: Assets/Resources/Prefabs/UI/LoginWindow
+  - AssetPath: Assets/Resources/TestMater.mat
   BuildAseet:
-  - AssetBundleName: project_tests_buildassetbundle_icons.ab
+  - AssetBundleName: project_resources_testmater.ab
     AssetNames:
-    - Assets/Tests_BuildAssetBundle/Icons/img_icon_qq.png
-    - Assets/Tests_BuildAssetBundle/Icons/img_icon_twitter.png
-    - Assets/Tests_BuildAssetBundle/Icons/img_icon_wechat.png
+    - Assets/Resources/TestMater.mat
     AssetLoadPaths:
-    - Tests_BuildAssetBundle/Icons/img_icon_qq
-    - Tests_BuildAssetBundle/Icons/img_icon_twitter
-    - Tests_BuildAssetBundle/Icons/img_icon_wechat
-  - AssetBundleName: project_tests_buildassetbundle_materials.ab
-    AssetNames:
-    - Assets/Tests_BuildAssetBundle/Materials/CubeMat.mat
-    AssetLoadPaths:
-    - Tests_BuildAssetBundle/Materials/CubeMat
-  - AssetBundleName: project_prefabs_cube.ab
-    AssetNames:
-    - Assets/Tests_BuildAssetBundle/Prefabs/Cube.prefab
-    AssetLoadPaths:
-    - Tests_BuildAssetBundle/Prefabs/Cube
-  - AssetBundleName: project_prefabs_images.ab
-    AssetNames:
-    - Assets/Tests_BuildAssetBundle/Prefabs/Images.prefab
-    AssetLoadPaths:
-    - Tests_BuildAssetBundle/Prefabs/Images
-  - AssetBundleName: project_ui_ui root.ab
-    AssetNames:
-    - Assets/Resources/Prefabs/UI/UI Root.prefab
-    AssetLoadPaths:
-    - Resources/Prefabs/UI/UI Root
-  - AssetBundleName: project_ui_loginwindow.ab
-    AssetNames:
-    - Assets/Resources/Prefabs/UI/LoginWindow/LoginWindow.prefab
-    AssetLoadPaths:
-    - Resources/Prefabs/UI/LoginWindow/LoginWindow
+    - Resources/TestMater

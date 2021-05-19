@@ -1,5 +1,6 @@
 ﻿using System;
 
+#if UNITY_EDITOR
 namespace DA.AssetBuild
 {
     [Serializable]
@@ -17,4 +18,6 @@ namespace DA.AssetBuild
     {
         public string AssetPath;
     }
-} 
+}
+
+#endif
