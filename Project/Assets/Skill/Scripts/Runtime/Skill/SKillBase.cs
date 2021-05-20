@@ -25,5 +25,10 @@ namespace Skill
         {
 
         }
+
+        public void UpdateSkill(float delte)
+        {
+
+        }
     }
 }

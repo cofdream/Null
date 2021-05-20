@@ -12,14 +12,10 @@ namespace Skill
 
         private void Start()
         {
-
-        }
-
-
-        [Button]
-        private void ReadloadUnits()
-        {
-            TestUIManager.ReLoadUnits(AllUnit);
+            foreach (var unit in AllUnit)
+            {
+                unit.Init();
+            }
         }
     }
 }
