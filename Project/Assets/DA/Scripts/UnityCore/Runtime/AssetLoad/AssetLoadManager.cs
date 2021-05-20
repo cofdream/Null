@@ -8,7 +8,7 @@ namespace DA.AssetLoad
     {
 #if UNITY_EDITOR
         public const string SIMULATION_MODE = "Asset bundle simulation mode";
-        public static bool IsSimulationMode = UnityEditor.EditorPrefs.GetBool(SIMULATION_MODE, false);
+        public readonly static bool IsSimulationMode = UnityEditor.EditorPrefs.GetBool(SIMULATION_MODE, false);
 #endif
     }
 }
