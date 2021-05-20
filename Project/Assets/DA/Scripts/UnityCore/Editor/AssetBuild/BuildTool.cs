@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using DA.AssetLoad;
+using UnityEditor;
 
 #if UNITY_EDITOR
 namespace DA.AssetBuild
@@ -16,6 +17,22 @@ namespace DA.AssetBuild
         {
             DA.AssetBuild.BuildRule.GenerateAssetBundle();
         }
+
+        [MenuItem("DATools/AssetBuild/SimulationMode", true)]
+        public static bool CheckSimulationMode()
+        {
+            Menu.SetChecked("DATools/AssetBuild/SimulationMode", EditorPrefs.GetBool(AssetLoadManager.SIMULATION_MODE, false));
+            return true;
+        }
+
+        [MenuItem("DATools/AssetBuild/SimulationMode")]
+        public static void SimulationMode()
+        {
+            bool simulationMode = !EditorPrefs.GetBool(AssetLoadManager.SIMULATION_MODE, false);
+            EditorPrefs.SetBool(AssetLoadManager.SIMULATION_MODE, simulationMode);
+
+            EditorUtility.DisplayDialog("Tip", simulationMode ? "Change load mode: Simulation Mode" : "Change load mode: Local Mode", "OK");
+        }
     }
 
 
@@ -23,5 +40,5 @@ namespace DA.AssetBuild
     {
 
     }
-} 
+}
 #endif

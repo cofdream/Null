@@ -142,7 +142,7 @@ namespace DA.AssetLoad
             {
                 assetLoad = ResourcesrLoad.GetLoad(assetName, loadType, RemoveSharedAssetLoad);
             }
-            else if (AssetLoadManager.IsSimulationMode)
+            else if (AssetLoadManager.IsSimulationMode == false)
             {
                 assetLoad = EditorLoad.GetEditorLoad(assetName, loadType, RemoveSharedAssetLoad);
             }
