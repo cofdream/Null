@@ -87,11 +87,11 @@ namespace DA.AssetBuild
                             string tempPath2 = Directory.GetParent(tempPath).Name;
                             if (tempPath2 != null)
                             {
-                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath)).ToLower();
+                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
                             }
                             else
                             {
-                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath)).ToLower();
+                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
                             }
                         }
 
