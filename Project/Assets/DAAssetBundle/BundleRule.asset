@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: BundleRule
   m_EditorClassIdentifier: 
   BuildAssetDatas:
-  - AssetPath: Assets/Resources/TestMater.mat
+  - AssetPath: Assets/Skill/Art/HeroArtResource/Prefabs/Hero.prefab
   BuildAseet:
-  - AssetBundleName: project_resources_testmater.ab
+  - AssetBundleName: project_prefabs_hero.ab
     AssetNames:
-    - Assets/Resources/TestMater.mat
+    - Assets/Skill/Art/HeroArtResource/Prefabs/Hero.prefab
     AssetLoadPaths:
-    - Resources/TestMater
+    - Assets/Skill/Art/HeroArtResource/Prefabs/Hero.prefab
