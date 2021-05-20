@@ -36,7 +36,7 @@ namespace DA.AssetBuild
 
             BuildPipeline.BuildAssetBundles(output, buildsList.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
         }
-
+        // todo  asset Name 改为全目录
         public static void GenerateBuildRule()
         {
             var buildRule = GetBundleRule();
@@ -87,11 +87,11 @@ namespace DA.AssetBuild
                             string tempPath2 = Directory.GetParent(tempPath).Name;
                             if (tempPath2 != null)
                             {
-                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
+                                assetData.AssetBundleName = (tempPath2 + "_" + tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath)).ToLower();
                             }
                             else
                             {
-                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath) + ".ab").ToLower();
+                                assetData.AssetBundleName = (tempPath + "_" + Path.GetFileNameWithoutExtension(buildAssetData.AssetPath)).ToLower();
                             }
                         }
 
