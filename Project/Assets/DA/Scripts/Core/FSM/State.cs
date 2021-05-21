@@ -5,10 +5,7 @@ namespace DA.Core.FSM
     [UnityEngine.CreateAssetMenu(menuName = "State/Create State")]
     public class State : UnityEngine.ScriptableObject
     {
-        public StateAction[] OnEnters;
-        public StateAction[] OnUpdates;
-        public StateAction[] OnFixedUpdates;
-        public StateAction[] OnExits;
+        public StateAction[] StateAction;
 
         public Transition[] Transitions;
 
@@ -43,14 +40,13 @@ namespace DA.Core.FSM
 
         private void ExecuteActions(StateAction[] stateActions)
         {
-            foreach (var item in stateActions)
-            {
-                if (item.Active) item.Execute();
-            }
+           
         }
 
         public Transition CheckTransitions()
         {
+            if (Transitions == null) return null;
+
             foreach (var transition in Transitions)
             {
                 if (transition.Active)

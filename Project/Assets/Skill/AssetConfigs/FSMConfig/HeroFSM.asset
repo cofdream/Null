@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd5819e0af8d3a418fcb28455b72649, type: 3}
   m_Name: HeroFSM
   m_EditorClassIdentifier: 
-  CurrentState: {fileID: 0}
-  Rigidbody: {fileID: 0}
-  Animator: {fileID: 0}
+  CurrentState: {fileID: 11400000, guid: 96f7b0ef336bfd54694a10f932d18013, type: 2}

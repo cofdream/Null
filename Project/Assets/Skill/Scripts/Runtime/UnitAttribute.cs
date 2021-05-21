@@ -1,7 +1,7 @@
 ﻿namespace Skill
 {
     [System.Serializable]
-    public class UnitAttribute
+    public struct UnitAttribute
     {
         [UnityEngine.SerializeField]
         private Numeric maxHealth;
@@ -22,6 +22,15 @@
         public int Def => def.GetValue();
         public int MoveSpeed => moveSpeed.GetValue();
 
+
+        public UnitAttribute(int health, int maxHealth, int atk, int def, int moveSpeed)
+        {
+            this.health    = new Numeric(health);
+            this.maxHealth = new Numeric(maxHealth); 
+            this.atk       = new Numeric(atk); 
+            this.def       = new Numeric(def); 
+            this.moveSpeed = new Numeric(moveSpeed); 
+        }
 
         public void HealthRestore()
         {

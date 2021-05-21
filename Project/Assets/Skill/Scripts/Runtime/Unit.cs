@@ -1,9 +1,5 @@
 using DA.AssetLoad;
-using DA.Core.FSM.Variables;
-using Sirenix.OdinInspector;
-using System;
-using System.Collections.Generic;
-using Temp2;
+using DA.Core.FSM;
 using UnityEngine;
 
 namespace Skill
@@ -18,9 +14,12 @@ namespace Skill
         public SKillBase[] SKills;
 
         public string PrefabPath;
-        public GameObject GameObject;
+        public GameObject GameObject { get; private set; }
+        public Rigidbody Rigidbody { get; private set; }
+        public Animator Animator { get; private set; }
 
-        public HeroFSM FSM;
+        public FSM FSM;
+        public AnimatorHashes AnimatorHashes = new AnimatorHashes();
 
         public void Init()
         {
@@ -34,9 +33,12 @@ namespace Skill
             var loader = AssetLoader.GetAssetLoader();
             var gameObject = loader.LoadAsset<GameObject>(PrefabPath);
             var modelGameObject = GameObject.Instantiate<GameObject>(gameObject, GameObject.transform);
-            GameObject.AddComponent<UnitObject>().Unit = this;
 
-            FSM.Init(modelGameObject);
+
+            FSMManager.AddFSM(FSM);
+
+            Rigidbody = modelGameObject.GetComponent<Rigidbody>();
+            Animator = modelGameObject.GetComponent<Animator>();
 
 
             loader.Unload(PrefabPath);

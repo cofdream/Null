@@ -1,5 +1,4 @@
 ﻿
-
 namespace DA.Core.FSM
 {
     public class FSM : UnityEngine.ScriptableObject
@@ -8,23 +7,17 @@ namespace DA.Core.FSM
 
         public void OnUpdate()
         {
-            if (CurrentState != null)
+            CurrentState.OnUpdate();
+            var transition = CurrentState.CheckTransitions();
+            if (transition != null)
             {
-                CurrentState.OnUpdate();
-                var transition = CurrentState.CheckTransitions();
-                if (transition != null)
-                {
-                    ChangeState(transition.TargetState);
-                }
+                ChangeState(transition.TargetState);
             }
         }
 
         public void OnFixedUpdate()
         {
-            if (CurrentState != null)
-            {
-                CurrentState.OnFixedUpdate();
-            }
+            CurrentState.OnFixedUpdate();
         }
 
         public void ChangeState(State targetState)
