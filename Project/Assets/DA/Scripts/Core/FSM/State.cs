@@ -23,27 +23,50 @@ namespace DA.Core.FSM
 
         public void OnEnter()
         {
-            ExecuteActions(OnEnters);
+            if (StateAction == null) return;
+            foreach (var stateAction in StateAction)
+            {
+                if (stateAction.Active)
+                {
+                    stateAction.OnEnter();
+                }
+            }
         }
         public void OnUpdate()
         {
-            ExecuteActions(OnUpdates);
+            if (StateAction == null) return;
+            foreach (var stateAction in StateAction)
+            {
+                if (stateAction.Active)
+                {
+                    stateAction.OnUpdate();
+                }
+            }
         }
         public void OnFixedUpdate()
         {
-            ExecuteActions(OnFixedUpdates);
+            if (StateAction == null) return;
+            foreach (var stateAction in StateAction)
+            {
+                if (stateAction.Active)
+                {
+                    stateAction.OnFixedUpdate();
+                }
+            }
         }
         public void OnExit()
         {
-            ExecuteActions(OnExits);
+            if (StateAction == null) return;
+            foreach (var stateAction in StateAction)
+            {
+                if (stateAction.Active)
+                {
+                    stateAction.OnExit();
+                }
+            }
         }
 
-        private void ExecuteActions(StateAction[] stateActions)
-        {
-           
-        }
-
-        public Transition CheckTransitions()
+        public State CheckTransitions()
         {
             if (Transitions == null) return null;
 
@@ -53,7 +76,7 @@ namespace DA.Core.FSM
                 {
                     if (transition.Condition.CheckStateChange())
                     {
-                        return transition;
+                        return transition.TargetState;
                     }
                 }
             }

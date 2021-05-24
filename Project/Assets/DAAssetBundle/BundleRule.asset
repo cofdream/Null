@@ -13,53 +13,10 @@ MonoBehaviour:
   m_Name: BundleRule
   m_EditorClassIdentifier: 
   BuildAssetDatas:
-  - AssetPath: Assets/Skill/Art/Hero/Prefabs/HeroModel.prefab
-  - AssetPath: Assets/Skill/AssetConfigs/ConditionConfig
-  - AssetPath: Assets/Skill/AssetConfigs/FSMConfig
-  - AssetPath: Assets/Skill/AssetConfigs/SkillConfig
-  - AssetPath: Assets/Skill/AssetConfigs/StateActionConfig
-  - AssetPath: Assets/Skill/AssetConfigs/StateConfig
-  - AssetPath: Assets/Skill/AssetConfigs/TransitionConfig
-  - AssetPath: Assets/Skill/AssetConfigs/UnitConfig
-  - AssetPath: Assets/Skill/AssetConfigs/VariablesConfig
-  - AssetPath: Assets/Skill/S_SCene.unity
+  - AssetPath: Assets/Game/Art/Prefabs/HeroModel.prefab
   BuildAseet:
   - AssetBundleName: project_prefabs_heromodel.ab
     AssetNames:
-    - Assets/Skill/Art/Hero/Prefabs/HeroModel.prefab
+    - Assets/Game/Art/Prefabs/HeroModel.prefab
     AssetLoadPaths:
-    - Skill/Art/Hero/Prefabs/HeroModel
-  - AssetBundleName: project_assetconfigs_fsmconfig.ab
-    AssetNames:
-    - Assets/Skill/AssetConfigs/FSMConfig/HeroFSM.asset
-    AssetLoadPaths:
-    - Skill/AssetConfigs/FSMConfig/HeroFSM
-  - AssetBundleName: project_assetconfigs_skillconfig.ab
-    AssetNames:
-    - Assets/Skill/AssetConfigs/SkillConfig/HealthRestore_Skill.asset
-    - Assets/Skill/AssetConfigs/SkillConfig/NormalAtk_Skill.asset
-    AssetLoadPaths:
-    - Skill/AssetConfigs/SkillConfig/HealthRestore_Skill
-    - Skill/AssetConfigs/SkillConfig/NormalAtk_Skill
-  - AssetBundleName: project_assetconfigs_stateactionconfig.ab
-    AssetNames:
-    - Assets/Skill/AssetConfigs/StateActionConfig/CasualStateAction.asset
-    AssetLoadPaths:
-    - Skill/AssetConfigs/StateActionConfig/CasualStateAction
-  - AssetBundleName: project_assetconfigs_stateconfig.ab
-    AssetNames:
-    - Assets/Skill/AssetConfigs/StateConfig/IdleState.asset
-    AssetLoadPaths:
-    - Skill/AssetConfigs/StateConfig/IdleState
-  - AssetBundleName: project_assetconfigs_unitconfig.ab
-    AssetNames:
-    - Assets/Skill/AssetConfigs/UnitConfig/HeroUnit.asset
-    - Assets/Skill/AssetConfigs/UnitConfig/MonsterUnit.asset
-    AssetLoadPaths:
-    - Skill/AssetConfigs/UnitConfig/HeroUnit
-    - Skill/AssetConfigs/UnitConfig/MonsterUnit
-  - AssetBundleName: project_skill_s_scene.ab
-    AssetNames:
-    - Assets/Skill/S_SCene.unity
-    AssetLoadPaths:
-    - Skill/S_SCene
+    - Game/Art/Prefabs/HeroModel
