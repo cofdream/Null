@@ -74,7 +74,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: vertical
-    m_EventTreshold: 0.1
+    m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7906953431153600517}
   m_Solo: 0
@@ -126,10 +126,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7906953431153600517}
-    m_Position: {x: 360, y: 230, z: 0}
+    m_Position: {x: 380, y: 230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6280621272606276376}
-    m_Position: {x: 360, y: 70, z: 0}
+    m_Position: {x: 380, y: 100, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -154,19 +154,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: leftFootForward
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: stance
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -190,7 +190,7 @@ BlendTree:
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 32b75672a9cba7044883e68fc5035b5e, type: 2}
-    m_Threshold: 0.1
+    m_Threshold: 0.25
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -206,7 +206,7 @@ BlendTree:
     m_Mirror: 0
   m_BlendParameter: vertical
   m_BlendParameterY: Blend
-  m_MinThreshold: 0.1
+  m_MinThreshold: 0.25
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0

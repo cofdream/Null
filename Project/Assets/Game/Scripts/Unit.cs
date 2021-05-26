@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class Unit 
+    public class Unit
     {
         public string Name;
 
@@ -21,6 +21,7 @@ namespace Game
         public FSM FSM;
         public AnimatorHashes AnimatorHashes = new AnimatorHashes();
         public AnimatorData AnimatorData;
+        public MovementVarible MovementVarible;
 
         public void Init()
         {
@@ -32,7 +33,6 @@ namespace Game
             var loader = AssetLoader.GetAssetLoader();
             var gameObject = loader.LoadAsset<GameObject>(PrefabPath);
             GameObject = GameObject.Instantiate<GameObject>(gameObject);
-
             FSMManager.AddFSM(FSM);
 
             Rigidbody = GameObject.GetComponent<Rigidbody>();
@@ -40,8 +40,11 @@ namespace Game
 
             AnimatorData = new AnimatorData(Animator);
 
+            MovementVarible = new MovementVarible();
 
             loader.Unload(PrefabPath);
         }
     }
+
+   
 }

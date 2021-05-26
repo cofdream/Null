@@ -3,7 +3,7 @@
 namespace DA.Core.FSM
 {
     [System.Serializable]
-    public class Transition : UnityEngine.ScriptableObject
+    public class Transition 
     {
         public int id;
         public bool Active;

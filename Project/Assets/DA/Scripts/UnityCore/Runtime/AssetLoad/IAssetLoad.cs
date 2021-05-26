@@ -50,9 +50,9 @@ namespace DA.AssetLoad
 
             foreach (var buildAsset in buildRule.BuildAseet)
             {
-                foreach (var assetLoadPath in buildAsset.AssetLoadPaths)
+                foreach (var assetName in buildAsset.AssetNames)
                 {
-                    if (assetLoadPath == assetPath)
+                    if (assetName == assetPath)
                     {
                         return AssetBundleConfig.AssetBundleRoot + buildAsset.AssetBundleName;
                     }

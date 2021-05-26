@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Skill;
 using DA.Core.FSM;
+using DA.AssetLoad;
 
 namespace Game.Test
 {
@@ -21,13 +22,11 @@ namespace Game.Test
 
         private void CreateHeroUnit()
         {
-            MovementVarible movementVarible = new MovementVarible();
-
             Unit unit = new Unit()
             {
                 Name = "Hero",
                 UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300),
-                PrefabPath = "Game/Art/Prefabs/HeroModel.prefab",
+                PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab",
                 FSM = new FSM(),
             };
 
@@ -40,7 +39,7 @@ namespace Game.Test
                     new InputStateAction()
                     {
                         Active = true,
-                        MovementVarible = movementVarible,
+                        MovementVarible = unit.MovementVarible,
                         Unit = unit,
                     },
                     //new CasualStateAction_Ani()
@@ -54,6 +53,7 @@ namespace Game.Test
                 },
             };
 
+
             State LocomotionState = new State()
             {
                 StateAction = new StateAction[]
@@ -61,20 +61,20 @@ namespace Game.Test
                     new InputStateAction()
                     {
                         Active = true,
-                        MovementVarible = movementVarible,
+                        MovementVarible = unit.MovementVarible,
                         Unit = unit,
                     },
                     new MovementForwardStateAction()
                     {
                         Active = true,
-                        MovementVarible = movementVarible,
+                        MovementVarible = unit.MovementVarible,
                         Rigidbody = unit.Rigidbody,
                         Transform = unit.GameObject.transform,
                     },
                     new MovementForward_Ani()
                     {
                         Active = true,
-                        MovementVarible = movementVarible,
+                        MovementVarible = unit.MovementVarible,
                         AnimatorHashes = unit.AnimatorHashes,
                         Transform = unit.GameObject.transform,
                         Animator = unit.Animator,
@@ -91,7 +91,7 @@ namespace Game.Test
                         Condition = new IdleCondition()
                         {
                             Description = "To idle state",
-                            MovementVarible = movementVarible,
+                            MovementVarible = unit.MovementVarible,
                         },
                         TargetState = idleState,
                     },
@@ -107,7 +107,7 @@ namespace Game.Test
                     Condition = new MoveCondition()
                     {
                         Description = "To locomotion state",
-                        MovementVarible = movementVarible,
+                        MovementVarible = unit.MovementVarible,
                     },
                     TargetState = LocomotionState,
                 },
@@ -118,6 +118,17 @@ namespace Game.Test
             unit.FSM.CurrentState = idleState;
 
             AllUnit.Add(unit);
+
+            string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
+            var loader = AssetLoader.GetAssetLoader();
+            CameraBind cameraBind = loader.LoadAsset<CameraBind>(path);
+            cameraBind = GameObject.Instantiate(cameraBind);
+
+            loader.Unload(path);
+
+            cameraBind.CM_VCamera.Follow = unit.GameObject.transform;
+
         }
+
     }
 }

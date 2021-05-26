@@ -3,7 +3,7 @@
 namespace DA.Core.FSM
 {
     [System.Serializable]
-    public class Condition : UnityEngine.ScriptableObject
+    public class Condition 
     {
         public string Description;
         public virtual bool CheckStateChange()

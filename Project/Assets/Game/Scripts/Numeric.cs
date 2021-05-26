@@ -99,4 +99,11 @@ namespace Game
             return value + (int)(value * (percentage / 100f + 0.005f));
         }
     }
+
+    // todo  监听值改变回调
+    //public interface ITemp<T>
+    //{
+    //    T GetValue();
+    //    T ValueChangeCallBak();
+    //}
 }

@@ -2,8 +2,7 @@
 
 namespace DA.Core.FSM
 {
-    [UnityEngine.CreateAssetMenu(menuName = "State/Create State")]
-    public class State : UnityEngine.ScriptableObject
+    public class State 
     {
         public StateAction[] StateAction;
 

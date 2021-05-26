@@ -3,7 +3,7 @@
 namespace DA.Core.FSM
 {
 
-    public class StateAction : UnityEngine.ScriptableObject
+    public class StateAction 
     {
         public bool Active;
 

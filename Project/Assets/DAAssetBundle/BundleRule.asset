@@ -14,9 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildAssetDatas:
   - AssetPath: Assets/Game/Art/Prefabs/HeroModel.prefab
+  - AssetPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
   BuildAseet:
   - AssetBundleName: project_prefabs_heromodel.ab
     AssetNames:
     - Assets/Game/Art/Prefabs/HeroModel.prefab
     AssetLoadPaths:
     - Game/Art/Prefabs/HeroModel
+  - AssetBundleName: project_prefabs_thirdpersoncamera.ab
+    AssetNames:
+    - Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
+    AssetLoadPaths:
+    - Game/Art/Prefabs/ThirdPersonCamera
