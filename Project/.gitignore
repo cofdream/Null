@@ -64,3 +64,6 @@ BuildProto/Generate
 # unity odin
 [Aa]ssets/Plugins/Sirenix/
 Sirenix.meta
+
+# asset bundle build
+BuildAssetBundle/
