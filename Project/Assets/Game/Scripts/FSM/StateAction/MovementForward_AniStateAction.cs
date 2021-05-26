@@ -4,17 +4,18 @@ using UnityEngine;
 
 namespace Game
 {
-    public class MovementForward_Ani : StateAction
+    [System.Serializable]
+    public class MovementForward_AniStateAction : StateAction
     {
         public AnimatorHashes AnimatorHashes;
         public Transform Transform;
         public Animator Animator;
         public AnimatorData AnimatorData;
-        public MovementVarible MovementVarible;
+        public MovementVariables MovementVariables;
         public FloatVariables DeltaTimeVariables;
         public override void OnUpdate()
         {
-            Animator.SetFloat(AnimatorHashes.Vertical, MovementVarible.MoveAmount, 0.2f, DeltaTimeVariables.Value);
+            Animator.SetFloat(AnimatorHashes.Vertical, MovementVariables.MoveAmount, 0.2f, DeltaTimeVariables.Value);
         }
         public override void OnExit()
         {

@@ -2,6 +2,7 @@
 
 namespace DA.Core.FSM
 {
+    [System.Serializable]
     public class State 
     {
         public StateAction[] StateAction;

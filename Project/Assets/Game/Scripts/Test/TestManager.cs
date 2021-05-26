@@ -13,6 +13,8 @@ namespace Game.Test
 
         public TestUIManager TestUIManager;
 
+        [SerializeField] private Unit unit;
+
         private void Start()
         {
             AllUnit = new List<Unit>();
@@ -22,7 +24,7 @@ namespace Game.Test
 
         private void CreateHeroUnit()
         {
-            Unit unit = new Unit()
+            unit = new Unit()
             {
                 Name = "Hero",
                 UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300),
@@ -32,6 +34,17 @@ namespace Game.Test
 
             unit.Init();
 
+            string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
+            var loader = AssetLoader.GetAssetLoader();
+            CameraHangPoint cameraHangPoint = loader.LoadAsset<CameraHangPoint>(path);
+            cameraHangPoint = GameObject.Instantiate(cameraHangPoint);
+
+            loader.Unload(path);
+
+            Transform followTransform = unit.ControllerHangPoint.FollowTarget;
+            cameraHangPoint.CM_VCamera.Follow = followTransform;
+
+
             State idleState = new State()
             {
                 StateAction = new StateAction[]
@@ -39,17 +52,22 @@ namespace Game.Test
                     new InputStateAction()
                     {
                         Active = true,
-                        MovementVarible = unit.MovementVarible,
+                        MovementVariables = unit.MovementVariables,
                         Unit = unit,
                     },
-                    //new CasualStateAction_Ani()
-                    //{
-                    //    Active = true,
-                    //    WaitTime = 1f,
-                    //    DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-                    //    Animator = unit.Animator,
-                    //    AnimatorHashes = unit.AnimatorHashes,
-                    //},
+                    new CasualStateAction_AniStateAction()
+                    {
+                        Active = false,
+                        WaitTime = 1f,
+                        DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+                        Animator = unit.Animator,
+                        AnimatorHashes = unit.AnimatorHashes,
+                    },
+                    new RotateStateAction()
+                    {
+                        Active = true,
+                        target = followTransform,
+                    },
                 },
             };
 
@@ -61,25 +79,38 @@ namespace Game.Test
                     new InputStateAction()
                     {
                         Active = true,
-                        MovementVarible = unit.MovementVarible,
+                        MovementVariables = unit.MovementVariables,
                         Unit = unit,
                     },
                     new MovementForwardStateAction()
                     {
                         Active = true,
-                        MovementVarible = unit.MovementVarible,
+                        MovementVariables = unit.MovementVariables,
                         Rigidbody = unit.Rigidbody,
                         Transform = unit.GameObject.transform,
                     },
-                    new MovementForward_Ani()
+                    new MovementForward_AniStateAction()
                     {
                         Active = true,
-                        MovementVarible = unit.MovementVarible,
+                        MovementVariables = unit.MovementVariables,
                         AnimatorHashes = unit.AnimatorHashes,
                         Transform = unit.GameObject.transform,
                         Animator = unit.Animator,
                         AnimatorData = unit.AnimatorData,
                         DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+                    },
+                    new RotationBaseOnCameraOrientationStateAction()
+                    {
+                        Active = true,
+                        Transform = unit.GameObject.transform,
+                        CameraTransform = cameraHangPoint.transform,
+                        MovementVariables = unit.MovementVariables,
+                        DeltaVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+                    },
+                    new RotateStateAction()
+                    {
+                        Active = true,
+                        target = followTransform,
                     },
                 },
                 Transitions = new Transition[]
@@ -91,7 +122,7 @@ namespace Game.Test
                         Condition = new IdleCondition()
                         {
                             Description = "To idle state",
-                            MovementVarible = unit.MovementVarible,
+                            MovementVarible = unit.MovementVariables,
                         },
                         TargetState = idleState,
                     },
@@ -107,7 +138,7 @@ namespace Game.Test
                     Condition = new MoveCondition()
                     {
                         Description = "To locomotion state",
-                        MovementVarible = unit.MovementVarible,
+                        MovementVariables = unit.MovementVariables,
                     },
                     TargetState = LocomotionState,
                 },
@@ -118,17 +149,6 @@ namespace Game.Test
             unit.FSM.CurrentState = idleState;
 
             AllUnit.Add(unit);
-
-            string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
-            var loader = AssetLoader.GetAssetLoader();
-            CameraBind cameraBind = loader.LoadAsset<CameraBind>(path);
-            cameraBind = GameObject.Instantiate(cameraBind);
-
-            loader.Unload(path);
-
-            cameraBind.CM_VCamera.Follow = unit.GameObject.transform;
-
         }
-
     }
 }

@@ -6,6 +6,7 @@ namespace Game
     [System.Serializable]
     public class SkillCommand
     {
+        [System.NonSerialized]
         public Unit[] Targets;
 
         public UnitAttributeChange[] unitAttributeChanges;

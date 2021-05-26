@@ -3,18 +3,19 @@ using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class InputStateAction : StateAction
     {
         public Unit Unit;
-        public MovementVarible MovementVarible;
+        public MovementVariables MovementVariables;
         public override void OnUpdate()
         {
-            MovementVarible.Horizontal = Input.GetAxis("Horizontal");
-            MovementVarible.Vertical = Input.GetAxis("Vertical");
+            MovementVariables.Horizontal = Input.GetAxis("Horizontal");
+            MovementVariables.Vertical = Input.GetAxis("Vertical");
 
-            MovementVarible.MoveAmount = Mathf.Clamp01(Mathf.Abs(MovementVarible.Horizontal) + Mathf.Abs(MovementVarible.Vertical));
+            MovementVariables.MoveAmount = Mathf.Clamp01(Mathf.Abs(MovementVariables.Horizontal) + Mathf.Abs(MovementVariables.Vertical));
 
-            MovementVarible.MoveSpeed = Unit.UnitAttribute.MoveSpeed;
+            MovementVariables.MoveSpeed = Unit.UnitAttribute.MoveSpeed;
         }
     }
 }

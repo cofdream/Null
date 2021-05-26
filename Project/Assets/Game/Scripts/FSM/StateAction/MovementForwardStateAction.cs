@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class MovementForwardStateAction : StateAction
     {
-        public MovementVarible MovementVarible;
+        public MovementVariables MovementVariables;
         public Rigidbody Rigidbody;
         public Transform Transform;
         public override void OnUpdate()
         {
-            if (MovementVarible.MoveAmount > 0.1f)
+            if (MovementVariables.MoveAmount > 0.1f)
             {
                 Rigidbody.drag = 0;
             }
@@ -19,7 +20,7 @@ namespace Game
                 Rigidbody.drag = 4;
             }
 
-            Vector3 targetVelocity = Transform.forward * MovementVarible.MoveAmount * MovementVarible.MoveSpeed * 0.01f;
+            Vector3 targetVelocity = Transform.forward * MovementVariables.MoveAmount * MovementVariables.MoveSpeed * 0.01f;
 
             //if (states.isGrounded)
             //{

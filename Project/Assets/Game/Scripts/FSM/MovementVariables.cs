@@ -2,7 +2,7 @@
 
 namespace Game
 {
-    public class MovementVarible
+    public class MovementVariables
     {
         public float Horizontal;
         public float Vertical;

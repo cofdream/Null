@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CasualStateAction_Ani : StateAction
+    [System.Serializable]
+    public class CasualStateAction_AniStateAction : StateAction
     {
         public FloatVariables DeltaTimeVariables;
         public Animator Animator;

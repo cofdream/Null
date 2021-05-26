@@ -2,7 +2,7 @@
 
 namespace DA.Core.FSM
 {
-
+    [System.Serializable]
     public class StateAction 
     {
         public bool Active;

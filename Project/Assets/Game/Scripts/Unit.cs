@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class Unit
     {
         public string Name;
@@ -13,15 +14,20 @@ namespace Game
 
         public SKillBase[] SKills;
 
+
+
         public string PrefabPath;
         public GameObject GameObject { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
         public Animator Animator { get; private set; }
 
+        public ControllerHangPoint ControllerHangPoint;
+
+        [Sirenix.OdinInspector.ShowInInspector]
         public FSM FSM;
         public AnimatorHashes AnimatorHashes = new AnimatorHashes();
         public AnimatorData AnimatorData;
-        public MovementVarible MovementVarible;
+        public MovementVariables MovementVariables;
 
         public void Init()
         {
@@ -37,14 +43,15 @@ namespace Game
 
             Rigidbody = GameObject.GetComponent<Rigidbody>();
             Animator = GameObject.GetComponent<Animator>();
+            ControllerHangPoint = GameObject.GetComponent<ControllerHangPoint>();
 
             AnimatorData = new AnimatorData(Animator);
 
-            MovementVarible = new MovementVarible();
+            MovementVariables = new MovementVariables();
 
             loader.Unload(PrefabPath);
         }
     }
 
-   
+
 }

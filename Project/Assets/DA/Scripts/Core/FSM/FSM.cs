@@ -1,6 +1,7 @@
 ﻿
 namespace DA.Core.FSM
 {
+    [System.Serializable]
     public class FSM 
     {
         public State CurrentState;

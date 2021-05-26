@@ -4,10 +4,10 @@ namespace Game
 {
     public class MoveCondition : Condition
     {
-        public MovementVarible MovementVarible;
+        public MovementVariables MovementVariables;
         public override bool CheckStateChange()
         {
-            return MovementVarible.MoveAmount > 0;
+            return MovementVariables.MoveAmount > 0;
         }
     }
 }
