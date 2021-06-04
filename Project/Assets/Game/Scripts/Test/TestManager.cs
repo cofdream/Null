@@ -19,7 +19,9 @@ namespace Game.Test
         {
             AllUnit = new List<Unit>();
 
-            CreateHeroUnit();
+            // CreateHeroUnit();
+
+            CreateHeroUnit_Skill();
         }
 
         private void CreateHeroUnit()
@@ -145,10 +147,21 @@ namespace Game.Test
             };
 
 
+            State CastState = new State()
+            {
+
+            };
+
+
 
             unit.FSM.CurrentState = idleState;
 
             AllUnit.Add(unit);
+        }
+
+        private void CreateHeroUnit_Skill()
+        {
+            Unit unit = new Unit();
         }
     }
 }

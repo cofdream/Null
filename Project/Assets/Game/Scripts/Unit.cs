@@ -52,6 +52,4 @@ namespace Game
             loader.Unload(PrefabPath);
         }
     }
-
-
 }
