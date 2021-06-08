@@ -64,5 +64,11 @@
                 atk.AddBaseValuePercentage(value);
             }
         }
+
+
+        public void Damage(int damageValue, Unit target)
+        {
+
+        }
     }
 }

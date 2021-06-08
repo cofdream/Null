@@ -5,14 +5,14 @@ using System.Collections;
 namespace Game.Skill
 {
     [System.Serializable]
-    public class SKillBase 
+    public class SKill : ScriptableObject
     {
         public int Id;
 
         public string Name;
         public string Introduction;
 
-        public SkillCommand[] Commands;
+        public SkillAction[] SkillActions;
 
         public GetTargetUnitType GetTargetUnitType;
 
@@ -26,9 +26,20 @@ namespace Game.Skill
 
         }
 
-        public void UpdateSkill(float delte)
+        public void CastSkill()
         {
+            foreach (var skillAction in SkillActions)
+            {
+                skillAction.CastSkill();
+            }
+        }
 
+        public void UpdateSkill(float delta)
+        {
+            foreach (var skillAction in SkillActions)
+            {
+                skillAction.UpdateAction(delta);
+            }
         }
     }
 }

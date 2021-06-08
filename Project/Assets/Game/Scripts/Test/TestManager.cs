@@ -34,7 +34,7 @@ namespace Game.Test
                 FSM = new FSM(),
             };
 
-            unit.Init();
+            //unit.Ionit();
 
             string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
             var loader = AssetLoader.GetAssetLoader();
@@ -147,11 +147,30 @@ namespace Game.Test
             };
 
 
-            State CastState = new State()
-            {
 
+            var skillFSM = new FSM();
+            unit.SkillFSM = skillFSM;
+
+            State startCastSkill_State = new State()
+            {
+                StateAction = new StateAction[]
+                {
+                     //模型动画
+                     //特效
+                     //音效
+
+                     //单位位移
+                    new TransformStateAction(),
+
+                     //伤害获取判定
+
+                    //施加伤害
+                    new DamageStateAction(),
+                },
             };
 
+
+            skillFSM.CurrentState = null;
 
 
             unit.FSM.CurrentState = idleState;

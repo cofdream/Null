@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Skill
 {
-    public class SkillTimer : SKillBase
+    public class SkillTimer : SKill
     {
         public float CastStartWait;
         public float CastEndWait;
@@ -32,8 +32,6 @@ namespace Game.Skill
 
                 return true;
             }
-
-            Debug.Log("CD ..");
 
             return false;
         }
@@ -63,7 +61,7 @@ namespace Game.Skill
                 targetUnits = new Unit[] { castUnit };
             }
 
-            foreach (var command in Commands)
+            foreach (var command in SkillActions)
             {
                 command.Targets = targetUnits;
                 command.Execute(castUnit);

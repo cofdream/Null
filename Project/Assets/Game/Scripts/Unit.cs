@@ -6,13 +6,14 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class Unit
+    public class Unit : ScriptableObject
     {
         public string Name;
 
         public UnitAttribute UnitAttribute;
 
-        public SKillBase[] SKills;
+        public SKill[] SKills;
+        public FSM SkillFSM;
 
 
 
@@ -50,6 +51,14 @@ namespace Game
             MovementVariables = new MovementVariables();
 
             loader.Unload(PrefabPath);
+        }
+
+        public void OnUpdate()
+        {
+            foreach (var sKill in SKills)
+            {
+                sKill.UpdateSkill(Time.deltaTime);
+            }
         }
     }
 }

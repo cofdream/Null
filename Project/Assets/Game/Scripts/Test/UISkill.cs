@@ -12,7 +12,7 @@ namespace Game.Test
         public Text CD;
 
         private SkillTimer skillTimer;
-        public void Init(SKillBase sKill)
+        public void Init(SKill sKill)
         {
             skillTimer = sKill as SkillTimer;
 

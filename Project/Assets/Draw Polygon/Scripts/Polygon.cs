@@ -16,6 +16,8 @@ namespace DA.Draw
         [Range(0, 1)]
         public float[] Proxy;
 
+        public bool isRandom;
+
         void Awake()
         {
             mesh = GetComponent<MeshFilter>().mesh;
@@ -23,7 +25,14 @@ namespace DA.Draw
             Proxy = new float[SideCount];
             for (int i = 0; i < SideCount; i++)
             {
-                Proxy[i] = Random.Range(0, 1f);
+                if (isRandom)
+                {
+                    Proxy[i] = Random.Range(0, 1f);
+                }
+                else
+                {
+                    Proxy[i] = 1;
+                }
             }
 
             DrawPolygon();
