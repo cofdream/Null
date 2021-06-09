@@ -68,7 +68,7 @@
 
         public void Damage(int damageValue, Unit target)
         {
-
+            health.RemoveBaseValue(damageValue);
         }
     }
 }

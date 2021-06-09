@@ -13,9 +13,6 @@ namespace Game
         public UnitAttribute UnitAttribute;
 
         public SKill[] SKills;
-        public FSM SkillFSM;
-
-
 
         public string PrefabPath;
         public GameObject GameObject { get; private set; }
@@ -26,13 +23,18 @@ namespace Game
 
         [Sirenix.OdinInspector.ShowInInspector]
         public FSM FSM;
-        public AnimatorHashes AnimatorHashes = new AnimatorHashes();
+        public AnimatorHashes AnimatorHashes;
         public AnimatorData AnimatorData;
         public MovementVariables MovementVariables;
 
         public void Init()
         {
             LoadGameObjec();
+
+            foreach (var sKill in SKills)
+            {
+                sKill.Executor.Value = this;
+            }
         }
 
         private void LoadGameObjec()
@@ -45,6 +47,8 @@ namespace Game
             Rigidbody = GameObject.GetComponent<Rigidbody>();
             Animator = GameObject.GetComponent<Animator>();
             ControllerHangPoint = GameObject.GetComponent<ControllerHangPoint>();
+
+            AnimatorHashes = new AnimatorHashes();
 
             AnimatorData = new AnimatorData(Animator);
 

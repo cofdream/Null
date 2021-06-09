@@ -11,10 +11,10 @@ namespace Game.Test
         public Text Desc;
         public Text CD;
 
-        private SkillTimer skillTimer;
+        public SKill SKill;
         public void Init(SKill sKill)
         {
-            skillTimer = sKill as SkillTimer;
+            SKill = sKill;
 
             Name.text = sKill.Name;
             Desc.text = sKill.Introduction;
@@ -25,15 +25,15 @@ namespace Game.Test
 
         public void CastSkill()
         {
-            bool iscd = skillTimer.Cast(TestUIManager.selectUnit);
+            SKill.CastSkill();
         }
 
         public void Update()
         {
-            if (skillTimer != null)
-            {
-                CD.text = skillTimer.SkillCD.ToString();
-            }
+            //if (SKill != null)
+            //{
+            //    CD.text = SKill.SkillCD.ToString();
+            //}
         }
-    } 
+    }
 }

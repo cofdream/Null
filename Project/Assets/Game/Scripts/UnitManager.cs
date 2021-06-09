@@ -4,14 +4,6 @@ using UnityEngine;
 
 namespace Game
 {
-    public enum GetTargetUnitType
-    {
-        Self,
-        SelfTeam,
-        Other,
-        OtherTeam,
-    }
-
     public class UnitManager
     {
         private static UnitManager instance;

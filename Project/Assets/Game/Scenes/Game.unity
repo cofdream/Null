@@ -419,36 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TestUIManager: {fileID: 2071270330}
-  unit:
-    Name: 
-    UnitAttribute:
-      maxHealth:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      health:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      atk:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      def:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      moveSpeed:
-        value: 0
-        dirty: 0
-        baseValue: 0
-    SKills: []
-    PrefabPath: 
-    ControllerHangPoint: {fileID: 0}
-    FSM:
-      CurrentState:
-        StateAction: []
-        Transitions: []
+  unit: {fileID: 11400000, guid: 74e109813903b534a824a26d2c9a6fec, type: 2}
 --- !u!4 &456368486
 Transform:
   m_ObjectHideFlags: 0
@@ -1921,36 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b2861d33f23346a0c1b8ade175d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit:
-    Name: 
-    UnitAttribute:
-      maxHealth:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      health:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      atk:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      def:
-        value: 0
-        dirty: 0
-        baseValue: 0
-      moveSpeed:
-        value: 0
-        dirty: 0
-        baseValue: 0
-    SKills: []
-    PrefabPath: 
-    ControllerHangPoint: {fileID: 0}
-    FSM:
-      CurrentState:
-        StateAction: []
-        Transitions: []
+  Unit: {fileID: 0}
   helath: {fileID: 1104893337}
   maxhelath: {fileID: 511177983}
   atk: {fileID: 56468741}
@@ -2053,7 +1995,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00002630757}
+  m_AnchoredPosition: {x: 0, y: 0.00066448445}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1688112656
@@ -2506,5 +2448,5 @@ MonoBehaviour:
   unitsScrollView: {fileID: 1333441416}
   uiSkill: {fileID: 6483358064026674471, guid: 47086eed6e568214ea5926c14e756907, type: 3}
   skillsScrollView: {fileID: 195989015}
-  drawUnitAttribute: {fileID: 0}
-  TestManager: {fileID: 0}
+  drawUnitAttribute: {fileID: 1674607376}
+  TestManager: {fileID: 456368485}

@@ -22,8 +22,8 @@ namespace Game.Test
         private void Awake()
         {
             Instance = this;
-        }
 
+        }
 
         public void ReLoadUnits(List<Unit> allUnit)
         {
@@ -63,7 +63,6 @@ namespace Game.Test
             {
                 var temp = Instantiate(uiSkill, skillsScrollView.content.transform);
                 temp.Init(sKill);
-                sKill.Init();
             }
         }
     }

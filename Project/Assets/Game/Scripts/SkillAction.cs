@@ -6,18 +6,18 @@ namespace Game
     [System.Serializable]
     public class SkillAction : ScriptableObject
     {
-        public bool Active;
+        public bool Active = true;
 
-        public string Name;
-        public string Introduction;
+        public string Name = "SkillAction";
+        public string Introduction = "Null...";
 
 
-        public void CastSkill()
+        public virtual void CastSkill()
         {
 
         }
 
-        public void UpdateAction(float delta)
+        public virtual void UpdateAction(float delta)
         {
 
         }

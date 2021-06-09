@@ -19,22 +19,22 @@ namespace Game.Test
         {
             AllUnit = new List<Unit>();
 
-            // CreateHeroUnit();
+            CreateHeroUnit();
 
-            CreateHeroUnit_Skill();
+            TestUIManager.ReLoadUnits(AllUnit);
         }
 
         private void CreateHeroUnit()
         {
-            unit = new Unit()
-            {
-                Name = "Hero",
-                UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300),
-                PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab",
-                FSM = new FSM(),
-            };
+          
+            var unit = Instantiate<Unit>(this.unit);
 
-            //unit.Ionit();
+            unit.Name = "Hero";
+            unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
+            unit.PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab";
+            unit.FSM = new FSM();
+
+            unit.Init();
 
             string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
             var loader = AssetLoader.GetAssetLoader();
@@ -146,41 +146,10 @@ namespace Game.Test
                 },
             };
 
-
-
-            var skillFSM = new FSM();
-            unit.SkillFSM = skillFSM;
-
-            State startCastSkill_State = new State()
-            {
-                StateAction = new StateAction[]
-                {
-                     //模型动画
-                     //特效
-                     //音效
-
-                     //单位位移
-                    new TransformStateAction(),
-
-                     //伤害获取判定
-
-                    //施加伤害
-                    new DamageStateAction(),
-                },
-            };
-
-
-            skillFSM.CurrentState = null;
-
-
             unit.FSM.CurrentState = idleState;
 
             AllUnit.Add(unit);
         }
 
-        private void CreateHeroUnit_Skill()
-        {
-            Unit unit = new Unit();
-        }
     }
 }

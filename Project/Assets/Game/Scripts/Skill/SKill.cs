@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using DA.Timer;
 using System.Collections;
+using Game.Variable;
 
 namespace Game.Skill
 {
@@ -12,25 +14,18 @@ namespace Game.Skill
         public string Name;
         public string Introduction;
 
+        public UnitVariable Executor;
+
         public SkillAction[] SkillActions;
-
-        public GetTargetUnitType GetTargetUnitType;
-
-        public virtual bool Cast(Unit castUnit)
-        {
-            return true;
-        }
-
-        public virtual void Init()
-        {
-
-        }
 
         public void CastSkill()
         {
             foreach (var skillAction in SkillActions)
             {
-                skillAction.CastSkill();
+                if (skillAction.Active)
+                {
+                    skillAction.CastSkill();
+                }
             }
         }
 
@@ -38,8 +33,18 @@ namespace Game.Skill
         {
             foreach (var skillAction in SkillActions)
             {
-                skillAction.UpdateAction(delta);
+                if (skillAction.Active)
+                {
+                    skillAction.UpdateAction(delta);
+                }
             }
+        }
+
+        public void Instantiate()
+        {
+           Executor = Instantiate(Executor);
+
+
         }
     }
 }

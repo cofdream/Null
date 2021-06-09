@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9b993af7a6c18c478a72df0f4369198, type: 3}
-  m_Name: NewAsset 1
+  m_Script: {fileID: 11500000, guid: 8279f05a9bb686d47834df2d6ca77b30, type: 3}
+  m_Name: ExecutorVariable
   m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  Introduction: 
-  Commands: []
-  GetTargetUnitType: 0
+  Value: {fileID: 0}
