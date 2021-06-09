@@ -3,6 +3,7 @@ using UnityEngine;
 using DA.Timer;
 using System.Collections;
 using Game.Variable;
+using System.Collections.Generic;
 
 namespace Game.Skill
 {
@@ -40,11 +41,21 @@ namespace Game.Skill
             }
         }
 
-        public void Instantiate()
+        public void InstantiateDependencies(Dictionary<ScriptableObject, ScriptableObject> AllDependencies)
         {
-           Executor = Instantiate(Executor);
+            if (AllDependencies.TryGetValue(Executor, out ScriptableObject scriptableObject))
+            {
+                Executor = scriptableObject as UnitVariable;
 
-
+                foreach (var skillAction in SkillActions)
+                {
+                    skillAction.InstantiateDependencies(AllDependencies);
+                }
+            }
+            else
+            {
+                Debug.LogError("-------------");
+            }
         }
     }
 }

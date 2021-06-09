@@ -12,5 +12,25 @@ namespace Game.Skill
         {
             Target.Value = Executor.Value;
         }
+        public override void InstantiateDependencies(System.Collections.Generic.Dictionary<ScriptableObject, ScriptableObject> allDependencies)
+        {
+            if (allDependencies.TryGetValue(Executor, out ScriptableObject scriptableObject))
+            {
+                Executor = scriptableObject as UnitVariable;
+            }
+            else
+            {
+                Debug.LogError("------------------------");
+            }
+
+            if (allDependencies.TryGetValue(Target, out scriptableObject))
+            {
+                Target = scriptableObject as UnitVariable;
+            }
+            else
+            {
+                Debug.LogError("------------------------");
+            }
+        }
     }
 }

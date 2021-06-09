@@ -15,6 +15,8 @@ namespace Game.Test
 
         [SerializeField] private Unit unit;
 
+        public Unit unitClone;
+
         private void Start()
         {
             AllUnit = new List<Unit>();
@@ -26,8 +28,10 @@ namespace Game.Test
 
         private void CreateHeroUnit()
         {
-          
-            var unit = Instantiate<Unit>(this.unit);
+            this.unit.GetDependencies();
+            Dictionary<ScriptableObject, ScriptableObject> AllDependencies = this.unit.AllDependencies;
+             var unit = unitClone = Instantiate<Unit>(this.unit);
+            unit.AllDependencies = AllDependencies;
 
             unit.Name = "Hero";
             unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);

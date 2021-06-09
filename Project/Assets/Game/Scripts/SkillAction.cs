@@ -1,4 +1,6 @@
 ﻿using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -20,6 +22,11 @@ namespace Game
         public virtual void UpdateAction(float delta)
         {
 
+        }
+
+        public virtual void InstantiateDependencies(Dictionary<ScriptableObject, ScriptableObject> allDependencies)
+        {
+            
         }
     }
 }

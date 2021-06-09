@@ -36,10 +36,6 @@ MonoBehaviour:
       baseValue: 0
   SKills:
   - {fileID: 11400000, guid: 71d2908d8ba8257478b247435149188c, type: 2}
-  SkillFSM:
-    CurrentState:
-      StateAction: []
-      Transitions: []
   PrefabPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
   ControllerHangPoint: {fileID: 0}
   FSM:
