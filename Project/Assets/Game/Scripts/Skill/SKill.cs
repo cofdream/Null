@@ -1,14 +1,12 @@
 ﻿using System;
 using UnityEngine;
-using DA.Timer;
-using System.Collections;
 using Game.Variable;
 using System.Collections.Generic;
 
 namespace Game.Skill
 {
     [System.Serializable]
-    public class SKill : ScriptableObject
+    public class Skill : DAScriptableObject
     {
         public int Id;
 
@@ -19,6 +17,10 @@ namespace Game.Skill
 
         public SkillAction[] SkillActions;
 
+        public void Init(Unit unit)
+        {
+            Executor.Value = unit;
+        }
         public void CastSkill()
         {
             foreach (var skillAction in SkillActions)
@@ -41,20 +43,17 @@ namespace Game.Skill
             }
         }
 
-        public void InstantiateDependencies(Dictionary<ScriptableObject, ScriptableObject> AllDependencies)
-        {
-            if (AllDependencies.TryGetValue(Executor, out ScriptableObject scriptableObject))
-            {
-                Executor = scriptableObject as UnitVariable;
 
-                foreach (var skillAction in SkillActions)
-                {
-                    skillAction.InstantiateDependencies(AllDependencies);
-                }
-            }
-            else
+        public override void CloneVariables(Dictionary<int, CloneData> allDependencies)
+        {
+            Executor = GetCloneInstance(allDependencies, Executor);
+
+            for (int i = 0; i < SkillActions.Length; i++)
             {
-                Debug.LogError("-------------");
+                var skillAction = GetCloneInstance(allDependencies, SkillActions[i]);
+                skillAction.CloneVariables(allDependencies);
+
+                SkillActions[i] = skillAction;
             }
         }
     }

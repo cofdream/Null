@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d607787ed83643439997ca34ee12640, type: 3}
   m_Name: Unit
   m_EditorClassIdentifier: 
+  InstanceID: 73174
   Name: Unit
   UnitAttribute:
     maxHealth:
@@ -34,7 +35,7 @@ MonoBehaviour:
       value: 0
       dirty: 0
       baseValue: 0
-  SKills:
+  Skills:
   - {fileID: 11400000, guid: 71d2908d8ba8257478b247435149188c, type: 2}
   PrefabPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
   ControllerHangPoint: {fileID: 0}

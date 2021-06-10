@@ -11,8 +11,8 @@ namespace Game.Test
         public Text Desc;
         public Text CD;
 
-        public SKill SKill;
-        public void Init(SKill sKill)
+        public Skill.Skill SKill;
+        public void Init(Skill.Skill sKill)
         {
             SKill = sKill;
 

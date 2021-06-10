@@ -15,23 +15,34 @@ namespace Game.Test
 
         [SerializeField] private Unit unit;
 
-        public Unit unitClone;
+        public Unit unitHero;
+
+        public List<Unit> unitEnemys;
+        public List<Unit> unitFriends;
+        public List<Unit> unitOthers;
 
         private void Start()
         {
             AllUnit = new List<Unit>();
 
+            var time = System.DateTime.Now;
             CreateHeroUnit();
+            Debug.Log((System.DateTime.Now - time).TotalSeconds);
+
+            AllUnit.AddRange(unitEnemys);
+            AllUnit.AddRange(unitFriends);
+            AllUnit.AddRange(unitOthers);
+
+
+
 
             TestUIManager.ReLoadUnits(AllUnit);
         }
 
         private void CreateHeroUnit()
         {
-            this.unit.GetDependencies();
-            Dictionary<ScriptableObject, ScriptableObject> AllDependencies = this.unit.AllDependencies;
-             var unit = unitClone = Instantiate<Unit>(this.unit);
-            unit.AllDependencies = AllDependencies;
+            var unit = unitHero = Instantiate<Unit>(this.unit);
+            unit.AllDependencies = this.unit.GetDependencies();
 
             unit.Name = "Hero";
             unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
@@ -151,8 +162,19 @@ namespace Game.Test
             };
 
             unit.FSM.CurrentState = idleState;
+        }
 
-            AllUnit.Add(unit);
+        private void CreateEnemys()
+        {
+            unitEnemys = new List<Unit>();
+        }
+        private void CreateFriends()
+        {
+            unitFriends = new List<Unit>() { unitHero };
+        }
+        private void CreateOthers()
+        {
+            unitOthers = new List<Unit>();
         }
 
     }

@@ -3,8 +3,9 @@
 namespace Game.Variable
 {
     [System.Serializable]
-    public class UnitVariable : ScriptableObject
+    public class UnitVariable : DAScriptableObject
     {
+
         public Unit Value;
     }
 }

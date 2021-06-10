@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38aaf2ed03e50d84ba422a52e805c2f4, type: 3}
   m_Name: ApplyDamage
   m_EditorClassIdentifier: 
-  Active: 0
-  Name: SkillAction
+  InstanceID: -137810
+  Active: 1
+  Name: Apply_SkillAction
   Introduction: Null...
   Executor: {fileID: 11400000, guid: 31599ca1bfeb41c45beee919f3f220a2, type: 2}
   Target: {fileID: 11400000, guid: 3df4868bbf6af0f4a86b74a2605d1d38, type: 2}

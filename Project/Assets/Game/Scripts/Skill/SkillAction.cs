@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class SkillAction : ScriptableObject
+    public class SkillAction : DAScriptableObject
     {
         public bool Active = true;
 
@@ -22,11 +22,6 @@ namespace Game
         public virtual void UpdateAction(float delta)
         {
 
-        }
-
-        public virtual void InstantiateDependencies(Dictionary<ScriptableObject, ScriptableObject> allDependencies)
-        {
-            
         }
     }
 }

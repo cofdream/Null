@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b993af7a6c18c478a72df0f4369198, type: 3}
   m_Name: Skill
   m_EditorClassIdentifier: 
-  Id: 0
-  Name: 
-  Introduction: 
+  InstanceID: -124680
+  Id: 1001
+  Name: skill_name
+  Introduction: skill_introduction
   Executor: {fileID: 11400000, guid: 31599ca1bfeb41c45beee919f3f220a2, type: 2}
   SkillActions:
   - {fileID: 11400000, guid: 92e4753a6c2ab5d45bdce7af3ff42e4f, type: 2}

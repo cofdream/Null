@@ -59,7 +59,7 @@ namespace Game.Test
             {
                 Destroy(item.gameObject);
             }
-            foreach (var sKill in selectUnit.SKills)
+            foreach (var sKill in selectUnit.Skills)
             {
                 var temp = Instantiate(uiSkill, skillsScrollView.content.transform);
                 temp.Init(sKill);

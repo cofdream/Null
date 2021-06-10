@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d21f7730d67ae348b6cca565e94d6a2, type: 3}
   m_Name: DamageVariable
   m_EditorClassIdentifier: 
+  InstanceID: -156080
   Value: 0

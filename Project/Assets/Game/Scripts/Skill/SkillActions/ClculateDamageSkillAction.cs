@@ -1,4 +1,5 @@
 ﻿using Game.Variable;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Skill
@@ -18,33 +19,11 @@ namespace Game.Skill
         {
             DamageVariable.Value = BaseDamage;
         }
-        public override void InstantiateDependencies(System.Collections.Generic.Dictionary<ScriptableObject, ScriptableObject> allDependencies)
+        public override void CloneVariables(Dictionary<int, CloneData> allDependencies)
         {
-            if (allDependencies.TryGetValue(Executor, out ScriptableObject scriptableObject))
-            {
-                Executor = scriptableObject as UnitVariable;
-            }
-            else
-            {
-                Debug.LogError("------------------------");
-            }
-
-            if (allDependencies.TryGetValue(Target, out scriptableObject))
-            {
-                Target = scriptableObject as UnitVariable;
-            }
-            else
-            {
-                Debug.LogError("------------------------");
-            }
-            if (allDependencies.TryGetValue(DamageVariable, out scriptableObject))
-            {
-                DamageVariable = scriptableObject as IntVariable;
-            }
-            else
-            {
-                Debug.LogError("------------------------");
-            }
+            Executor = GetCloneInstance(allDependencies, Executor);
+            Target = GetCloneInstance(allDependencies, Target);
+            DamageVariable = GetCloneInstance(allDependencies, DamageVariable);
         }
     }
 }

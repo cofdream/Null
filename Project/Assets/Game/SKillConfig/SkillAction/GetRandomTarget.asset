@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399240648d1310a47ae174df6e3cc26a, type: 3}
   m_Name: GetRandomTarget
   m_EditorClassIdentifier: 
-  Active: 0
+  InstanceID: -165896
+  Active: 1
   Name: SkillAction
   Introduction: Null...
   Executor: {fileID: 11400000, guid: 31599ca1bfeb41c45beee919f3f220a2, type: 2}
