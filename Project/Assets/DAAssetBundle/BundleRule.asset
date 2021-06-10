@@ -15,14 +15,15 @@ MonoBehaviour:
   BuildAssetDatas:
   - AssetPath: Assets/Game/Art/Prefabs/HeroModel.prefab
   - AssetPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
+  - AssetPath: Assets/Game/Art/Prefabs/UI/UIHealth.prefab
   BuildAseet:
   - AssetBundleName: project_prefabs_heromodel.ab
     AssetNames:
     - Assets/Game/Art/Prefabs/HeroModel.prefab
     AssetLoadPaths:
     - Game/Art/Prefabs/HeroModel
-  - AssetBundleName: project_prefabs_thirdpersoncamera.ab
+  - AssetBundleName: project_ui_uihealth.ab
     AssetNames:
-    - Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
+    - Assets/Game/Art/Prefabs/UI/UIHealth.prefab
     AssetLoadPaths:
-    - Game/Art/Prefabs/ThirdPersonCamera
+    - Game/Art/Prefabs/UI/UIHealth

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d607787ed83643439997ca34ee12640, type: 3}
-  m_Name: Unit
+  m_Name: UnitHero
   m_EditorClassIdentifier: 
   InstanceID: 73174
-  Name: Unit
+  Name: UnitHero
   UnitAttribute:
     maxHealth:
       value: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
       baseValue: 0
   Skills:
   - {fileID: 11400000, guid: 71d2908d8ba8257478b247435149188c, type: 2}
-  PrefabPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
+  PrefabPath: Assets/Game/Art/Prefabs/HeroModel.prefab
   ControllerHangPoint: {fileID: 0}
   FSM:
     CurrentState:

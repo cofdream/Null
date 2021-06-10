@@ -1,7 +1,5 @@
-﻿using Sirenix.OdinInspector;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Game.Skill;
 using DA.Core.FSM;
 using DA.AssetLoad;
 
@@ -9,17 +7,24 @@ namespace Game.Test
 {
     public class TestManager : MonoBehaviour
     {
-        private List<Unit> AllUnit;
+        public static TestManager Instance { get; private set; }
 
-        public TestUIManager TestUIManager;
+        [SerializeField] private Unit unitHero;
+        [SerializeField] private Unit unitEnemy;
 
-        [SerializeField] private Unit unit;
+        public Unit unitHeroClone;
+        public CameraHangPoint CameraHangPoint;
 
-        public Unit unitHero;
+        public List<Unit> AllUnit;
 
         public List<Unit> unitEnemys;
         public List<Unit> unitFriends;
         public List<Unit> unitOthers;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
@@ -27,32 +32,41 @@ namespace Game.Test
 
             var time = System.DateTime.Now;
             CreateHeroUnit();
-            Debug.Log((System.DateTime.Now - time).TotalSeconds);
+            Debug.Log("Hero" + (System.DateTime.Now - time).TotalSeconds);
 
-            AllUnit.AddRange(unitEnemys);
+            time = System.DateTime.Now;
+            CreateFriends();
+            Debug.Log("Friends" + (System.DateTime.Now - time).TotalSeconds);
+
+            time = System.DateTime.Now;
+           // CreateEnemys();
+            Debug.Log("Enemys" + (System.DateTime.Now - time).TotalSeconds);
+
+            time = System.DateTime.Now;
+            CreateOthers();
+            Debug.Log("Others" + (System.DateTime.Now - time).TotalSeconds);
+
             AllUnit.AddRange(unitFriends);
+            AllUnit.AddRange(unitEnemys);
             AllUnit.AddRange(unitOthers);
 
-
-
-
-            TestUIManager.ReLoadUnits(AllUnit);
+            TestUIManager.Instance.ReLoadUnits(AllUnit);
         }
 
         private void CreateHeroUnit()
         {
-            var unit = unitHero = Instantiate<Unit>(this.unit);
-            unit.AllDependencies = this.unit.GetDependencies();
+            var unit = unitHeroClone = Instantiate(unitHero);
+            unit.AllDependencies = unitHero.GetDependencies();
 
-            unit.Name = "Hero";
             unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
-            unit.PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab";
+            unit.Name = "Hero";
             unit.FSM = new FSM();
 
-            unit.Init();
+            unit.Init(Vector3.zero, Quaternion.identity);
 
             string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
             var loader = AssetLoader.GetAssetLoader();
+
             CameraHangPoint cameraHangPoint = loader.LoadAsset<CameraHangPoint>(path);
             cameraHangPoint = GameObject.Instantiate(cameraHangPoint);
 
@@ -167,15 +181,27 @@ namespace Game.Test
         private void CreateEnemys()
         {
             unitEnemys = new List<Unit>();
+
+            for (int i = 1; i <= 5; i++)
+            {
+                var unit = Instantiate<Unit>(unitEnemy);
+                unit.AllDependencies = unitEnemy.GetDependencies();
+
+                unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
+                unit.Name = "Enemy " + i;
+                unit.Init(new Vector3(Random.Range(-5, 10), 0, Random.Range(-5, 5)), Quaternion.identity);
+
+                unitEnemys.Add(unit);
+            }
+
         }
         private void CreateFriends()
         {
-            unitFriends = new List<Unit>() { unitHero };
+            unitFriends = new List<Unit>() { unitHeroClone };
         }
         private void CreateOthers()
         {
             unitOthers = new List<Unit>();
         }
-
     }
 }

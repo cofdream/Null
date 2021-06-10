@@ -53,7 +53,7 @@ namespace Game
         }
 
 
-        public void Init()
+        public void Init(Vector3 bornPosition, Quaternion rotation)
         {
             foreach (var cloneData in AllDependencies.Values)
             {
@@ -67,14 +67,15 @@ namespace Game
                 skill.Init(this);
             }
 
-            LoadGameObjec();
+            LoadGameObjec(bornPosition, rotation);
         }
 
-        private void LoadGameObjec()
+        private void LoadGameObjec(Vector3 bornPosition, Quaternion rotation)
         {
             var loader = AssetLoader.GetAssetLoader();
             var gameObject = loader.LoadAsset<GameObject>(PrefabPath);
-            GameObject = GameObject.Instantiate<GameObject>(gameObject);
+            GameObject = GameObject.Instantiate<GameObject>(gameObject, bornPosition, rotation);
+            GameObject.name = Name;
             FSMManager.AddFSM(FSM);
 
             Rigidbody = GameObject.GetComponent<Rigidbody>();

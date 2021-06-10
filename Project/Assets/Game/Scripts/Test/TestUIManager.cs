@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DA.AssetLoad;
+using Game.UI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +8,9 @@ namespace Game.Test
 {
     public class TestUIManager : MonoBehaviour
     {
+        public static TestUIManager Instance { get; private set; }
+
+
         public UIUnit uiUnit;
         public ScrollRect unitsScrollView;
 
@@ -14,29 +19,33 @@ namespace Game.Test
 
         public DrawUnitAttribute drawUnitAttribute;
 
-        public TestManager TestManager;
+        public Transform helthTransform;
+        public string HealthPerabPath;
 
         public static Unit selectUnit;
-        public static TestUIManager Instance;
+
+        public Camera HeroCamera;
 
         private void Awake()
         {
             Instance = this;
-
         }
+
 
         public void ReLoadUnits(List<Unit> allUnit)
         {
-            foreach (Transform item in unitsScrollView.content.transform)
-            {
-                Destroy(item.gameObject);
-            }
+            var loader = AssetLoader.GetAssetLoader();
 
+            var healthPrefab = loader.LoadAsset<UIHealth>(HealthPerabPath);
             foreach (var unit in allUnit)
             {
                 var temp = Instantiate(uiUnit, unitsScrollView.content.transform);
                 temp.Init(unit);
+
+                var uiHealth = Instantiate(healthPrefab, helthTransform.transform);
+                uiHealth.Init(unit);
             }
+
 
             SelectUnit(allUnit[0]);
         }

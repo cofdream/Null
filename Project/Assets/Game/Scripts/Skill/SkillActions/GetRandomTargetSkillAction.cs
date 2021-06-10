@@ -1,6 +1,7 @@
 ﻿using Game.Variable;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Game.Skill
 {
@@ -11,7 +12,19 @@ namespace Game.Skill
 
         public override void CastSkill()
         {
-            Target.Value = Executor.Value;
+            var allUnit = Test.TestManager.Instance.AllUnit.Where(
+                (unit) =>
+                {
+                    return unit != Target.Value;
+                }
+                ).ToArray();
+
+            if (allUnit.Length == 0)
+            {
+                return;
+            }
+            Target.Value = allUnit[Random.Range(0, allUnit.Length)];
+
         }
         public override void CloneVariables(Dictionary<int, CloneData> allDependencies)
         {

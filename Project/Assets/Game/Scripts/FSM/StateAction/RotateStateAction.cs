@@ -21,6 +21,7 @@ namespace Game
 
         public override void OnUpdate()
         {
+            return;
             // 左右旋转有些问题，暂时关闭
             //x += Input.GetAxis("Mouse X");
             y += Input.GetAxis("Mouse Y");

@@ -13,6 +13,10 @@ namespace Game.Skill
 
         public override void CastSkill()
         {
+            if (Executor.Value == null)
+            {
+                return;
+            }
             Target.Value.UnitAttribute.Damage(DamageVariable.Value, Executor.Value);
         }
 
