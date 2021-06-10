@@ -23,19 +23,29 @@ namespace Game.UI
         {
             healthFg.fillAmount = (float)Unit.UnitAttribute.Health / Unit.UnitAttribute.MaxHealth;
 
+            UpdatePosition();
+        }
+        private void UpdatePosition()
+        {
+            if (Unit.GameObject.name == "Hero")
+            {
+                return;
+            }
+
+            Debug.Log(Unit.GameObject.name);
             Vector3 pos = Unit.GameObject.transform.position;
 
             Vector2 anchoredPosition = TestUIManager.Instance.HeroCamera.WorldToScreenPoint(pos);
-            anchoredPosition.x = anchoredPosition.x - Screen.width;
-            //anchoredPosition.y -= Screen.height * 0.5f;
+            anchoredPosition.x = anchoredPosition.x - Screen.width * 0.5f;
+            anchoredPosition.y = anchoredPosition.y - Screen.height * 0.5f;
 
             rectTransform.anchoredPosition = anchoredPosition;
-
         }
-
         internal void Init(Unit unit)
         {
             Unit = unit;
+
+            UpdatePosition();
         }
     }
 }

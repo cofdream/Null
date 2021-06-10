@@ -39,7 +39,7 @@ namespace Game.Test
             Debug.Log("Friends" + (System.DateTime.Now - time).TotalSeconds);
 
             time = System.DateTime.Now;
-           // CreateEnemys();
+            CreateEnemys();
             Debug.Log("Enemys" + (System.DateTime.Now - time).TotalSeconds);
 
             time = System.DateTime.Now;
