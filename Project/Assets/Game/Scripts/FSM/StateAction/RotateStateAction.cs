@@ -24,12 +24,12 @@ namespace Game
             return;
             // 左右旋转有些问题，暂时关闭
             //x += Input.GetAxis("Mouse X");
-            y += Input.GetAxis("Mouse Y");
+            //y += Input.GetAxis("Mouse Y");
 
             //x = Mathf.Clamp(x, -35f, 35f);
-            y = Mathf.Clamp(y, -35f, 35f);
+            //y = Mathf.Clamp(y, -35f, 35f);
 
-            target.localRotation = Quaternion.Euler(-y, x, 0);
+            //target.localRotation = Quaternion.Euler(-y, x, 0);
         }
     }
 }

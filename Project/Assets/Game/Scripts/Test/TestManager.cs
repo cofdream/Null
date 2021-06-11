@@ -75,6 +75,8 @@ namespace Game.Test
             Transform followTransform = unit.ControllerHangPoint.FollowTarget;
             cameraHangPoint.CM_VCamera.Follow = followTransform;
 
+            TestUIManager.Instance.HeroCamera = cameraHangPoint.Camera;
+
 
             State idleState = new State()
             {

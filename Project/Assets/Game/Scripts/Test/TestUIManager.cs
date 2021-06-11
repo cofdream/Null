@@ -36,7 +36,7 @@ namespace Game.Test
         {
             var loader = AssetLoader.GetAssetLoader();
 
-            var healthPrefab = loader.LoadAsset<UIHealth>(HealthPerabPath);
+            var healthPrefab = loader.LoadAsset<UIHealthBar>(HealthPerabPath);
             foreach (var unit in allUnit)
             {
                 var temp = Instantiate(uiUnit, unitsScrollView.content.transform);
