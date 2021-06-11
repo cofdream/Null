@@ -21,6 +21,8 @@ namespace Game.Test
         public List<Unit> unitFriends;
         public List<Unit> unitOthers;
 
+        public bool IsLog;
+        public bool IsCreateEnemys;
         private void Awake()
         {
             Instance = this;
@@ -32,19 +34,20 @@ namespace Game.Test
 
             var time = System.DateTime.Now;
             CreateHeroUnit();
-            Debug.Log("Hero" + (System.DateTime.Now - time).TotalSeconds);
+            if (IsLog) Debug.Log("Create Hero time:" + (System.DateTime.Now - time).TotalSeconds);
 
             time = System.DateTime.Now;
             CreateFriends();
-            Debug.Log("Friends" + (System.DateTime.Now - time).TotalSeconds);
+            if (IsLog) Debug.Log("Create Friends time:" + (System.DateTime.Now - time).TotalSeconds);
+
 
             time = System.DateTime.Now;
-            CreateEnemys();
-            Debug.Log("Enemys" + (System.DateTime.Now - time).TotalSeconds);
+            if (IsCreateEnemys) CreateEnemys();
+            if (IsLog) Debug.Log("Create Enemys time:" + (System.DateTime.Now - time).TotalSeconds);
 
             time = System.DateTime.Now;
             CreateOthers();
-            Debug.Log("Others" + (System.DateTime.Now - time).TotalSeconds);
+            if (IsLog) Debug.Log("Create Others time:" + (System.DateTime.Now - time).TotalSeconds);
 
             AllUnit.AddRange(unitFriends);
             AllUnit.AddRange(unitEnemys);
