@@ -1,11 +1,11 @@
 ﻿
 
-namespace DA.Core.FSM
+namespace Game.FSM
 {
     [System.Serializable]
-    public class StateAction 
+    public class StateAction : ScriptableObjectClone
     {
-        public bool Active;
+        public bool Active = true;
 
         public virtual void OnEnter()
         {

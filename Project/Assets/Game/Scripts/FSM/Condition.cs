@@ -1,9 +1,9 @@
 ﻿
 
-namespace DA.Core.FSM
+namespace Game.FSM
 {
     [System.Serializable]
-    public class Condition 
+    public class Condition : ScriptableObjectClone
     {
         public string Description;
         public virtual bool CheckStateChange()

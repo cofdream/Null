@@ -1,4 +1,4 @@
-﻿using DA.Core.FSM;
+﻿using Game.FSM;
 
 namespace Game
 {

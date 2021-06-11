@@ -20,7 +20,7 @@ namespace Game.Skill
             Target.Value.UnitAttribute.Damage(DamageVariable.Value, Executor.Value);
         }
 
-        public override void CloneVariables(Dictionary<int, CloneData> allDependencies)
+        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
         {
             Executor = GetCloneInstance(allDependencies, Executor);
             Target = GetCloneInstance(allDependencies, Target);

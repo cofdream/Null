@@ -1,5 +1,5 @@
 using DA.AssetLoad;
-using DA.Core.FSM;
+using Game.FSM;
 using Game.Skill;
 using System.Collections.Generic;
 using UnityEditor;
@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class Unit : DAScriptableObject
+    public class Unit : ScriptableObjectClone
     {
         public string Name;
 
@@ -23,7 +23,7 @@ namespace Game
 
         public ControllerHangPoint ControllerHangPoint;
 
-        public FSM FSM;
+        public FiniteStateMachine FSM;
         public AnimatorHashes AnimatorHashes;
         public AnimatorData AnimatorData;
         public MovementVariables MovementVariables;
@@ -36,7 +36,7 @@ namespace Game
             List<CloneData> cloneDatas = new List<CloneData>();
             foreach (var dependencie in Dependencies)
             {
-                var daSO = AssetDatabase.LoadAssetAtPath<DAScriptableObject>(dependencie);
+                var daSO = AssetDatabase.LoadAssetAtPath<ScriptableObjectClone>(dependencie);
                 if (daSO != null)
                 {
                     cloneDatas.Add(new CloneData() { Instance = daSO });
@@ -46,7 +46,7 @@ namespace Game
             AllDependencies = new Dictionary<int, CloneData>(cloneDatas.Count);
             foreach (var cloneData in cloneDatas)
             {
-                AllDependencies.Add(cloneData.Instance.InstanceID, cloneData);
+                AllDependencies.Add(cloneData.Instance.GetInstanceID(), cloneData);
             }
 
             return AllDependencies;
@@ -60,7 +60,7 @@ namespace Game
                 cloneData.CloneInstance = Instantiate(cloneData.Instance);
             }
 
-            CloneVariables(AllDependencies);
+            CloneDependencies(AllDependencies);
 
             foreach (var skill in Skills)
             {
@@ -99,18 +99,12 @@ namespace Game
             }
         }
 
-        public override void CloneVariables(Dictionary<int, CloneData> AllDependencies)
+        protected override void CloneDependencies(Dictionary<int, CloneData> AllDependencies)
         {
             for (int i = 0; i < Skills.Length; i++)
             {
-                if (AllDependencies.TryGetValue(Skills[i].InstanceID, out var cloneData))
-                {
-                    var skill = cloneData.CloneInstance as Skill.Skill;
-                    skill.CloneVariables(AllDependencies);
-                    Skills[i] = skill;
-                }
+                Skills[i] = GetCloneInstance(AllDependencies, Skills[i]);
             }
-
         }
     }
 }

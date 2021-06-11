@@ -1,4 +1,4 @@
-﻿using DA.Core.FSM.Variables;
+﻿using Game.Variables;
 using UnityEngine;
 
 namespace Game

@@ -1,5 +1,5 @@
-﻿using DA.Core.FSM;
-using DA.Core.FSM.Variables;
+﻿using Game.FSM;
+using Game.Variables;
 using UnityEngine;
 
 namespace Game

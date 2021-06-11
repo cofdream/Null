@@ -1,14 +1,13 @@
 ﻿
 
-namespace DA.Core.FSM
+namespace Game.FSM
 {
     [System.Serializable]
-    public class Transition
+    public class Transition : ScriptableObjectClone
     {
         public int id;
-        public bool Active;
+        public bool Active = true;
         public Condition Condition;
-        [System.NonSerialized]
         public State TargetState;
     }
 }

@@ -1,5 +1,7 @@
-﻿using DA.Core.FSM;
-using DA.Core.FSM.Variables;
+﻿using Game.FSM;
+using Game.Variable;
+using Game.Variables;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -8,8 +10,11 @@ namespace Game
     public class CasualStateAction_AniStateAction : StateAction
     {
         public FloatVariables DeltaTimeVariables;
-        public Animator Animator;
-        public AnimatorHashes AnimatorHashes;
+        public ObjectVariable AnimatorVariable;
+        public ObjectVariable AnimatorHashesVariable;
+
+        private Animator Animator;
+        private AnimatorHashes AnimatorHashes;
 
         public float WaitTime;
         private float curWaitTime;
@@ -23,6 +28,9 @@ namespace Game
             casulaTime = 2.5f;
             curWaitTime = 0f;
             curCasualTime = 0f;
+
+            Animator = AnimatorVariable.Value as Animator;
+            AnimatorHashes = AnimatorHashesVariable.Value as AnimatorHashes;
         }
 
 
@@ -52,6 +60,13 @@ namespace Game
                     //Animator.SetBool(AnimatorHashes.capusal, true);
                 }
             }
+        }
+
+        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
+        {
+            DeltaTimeVariables = GetCloneInstance(allDependencies, DeltaTimeVariables);
+            AnimatorVariable = GetCloneInstance(allDependencies, AnimatorVariable);
+            AnimatorHashesVariable = GetCloneInstance(allDependencies, AnimatorHashesVariable);
         }
     }
 }

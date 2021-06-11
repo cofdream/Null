@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Game.Skill
 {
     [System.Serializable]
-    public class Skill : DAScriptableObject
+    public class Skill : ScriptableObjectClone
     {
         public int Id;
 
@@ -44,16 +44,13 @@ namespace Game.Skill
         }
 
 
-        public override void CloneVariables(Dictionary<int, CloneData> allDependencies)
+        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
         {
             Executor = GetCloneInstance(allDependencies, Executor);
 
             for (int i = 0; i < SkillActions.Length; i++)
             {
-                var skillAction = GetCloneInstance(allDependencies, SkillActions[i]);
-                skillAction.CloneVariables(allDependencies);
-
-                SkillActions[i] = skillAction;
+                SkillActions[i] = GetCloneInstance(allDependencies, SkillActions[i]);
             }
         }
     }

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a17501258ac5e4d935f34b25a36621, type: 3}
+  m_Name: StartMoveCondition
+  m_EditorClassIdentifier: 
+  Description: "\u5F00\u59CB\u79FB\u52A8\uFF0C\u8DF3\u8F6CLocomontion"
+  MovementVarible: {fileID: 11400000, guid: fd4182ce8c3a1e747baa3cb61b43d11c, type: 2}

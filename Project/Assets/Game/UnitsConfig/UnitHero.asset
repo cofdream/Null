@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d607787ed83643439997ca34ee12640, type: 3}
   m_Name: UnitHero
   m_EditorClassIdentifier: 
-  InstanceID: 73174
   Name: UnitHero
   UnitAttribute:
     maxHealth:
@@ -39,27 +38,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 71d2908d8ba8257478b247435149188c, type: 2}
   PrefabPath: Assets/Game/Art/Prefabs/HeroModel.prefab
   ControllerHangPoint: {fileID: 0}
-  FSM:
-    CurrentState:
-      StateAction: []
-      Transitions:
-      - id: 0
-        Active: 0
-        Condition:
-          Description: 
-      - id: 0
-        Active: 0
-        Condition:
-          Description: 
-      - id: 0
-        Active: 0
-        Condition:
-          Description: 
-      - id: 0
-        Active: 0
-        Condition:
-          Description: 
-      - id: 0
-        Active: 0
-        Condition:
-          Description: 
+  FSM: {fileID: 11400000, guid: b58e3019601879344bf4203c40e0a1da, type: 2}
+  MovementVariables: {fileID: 11400000, guid: fd4182ce8c3a1e747baa3cb61b43d11c, type: 2}

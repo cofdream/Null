@@ -1,4 +1,6 @@
-﻿using DA.Core.FSM;
+﻿using Game.FSM;
+using Game.Variable;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -6,7 +8,7 @@ namespace Game
     [System.Serializable]
     public class InputStateAction : StateAction
     {
-        public Unit Unit;
+        public UnitVariable UnitVariable;
         public MovementVariables MovementVariables;
         public override void OnUpdate()
         {
@@ -15,7 +17,13 @@ namespace Game
 
             MovementVariables.MoveAmount = Mathf.Clamp01(Mathf.Abs(MovementVariables.Horizontal) + Mathf.Abs(MovementVariables.Vertical));
 
-            MovementVariables.MoveSpeed = Unit.UnitAttribute.MoveSpeed;
+            MovementVariables.MoveSpeed = UnitVariable.Value.UnitAttribute.MoveSpeed;
+        }
+
+        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
+        {
+            UnitVariable = GetCloneInstance(allDependencies, UnitVariable);
+            MovementVariables = GetCloneInstance(allDependencies, MovementVariables);
         }
     }
 }

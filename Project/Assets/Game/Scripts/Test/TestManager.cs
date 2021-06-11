@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using DA.Core.FSM;
+using Game.FSM;
 using DA.AssetLoad;
 
 namespace Game.Test
@@ -63,7 +63,7 @@ namespace Game.Test
 
             unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
             unit.Name = "Hero";
-            unit.FSM = new FSM();
+            unit.FSM = new FiniteStateMachine();
 
             unit.Init(Vector3.zero, Quaternion.identity);
 
@@ -81,106 +81,106 @@ namespace Game.Test
             TestUIManager.Instance.HeroCamera = cameraHangPoint.Camera;
 
 
-            State idleState = new State()
-            {
-                StateAction = new StateAction[]
-                {
-                    new InputStateAction()
-                    {
-                        Active = true,
-                        MovementVariables = unit.MovementVariables,
-                        Unit = unit,
-                    },
-                    new CasualStateAction_AniStateAction()
-                    {
-                        Active = false,
-                        WaitTime = 1f,
-                        DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-                        Animator = unit.Animator,
-                        AnimatorHashes = unit.AnimatorHashes,
-                    },
-                    new RotateStateAction()
-                    {
-                        Active = true,
-                        target = followTransform,
-                    },
-                },
-            };
+            //State idleState = new State()
+            //{
+            //    StateAction = new StateAction[]
+            //    {
+            //        //new InputStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    MovementVariables = unit.MovementVariables,
+            //        //    UnitVariable = unit,
+            //        //},
+            //        //new CasualStateAction_AniStateAction()
+            //        //{
+            //        //    Active = false,
+            //        //    WaitTime = 1f,
+            //        //    DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+            //        //    Animator = unit.Animator,
+            //        //    AnimatorHashes = unit.AnimatorHashes,
+            //        //},
+            //        //new RotateStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    target = followTransform,
+            //        //},
+            //    },
+            //};
 
 
-            State LocomotionState = new State()
-            {
-                StateAction = new StateAction[]
-                {
-                    new InputStateAction()
-                    {
-                        Active = true,
-                        MovementVariables = unit.MovementVariables,
-                        Unit = unit,
-                    },
-                    new MovementForwardStateAction()
-                    {
-                        Active = true,
-                        MovementVariables = unit.MovementVariables,
-                        Rigidbody = unit.Rigidbody,
-                        Transform = unit.GameObject.transform,
-                    },
-                    new MovementForward_AniStateAction()
-                    {
-                        Active = true,
-                        MovementVariables = unit.MovementVariables,
-                        AnimatorHashes = unit.AnimatorHashes,
-                        Transform = unit.GameObject.transform,
-                        Animator = unit.Animator,
-                        AnimatorData = unit.AnimatorData,
-                        DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-                    },
-                    new RotationBaseOnCameraOrientationStateAction()
-                    {
-                        Active = true,
-                        Transform = unit.GameObject.transform,
-                        CameraTransform = cameraHangPoint.transform,
-                        MovementVariables = unit.MovementVariables,
-                        DeltaVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-                    },
-                    new RotateStateAction()
-                    {
-                        Active = true,
-                        target = followTransform,
-                    },
-                },
-                Transitions = new Transition[]
-                {
-                    new Transition()
-                    {
-                        Active = true,
-                        id = 0,
-                        Condition = new IdleCondition()
-                        {
-                            Description = "To idle state",
-                            MovementVarible = unit.MovementVariables,
-                        },
-                        TargetState = idleState,
-                    },
-                },
-            };
+            //State LocomotionState = new State()
+            //{
+            //    StateAction = new StateAction[]
+            //    {
+            //        //new InputStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    MovementVariables = unit.MovementVariables,
+            //        //    UnitVariable = unit,
+            //        //},
+            //        //new MovementForwardStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    MovementVariables = unit.MovementVariables,
+            //        //    rigidbody = unit.Rigidbody,
+            //        //    transform = unit.GameObject.transform,
+            //        //},
+            //        //new MovementForward_AniStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    MovementVariables = unit.MovementVariables,
+            //        //    AnimatorHashes = unit.AnimatorHashes,
+            //        //    Transform = unit.GameObject.transform,
+            //        //    Animator = unit.Animator,
+            //        //    AnimatorData = unit.AnimatorData,
+            //        //    DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+            //        //},
+            //        //new RotationBaseOnCameraOrientationStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    Transform = unit.GameObject.transform,
+            //        //    CameraTransform = cameraHangPoint.transform,
+            //        //    MovementVariables = unit.MovementVariables,
+            //        //    DeltaVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
+            //        //},
+            //        //new RotateStateAction()
+            //        //{
+            //        //    Active = true,
+            //        //    target = followTransform,
+            //        //},
+            //    },
+            //    Transitions = new Transition[]
+            //    {
+            //        new Transition()
+            //        {
+            //            Active = true,
+            //            id = 0,
+            //            Condition = new IdleCondition()
+            //            {
+            //                Description = "To idle state",
+            //                MovementVarible = unit.MovementVariables,
+            //            },
+            //            TargetState = idleState,
+            //        },
+            //    },
+            //};
 
-            idleState.Transitions = new Transition[]
-            {
-                new Transition()
-                {
-                    Active = true,
-                    id = 0,
-                    Condition = new MoveCondition()
-                    {
-                        Description = "To locomotion state",
-                        MovementVariables = unit.MovementVariables,
-                    },
-                    TargetState = LocomotionState,
-                },
-            };
+            //idleState.Transitions = new Transition[]
+            //{
+            //    new Transition()
+            //    {
+            //        Active = true,
+            //        id = 0,
+            //        Condition = new MoveCondition()
+            //        {
+            //            Description = "To locomotion state",
+            //            MovementVariables = unit.MovementVariables,
+            //        },
+            //        TargetState = LocomotionState,
+            //    },
+            //};
 
-            unit.FSM.CurrentState = idleState;
+            //unit.FSM.CurrentState = idleState;
         }
 
         private void CreateEnemys()

@@ -1,9 +1,9 @@
 ﻿
 
-namespace DA.Core.FSM
+namespace Game.FSM
 {
     [System.Serializable]
-    public class State 
+    public class State : ScriptableObjectClone
     {
         public StateAction[] StateAction;
 

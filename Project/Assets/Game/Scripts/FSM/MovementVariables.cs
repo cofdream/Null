@@ -2,7 +2,7 @@
 
 namespace Game
 {
-    public class MovementVariables
+    public class MovementVariables : ScriptableObjectClone
     {
         public float Horizontal;
         public float Vertical;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07de413062cd2e143bbbb5427dd09180, type: 3}
+  m_Name: LocomotionState
+  m_EditorClassIdentifier: 
+  StateAction:
+  - {fileID: 11400000, guid: ce0d98cecfd68914e9bae1be03903b99, type: 2}
+  - {fileID: 11400000, guid: 9b14cb1bf5548e74ba0e1f5098b3edcc, type: 2}
+  - {fileID: 11400000, guid: f33a8914054bdee48a0466cac31e298b, type: 2}
+  - {fileID: 11400000, guid: 75a9f476b549b5441b2385138018188b, type: 2}
+  Transitions:
+  - {fileID: 11400000, guid: 1b3968b79778e114e8a2dfcaa912b532, type: 2}

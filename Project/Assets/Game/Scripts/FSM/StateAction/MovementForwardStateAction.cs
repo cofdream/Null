@@ -1,4 +1,6 @@
-﻿using DA.Core.FSM;
+﻿using Game.FSM;
+using Game.Variable;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -6,21 +8,32 @@ namespace Game
     [System.Serializable]
     public class MovementForwardStateAction : StateAction
     {
-        public MovementVariables MovementVariables;
-        public Rigidbody Rigidbody;
-        public Transform Transform;
+        [SerializeField] private MovementVariables  MovementVariables;
+        [SerializeField] private ObjectVariable     RigidbodyVariables;
+        [SerializeField] private GameobjectVariable TargetGOVariables;
+
+
+        private Rigidbody rigidbody;
+        private Transform transform;
+
+        public override void OnEnter()
+        {
+            rigidbody = RigidbodyVariables.Value as Rigidbody;
+            transform = TargetGOVariables.Value.transform;
+        }
+
         public override void OnUpdate()
         {
             if (MovementVariables.MoveAmount > 0.1f)
             {
-                Rigidbody.drag = 0;
+                rigidbody.drag = 0;
             }
             else
             {
-                Rigidbody.drag = 4;
+                rigidbody.drag = 4;
             }
 
-            Vector3 targetVelocity = Transform.forward * MovementVariables.MoveAmount * MovementVariables.MoveSpeed * 0.01f;
+            Vector3 targetVelocity = 0.01f * MovementVariables.MoveAmount * MovementVariables.MoveSpeed * transform.forward;
 
             //if (states.isGrounded)
             //{
@@ -31,7 +44,13 @@ namespace Game
             //    targetVelocity.y = states.rigidbody.velocity.y;
             //}
 
-            Rigidbody.velocity = targetVelocity;
+            rigidbody.velocity = targetVelocity;
+        }
+        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
+        {
+            MovementVariables = GetCloneInstance(allDependencies, MovementVariables);
+            RigidbodyVariables = GetCloneInstance(allDependencies, RigidbodyVariables);
+            TargetGOVariables = GetCloneInstance(allDependencies, TargetGOVariables);
         }
     }
 }

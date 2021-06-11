@@ -1,4 +1,4 @@
-using DA.Core.FSM;
+using Game.FSM;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ namespace Game
 {
     public class FSMManager : MonoBehaviour
     {
-        private static List<FSM> fsmList = new List<FSM>();
+        private static List<FSM.FiniteStateMachine> fsmList = new List<FSM.FiniteStateMachine>();
         private static FSMManager instance;
         public static GlobalVariabeles GlobalVariabeles { get; set; }
 
@@ -42,11 +42,11 @@ namespace Game
             }
         }
 
-        public static void AddFSM(FSM fsm)
+        public static void AddFSM(FSM.FiniteStateMachine fsm)
         {
             fsmList.Add(fsm);
         }
-        public static void RemoveFSM(FSM fsm)
+        public static void RemoveFSM(FSM.FiniteStateMachine fsm)
         {
             fsmList.Remove(fsm);
         }

@@ -1,9 +1,11 @@
 ﻿
-namespace DA.Core.FSM
+namespace Game.FSM
 {
     [System.Serializable]
-    public class FSM 
+    public class FiniteStateMachine : ScriptableObjectClone
     {
+        public State[] AllStates;
+
         public State CurrentState;
 
         public void OnUpdate()
