@@ -3,9 +3,8 @@
 namespace Game.Variable
 {
     [System.Serializable]
-    public class UnitVariable : ScriptableObjectClone
+    public class UnitVariable 
     {
-
-        public Unit Value;
+       [HideInInspector] public Unit Value;
     }
 }

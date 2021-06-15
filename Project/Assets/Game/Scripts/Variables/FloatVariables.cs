@@ -2,7 +2,7 @@
 
 namespace Game.Variables
 {
-    public class FloatVariables : ScriptableObjectClone
+    public class FloatVariables 
     {
         public float Value { get; set; }
 

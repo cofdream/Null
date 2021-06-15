@@ -1,13 +1,13 @@
-﻿
+﻿using UnityEngine;
 
 namespace Game.FSM
 {
     [System.Serializable]
-    public class Transition : ScriptableObjectClone
+    public class Transition
     {
         public int id;
         public bool Active = true;
-        public Condition Condition;
-        public State TargetState;
+        [SerializeReference] public Condition Condition;
+        [HideInInspector] public State TargetState;
     }
 }

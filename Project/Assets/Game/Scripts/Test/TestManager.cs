@@ -2,15 +2,13 @@
 using UnityEngine;
 using Game.FSM;
 using DA.AssetLoad;
+using Game.Variable;
 
 namespace Game.Test
 {
     public class TestManager : MonoBehaviour
     {
         public static TestManager Instance { get; private set; }
-
-        [SerializeField] private Unit unitHero;
-        [SerializeField] private Unit unitEnemy;
 
         public Unit unitHeroClone;
         public CameraHangPoint CameraHangPoint;
@@ -56,150 +54,211 @@ namespace Game.Test
             TestUIManager.Instance.ReLoadUnits(AllUnit);
         }
 
+        private void Update()
+        {
+            foreach (var item in AllUnit)
+            {
+                item.Update();
+            }
+        }
+        private void FixedUpdate()
+        {
+            foreach (var item in AllUnit)
+            {
+                item.FixedUpdate();
+            }
+        }
+
         private void CreateHeroUnit()
         {
-            var unit = unitHeroClone = Instantiate(unitHero);
-            unit.AllDependencies = unitHero.GetDependencies();
+            Unit unit = new Unit();
 
-            unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
             unit.Name = "Hero";
+            unit.PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab";
+
+            unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 8);
+
             unit.FSM = new FiniteStateMachine();
+
+            //Skill
+            {
+                Skill AtkRandomTarget = new Skill();
+
+                AplyDamageSkillAction aplyDamageSkillAction = new AplyDamageSkillAction();
+                ClculateDamageSkillAction clculateDamageSkillAction = new ClculateDamageSkillAction();
+                GetRandomTargetSkillAction getRandomTargetSkillAction = new GetRandomTargetSkillAction();
+
+                UnitVariable executor = new UnitVariable();
+                UnitVariable target = new UnitVariable();
+                IntVariable intVariable = new IntVariable();
+
+                aplyDamageSkillAction.Executor = executor;
+                aplyDamageSkillAction.Target = target;
+                aplyDamageSkillAction.DamageVariable = intVariable;
+
+                clculateDamageSkillAction.Executor = executor;
+                clculateDamageSkillAction.Target = target;
+                clculateDamageSkillAction.DamageVariable = intVariable;
+                clculateDamageSkillAction.BaseDamage = 10;
+
+                getRandomTargetSkillAction.Executor = executor;
+                getRandomTargetSkillAction.Target = target;
+
+                AtkRandomTarget.SkillActions = new SkillAction[] { getRandomTargetSkillAction, clculateDamageSkillAction, aplyDamageSkillAction };
+                AtkRandomTarget.Executor = executor;
+
+
+                Skill fly = new Skill();
+
+
+                unit.Skills = new Skill[] { AtkRandomTarget };
+            }
 
             unit.Init(Vector3.zero, Quaternion.identity);
 
+
+            unitHeroClone = unit;
+
+
             string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
             var loader = AssetLoader.GetAssetLoader();
-
             CameraHangPoint cameraHangPoint = loader.LoadAsset<CameraHangPoint>(path);
-            cameraHangPoint = GameObject.Instantiate(cameraHangPoint);
-
             loader.Unload(path);
 
+            cameraHangPoint = GameObject.Instantiate(cameraHangPoint);
             Transform followTransform = unit.ControllerHangPoint.FollowTarget;
             cameraHangPoint.CM_VCamera.Follow = followTransform;
 
             TestUIManager.Instance.HeroCamera = cameraHangPoint.Camera;
 
 
-            //State idleState = new State()
-            //{
-            //    StateAction = new StateAction[]
-            //    {
-            //        //new InputStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    MovementVariables = unit.MovementVariables,
-            //        //    UnitVariable = unit,
-            //        //},
-            //        //new CasualStateAction_AniStateAction()
-            //        //{
-            //        //    Active = false,
-            //        //    WaitTime = 1f,
-            //        //    DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-            //        //    Animator = unit.Animator,
-            //        //    AnimatorHashes = unit.AnimatorHashes,
-            //        //},
-            //        //new RotateStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    target = followTransform,
-            //        //},
-            //    },
-            //};
+            State idleState = new State();
+            State LocomotionState = new State();
 
+            var InputStateAction = new InputStateAction();
+            var RotateStateAction = new RotateStateAction();
+            var MovementForwardStateAction = new MovementForwardStateAction();
+            var MovementForward_AniStateAction = new MovementForward_AniStateAction();
+            var RotationBaseOnCameraOrientationStateAction = new RotationBaseOnCameraOrientationStateAction();
 
-            //State LocomotionState = new State()
-            //{
-            //    StateAction = new StateAction[]
-            //    {
-            //        //new InputStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    MovementVariables = unit.MovementVariables,
-            //        //    UnitVariable = unit,
-            //        //},
-            //        //new MovementForwardStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    MovementVariables = unit.MovementVariables,
-            //        //    rigidbody = unit.Rigidbody,
-            //        //    transform = unit.GameObject.transform,
-            //        //},
-            //        //new MovementForward_AniStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    MovementVariables = unit.MovementVariables,
-            //        //    AnimatorHashes = unit.AnimatorHashes,
-            //        //    Transform = unit.GameObject.transform,
-            //        //    Animator = unit.Animator,
-            //        //    AnimatorData = unit.AnimatorData,
-            //        //    DeltaTimeVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-            //        //},
-            //        //new RotationBaseOnCameraOrientationStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    Transform = unit.GameObject.transform,
-            //        //    CameraTransform = cameraHangPoint.transform,
-            //        //    MovementVariables = unit.MovementVariables,
-            //        //    DeltaVariables = FSMManager.GlobalVariabeles.DeltaTimeVariables,
-            //        //},
-            //        //new RotateStateAction()
-            //        //{
-            //        //    Active = true,
-            //        //    target = followTransform,
-            //        //},
-            //    },
-            //    Transitions = new Transition[]
-            //    {
-            //        new Transition()
-            //        {
-            //            Active = true,
-            //            id = 0,
-            //            Condition = new IdleCondition()
-            //            {
-            //                Description = "To idle state",
-            //                MovementVarible = unit.MovementVariables,
-            //            },
-            //            TargetState = idleState,
-            //        },
-            //    },
-            //};
+            var ToLocamotionState = new Transition();
+            var MoveCondition = new MoveCondition();
 
-            //idleState.Transitions = new Transition[]
-            //{
-            //    new Transition()
-            //    {
-            //        Active = true,
-            //        id = 0,
-            //        Condition = new MoveCondition()
-            //        {
-            //            Description = "To locomotion state",
-            //            MovementVariables = unit.MovementVariables,
-            //        },
-            //        TargetState = LocomotionState,
-            //    },
-            //};
+            var ToIdleState = new Transition();
+            var StopCondition = new IdleCondition();
 
-            //unit.FSM.CurrentState = idleState;
+            var MovementVariables = new MovementVariables();
+
+            unit.FSM.AllStates = new State[] { idleState, LocomotionState };
+            unit.FSM.CurrentState = idleState;
+
+            idleState.StateAction = new StateAction[] { InputStateAction, RotateStateAction };
+            idleState.Transitions = new Transition[] { ToLocamotionState };
+
+            LocomotionState.StateAction = new StateAction[] { InputStateAction, RotateStateAction, MovementForwardStateAction, RotationBaseOnCameraOrientationStateAction, MovementForward_AniStateAction };
+            LocomotionState.Transitions = new Transition[] { ToIdleState };
+
+            InputStateAction.MovementVariables = MovementVariables;
+            InputStateAction.UnitVariable = new UnitVariable() { Value = unit };
+
+            RotateStateAction.target = unit.GameObject.transform;
+
+            MovementForwardStateAction.MovementVariables = MovementVariables;
+            MovementForwardStateAction.transform = unit.GameObject.transform;
+            MovementForwardStateAction.rigidbody = unit.Rigidbody;
+
+            MovementForward_AniStateAction.Animator = unit.Animator;
+            MovementForward_AniStateAction.MovementVariables = MovementVariables;
+            MovementForward_AniStateAction.Transform = unit.GameObject.transform;
+
+            RotationBaseOnCameraOrientationStateAction.Transform = unit.GameObject.transform;
+            RotationBaseOnCameraOrientationStateAction.MovementVariables = MovementVariables;
+            RotationBaseOnCameraOrientationStateAction.CameraTransform = cameraHangPoint.Camera.transform;
+
+            MoveCondition.MovementVariable = MovementVariables;
+            StopCondition.MovementVarible = MovementVariables;
+
+            ToLocamotionState.Condition = MoveCondition;
+            ToLocamotionState.TargetState = LocomotionState;
+
+            ToIdleState.Condition = StopCondition;
+            ToIdleState.TargetState = idleState;
         }
 
         private void CreateEnemys()
         {
             unitEnemys = new List<Unit>();
 
-            for (int i = 1; i <= 5; i++)
+            for (int i = 0; i < 1; i++)
             {
-                var unit = Instantiate<Unit>(unitEnemy);
-                unit.AllDependencies = unitEnemy.GetDependencies();
-
-                unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 300);
-                unit.Name = "Enemy " + i;
-                unit.Init(new Vector3(Random.Range(-5, 10), 0, Random.Range(-5, 5)), Quaternion.identity);
+                Unit unit = new Unit();
 
                 unitEnemys.Add(unit);
-            }
 
+                unit.Name = "Enemy";
+                unit.PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab";
+
+                unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 8);
+
+                unit.Skills = new Skill[] { };
+
+                unit.FSM = new FiniteStateMachine();
+
+                unit.Init(new Vector3(1, 0, 1), Quaternion.identity);
+
+
+                unitHeroClone = unit;
+
+
+                #region MyRegion
+                //State idleState = new State();
+                //State LocomotionState = new State();
+
+                ////var InputStateAction = new InputStateAction();
+                //var RotateStateAction = new RotateStateAction();
+                //var MovementForwardStateAction = new MovementForwardStateAction();
+                //var MovementForward_AniStateAction = new MovementForward_AniStateAction();
+
+                //var ToLocamotionState = new Transition();
+                //var MoveCondition = new MoveCondition();
+
+                //var ToIdleState = new Transition();
+                //var StopCondition = new IdleCondition();
+
+                //var MovementVariables = new MovementVariables();
+
+                //unit.FSM.AllStates = new State[] { idleState, LocomotionState };
+                //unit.FSM.CurrentState = idleState;
+
+                //idleState.StateAction = new StateAction[] {  RotateStateAction };
+                //idleState.Transitions = new Transition[] { ToLocamotionState };
+
+                //LocomotionState.StateAction = new StateAction[] {  RotateStateAction, MovementForwardStateAction, MovementForward_AniStateAction };
+                //LocomotionState.Transitions = new Transition[] { ToIdleState };
+
+
+                //RotateStateAction.target = unit.GameObject.transform;
+
+                //MovementForwardStateAction.MovementVariables = MovementVariables;
+                //MovementForwardStateAction.transform = unit.GameObject.transform;
+                //MovementForwardStateAction.rigidbody = unit.Rigidbody;
+
+                //MovementForward_AniStateAction.Animator = unit.Animator;
+                //MovementForward_AniStateAction.MovementVariables = MovementVariables;
+                //MovementForward_AniStateAction.Transform = unit.GameObject.transform;
+
+                //MoveCondition.MovementVariable = MovementVariables;
+                //StopCondition.MovementVarible = MovementVariables;
+
+                //ToLocamotionState.Condition = MoveCondition;
+                //ToLocamotionState.TargetState = LocomotionState;
+
+                //ToIdleState.Condition = StopCondition;
+                //ToIdleState.TargetState = idleState; 
+                #endregion
+            }
         }
+
         private void CreateFriends()
         {
             unitFriends = new List<Unit>() { unitHeroClone };

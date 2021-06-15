@@ -1,14 +1,15 @@
-﻿
+﻿using UnityEngine;
+
 namespace Game.FSM
 {
     [System.Serializable]
-    public class FiniteStateMachine : ScriptableObjectClone
+    public class FiniteStateMachine
     {
-        public State[] AllStates;
+        [SerializeReference] public State[] AllStates;
 
-        public State CurrentState;
+        [SerializeReference] public State CurrentState;
 
-        public void OnUpdate()
+        public void Update()
         {
             CurrentState.OnUpdate();
             var targetState = CurrentState.CheckTransitions();
@@ -18,7 +19,7 @@ namespace Game.FSM
             }
         }
 
-        public void OnFixedUpdate()
+        public void FixedUpdate()
         {
             CurrentState.OnFixedUpdate();
         }

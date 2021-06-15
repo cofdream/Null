@@ -1,14 +1,14 @@
 ﻿using Game.Variable;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace Game.Skill
+namespace Game
 {
+    [System.Serializable]
     public class GetRandomTargetSkillAction : SkillAction
     {
-        public UnitVariable Executor;
-        public UnitVariable Target;
+        [HideInInspector] public UnitVariable Executor;
+        [HideInInspector] public UnitVariable Target;
 
         public override void CastSkill()
         {
@@ -21,15 +21,12 @@ namespace Game.Skill
 
             if (allUnit.Length == 0)
             {
+                Debug.Log("找不到目标");
                 return;
             }
             Target.Value = allUnit[Random.Range(0, allUnit.Length)];
 
         }
-        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
-        {
-            Executor = GetCloneInstance(allDependencies, Executor);
-            Target = GetCloneInstance(allDependencies, Target);
-        }
+
     }
 }

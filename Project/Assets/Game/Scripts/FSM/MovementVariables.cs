@@ -2,7 +2,8 @@
 
 namespace Game
 {
-    public class MovementVariables : ScriptableObjectClone
+    [System.Serializable]
+    public class MovementVariables
     {
         public float Horizontal;
         public float Vertical;

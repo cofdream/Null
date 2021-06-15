@@ -2,6 +2,7 @@
 
 namespace Game
 {
+    [System.Serializable]
 	public class AnimatorData
 	{
         public Transform leftFoot;

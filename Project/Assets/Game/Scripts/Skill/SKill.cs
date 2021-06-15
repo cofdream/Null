@@ -1,18 +1,18 @@
 ﻿using System;
 using UnityEngine;
 using Game.Variable;
-using System.Collections.Generic;
 
-namespace Game.Skill
+namespace Game
 {
-    [System.Serializable]
-    public class Skill : ScriptableObjectClone
+    [Serializable]
+    public class Skill
     {
         public int Id;
 
         public string Name;
         public string Introduction;
 
+        [HideInInspector] 
         public UnitVariable Executor;
 
         public SkillAction[] SkillActions;
@@ -40,17 +40,6 @@ namespace Game.Skill
                 {
                     skillAction.UpdateAction(delta);
                 }
-            }
-        }
-
-
-        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
-        {
-            Executor = GetCloneInstance(allDependencies, Executor);
-
-            for (int i = 0; i < SkillActions.Length; i++)
-            {
-                SkillActions[i] = GetCloneInstance(allDependencies, SkillActions[i]);
             }
         }
     }

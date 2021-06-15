@@ -1,13 +1,15 @@
 ﻿
 
+using UnityEngine;
+
 namespace Game.FSM
 {
     [System.Serializable]
-    public class State : ScriptableObjectClone
+    public class State
     {
-        public StateAction[] StateAction;
+        [SerializeReference] public StateAction[] StateAction;
 
-        public Transition[] Transitions;
+        [SerializeReference] public Transition[] Transitions;
 
         public Transition GetTransitions(int index)
         {

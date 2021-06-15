@@ -3,7 +3,7 @@
 namespace Game.FSM
 {
     [System.Serializable]
-    public class StateAction : ScriptableObjectClone
+    public class StateAction
     {
         public bool Active = true;
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -346,49 +346,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 195989013}
   m_CullTransparentMesh: 1
---- !u!1 &214163309
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 214163311}
-  - component: {fileID: 214163310}
-  m_Layer: 0
-  m_Name: FSMManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &214163310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214163309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9eaad8a82db5344aaa7535d22ed0a1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &214163311
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214163309}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456368484
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,14 +375,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f42645b24a85b44a9351671ce051dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitHero: {fileID: 11400000, guid: 74e109813903b534a824a26d2c9a6fec, type: 2}
-  unitEnemy: {fileID: 11400000, guid: d881dccda458d52448b63b8a83975ded, type: 2}
-  unitHeroClone: {fileID: 0}
+  unitHeroClone:
+    Name: 
+    UnitAttribute:
+      maxHealth:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      health:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      atk:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      def:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      moveSpeed:
+        value: 0
+        dirty: 0
+        baseValue: 0
+    Skills: []
+    PrefabPath: 
+    GameObject: {fileID: 0}
+    Rigidbody: {fileID: 0}
+    Animator: {fileID: 0}
+    ControllerHangPoint: {fileID: 0}
+    FSM:
+      id: 0
+    AnimatorHashes:
+      Vertical: -1468631908
+      Stance: -2097331396
+      LeftFootForward: 1370301830
+    AnimatorData:
+      leftFoot: {fileID: 0}
+      rightFoot: {fileID: 0}
+    MovementVariables:
+      id: 0
   CameraHangPoint: {fileID: 0}
   AllUnit: []
   unitEnemys: []
   unitFriends: []
   unitOthers: []
+  IsLog: 0
+  IsCreateEnemys: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!4 &456368486
 Transform:
   m_ObjectHideFlags: 0
@@ -1149,7 +1149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &991313355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1577,7 +1577,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1112144565}
   m_HandleRect: {fileID: 1112144564}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1918,7 +1918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -34.739502, y: 105.75}
+  m_AnchoredPosition: {x: -34.739746, y: 105.75}
   m_SizeDelta: {x: 289.261, y: 686.5}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1674607376
@@ -1933,12 +1933,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b2861d33f23346a0c1b8ade175d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 0}
+  Unit:
+    Name: 
+    UnitAttribute:
+      maxHealth:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      health:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      atk:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      def:
+        value: 0
+        dirty: 0
+        baseValue: 0
+      moveSpeed:
+        value: 0
+        dirty: 0
+        baseValue: 0
+    Skills: []
+    PrefabPath: 
+    GameObject: {fileID: 0}
+    Rigidbody: {fileID: 0}
+    Animator: {fileID: 0}
+    ControllerHangPoint: {fileID: 0}
+    FSM:
+      id: 0
+    AnimatorHashes:
+      Vertical: -1468631908
+      Stance: -2097331396
+      LeftFootForward: 1370301830
+    AnimatorData:
+      leftFoot: {fileID: 0}
+      rightFoot: {fileID: 0}
+    MovementVariables:
+      id: 0
   helath: {fileID: 1104893337}
   maxhelath: {fileID: 511177983}
   atk: {fileID: 56468741}
   def: {fileID: 1070969409}
   moveSpeed: {fileID: 1781637171}
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!114 &1674607377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2405,7 +2448,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1427291064}
   m_HandleRect: {fileID: 1427291063}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

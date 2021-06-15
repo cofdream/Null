@@ -8,8 +8,8 @@ namespace Game
     [System.Serializable]
     public class InputStateAction : StateAction
     {
-        public UnitVariable UnitVariable;
-        public MovementVariables MovementVariables;
+        [HideInInspector] public UnitVariable UnitVariable;
+        [SerializeReference] public MovementVariables MovementVariables;
         public override void OnUpdate()
         {
             MovementVariables.Horizontal = Input.GetAxis("Horizontal");
@@ -18,12 +18,6 @@ namespace Game
             MovementVariables.MoveAmount = Mathf.Clamp01(Mathf.Abs(MovementVariables.Horizontal) + Mathf.Abs(MovementVariables.Vertical));
 
             MovementVariables.MoveSpeed = UnitVariable.Value.UnitAttribute.MoveSpeed;
-        }
-
-        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
-        {
-            UnitVariable = GetCloneInstance(allDependencies, UnitVariable);
-            MovementVariables = GetCloneInstance(allDependencies, MovementVariables);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Game
 {
+    [System.Serializable]
     public class AnimatorHashes
     {
         public int Vertical = Animator.StringToHash("vertical");

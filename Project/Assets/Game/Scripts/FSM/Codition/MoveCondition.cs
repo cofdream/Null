@@ -1,13 +1,15 @@
 ﻿using Game.FSM;
+using UnityEngine;
 
 namespace Game
 {
+    [System.Serializable]
     public class MoveCondition : Condition
     {
-        public MovementVariables MovementVariables;
+        [SerializeReference] public MovementVariables MovementVariable;
         public override bool CheckStateChange()
         {
-            return MovementVariables.MoveAmount > 0;
+            return MovementVariable.MoveAmount > 0;
         }
     }
 }

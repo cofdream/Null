@@ -29,8 +29,7 @@ namespace Game.UI
         {
             Camera camera = TestUIManager.Instance.HeroCamera;
 
-            Vector3 pos = Unit.GameObject.transform.position;
-            pos.y += 2;
+            Vector3 pos = Unit.ControllerHangPoint.HeadTop.position;
 
             //Vector2 position = camera.WorldToScreenPoint(pos);
             //position.x = position.x - Screen.width * 0.5f;

@@ -5,4 +5,5 @@ using UnityEngine;
 public class ControllerHangPoint : MonoBehaviour
 {
     public Transform FollowTarget;
+    public Transform HeadTop;
 }

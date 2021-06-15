@@ -1,4 +1,3 @@
-using Game.Skill;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +10,8 @@ namespace Game.Test
         public Text Desc;
         public Text CD;
 
-        public Skill.Skill SKill;
-        public void Init(Skill.Skill sKill)
+        public Skill SKill;
+        public void Init(Skill sKill)
         {
             SKill = sKill;
 

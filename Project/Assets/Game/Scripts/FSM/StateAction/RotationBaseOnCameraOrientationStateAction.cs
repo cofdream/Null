@@ -9,23 +9,11 @@ namespace Game
     [System.Serializable]
     public class RotationBaseOnCameraOrientationStateAction : StateAction
     {
-        [SerializeField] private FloatVariables DeltaVariables;
-        [SerializeField] private MovementVariables MovementVariables;
-        [SerializeField] private GameobjectVariable TransformVariables;
-        [SerializeField] private GameobjectVariable CameraTransformVariables;
+        [SerializeReference] public MovementVariables MovementVariables;
+        [SerializeReference] public Transform Transform;
+        [SerializeReference] public Transform CameraTransform;
 
-
-        [SerializeField] private float speed = 8f;
-
-
-        private Transform Transform;
-        private Transform CameraTransform;
-
-        public override void OnEnter()
-        {
-            Transform = TransformVariables.Value.transform;
-            CameraTransform = CameraTransformVariables.Value.transform;
-        }
+        public float speed = 8f;
 
         public override void OnUpdate()
         {
@@ -42,15 +30,8 @@ namespace Game
             }
 
             Quaternion tragetRotation = Quaternion.LookRotation(targetDirection);
-            Transform.rotation = Quaternion.Slerp(Transform.rotation, tragetRotation, DeltaVariables.Value * MovementVariables.MoveAmount * speed);
+            Transform.rotation = Quaternion.Slerp(Transform.rotation, tragetRotation, Time.deltaTime * MovementVariables.MoveAmount * speed);
         }
 
-        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
-        {
-            DeltaVariables = GetCloneInstance(allDependencies, DeltaVariables);
-            MovementVariables = GetCloneInstance(allDependencies, MovementVariables);
-            TransformVariables = GetCloneInstance(allDependencies, TransformVariables);
-            CameraTransformVariables = GetCloneInstance(allDependencies, CameraTransformVariables);
-        }
     }
 }

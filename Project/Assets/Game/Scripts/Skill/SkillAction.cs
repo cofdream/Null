@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class SkillAction : ScriptableObjectClone
+    public class SkillAction 
     {
         public bool Active = true;
 

@@ -3,7 +3,7 @@
 namespace Game.Variable
 {
     [System.Serializable]
-    public class IntVariable : ScriptableObjectClone
+    public class IntVariable 
     {
         public int Value;
     }

@@ -8,19 +8,9 @@ namespace Game
     [System.Serializable]
     public class MovementForwardStateAction : StateAction
     {
-        [SerializeField] private MovementVariables  MovementVariables;
-        [SerializeField] private ObjectVariable     RigidbodyVariables;
-        [SerializeField] private GameobjectVariable TargetGOVariables;
-
-
-        private Rigidbody rigidbody;
-        private Transform transform;
-
-        public override void OnEnter()
-        {
-            rigidbody = RigidbodyVariables.Value as Rigidbody;
-            transform = TargetGOVariables.Value.transform;
-        }
+        [SerializeReference] public MovementVariables MovementVariables;
+        [SerializeReference] public Rigidbody rigidbody;
+        [SerializeReference] public Transform transform;
 
         public override void OnUpdate()
         {
@@ -33,7 +23,7 @@ namespace Game
                 rigidbody.drag = 4;
             }
 
-            Vector3 targetVelocity = 0.01f * MovementVariables.MoveAmount * MovementVariables.MoveSpeed * transform.forward;
+            Vector3 targetVelocity =  MovementVariables.MoveAmount * MovementVariables.MoveSpeed * transform.forward;
 
             //if (states.isGrounded)
             //{
@@ -45,12 +35,6 @@ namespace Game
             //}
 
             rigidbody.velocity = targetVelocity;
-        }
-        protected override void CloneDependencies(Dictionary<int, CloneData> allDependencies)
-        {
-            MovementVariables = GetCloneInstance(allDependencies, MovementVariables);
-            RigidbodyVariables = GetCloneInstance(allDependencies, RigidbodyVariables);
-            TargetGOVariables = GetCloneInstance(allDependencies, TargetGOVariables);
         }
     }
 }
