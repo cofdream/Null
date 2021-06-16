@@ -3,8 +3,8 @@
 namespace Game.Variable
 {
     [System.Serializable]
-    public class UnitVariable 
+    public class UnitVariable
     {
-       [HideInInspector] public Unit Value;
+        public Unit Value { get; set; }
     }
 }

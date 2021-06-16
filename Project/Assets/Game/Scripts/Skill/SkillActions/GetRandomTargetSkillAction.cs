@@ -1,6 +1,7 @@
 ﻿using Game.Variable;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace Game
 {
@@ -9,6 +10,9 @@ namespace Game
     {
         [HideInInspector] public UnitVariable Executor;
         [HideInInspector] public UnitVariable Target;
+
+        public UnitAttribute ExecutorAttribute;
+        public UnitAttribute TargetAttribute;
 
         public override void CastSkill()
         {
@@ -21,12 +25,9 @@ namespace Game
 
             if (allUnit.Length == 0)
             {
-                Debug.Log("找不到目标");
-                return;
             }
-            Target.Value = allUnit[Random.Range(0, allUnit.Length)];
-
+            else
+                Target.Value = allUnit[Random.Range(0, allUnit.Length)];
         }
-
     }
 }

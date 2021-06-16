@@ -22,11 +22,11 @@ namespace Game
         }
         public override void OnUpdate()
         {
-            Animator.SetFloat(AnimatorHashes.Vertical, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
+            Animator.SetFloat(AnimatorHashes.MoveVertical, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
         }
         public override void OnExit()
         {
-            Animator.SetFloat(AnimatorHashes.Vertical, 0);
+            Animator.SetFloat(AnimatorHashes.MoveVertical, 0);
 
 
             Vector3 lf_relative = Transform.InverseTransformPoint(AnimatorData.leftFoot.position);

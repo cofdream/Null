@@ -11,6 +11,10 @@ namespace Game.FSM
 
         public void Update()
         {
+            if (CurrentState == null)
+            {
+                return;
+            }
             CurrentState.OnUpdate();
             var targetState = CurrentState.CheckTransitions();
             if (targetState != null)
@@ -21,6 +25,10 @@ namespace Game.FSM
 
         public void FixedUpdate()
         {
+            if (CurrentState == null)
+            {
+                return;
+            }
             CurrentState.OnFixedUpdate();
         }
 

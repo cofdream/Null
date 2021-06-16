@@ -11,9 +11,13 @@ namespace Game.Test
         public Text CD;
 
         public Skill SKill;
-        public void Init(Skill sKill)
+        public Unit Unit;
+        public int index;
+        public void Init(Skill sKill, Unit unit, int index)
         {
             SKill = sKill;
+            Unit = unit;
+            this.index = index;
 
             Name.text = sKill.Name;
             Desc.text = sKill.Introduction;
@@ -24,7 +28,7 @@ namespace Game.Test
 
         public void CastSkill()
         {
-            SKill.CastSkill();
+            Unit.Magic.Cast(index);
         }
 
         public void Update()

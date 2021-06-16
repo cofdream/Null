@@ -68,10 +68,15 @@ namespace Game.Test
             {
                 Destroy(item.gameObject);
             }
-            foreach (var sKill in selectUnit.Skills)
+
+            if (selectUnit.Magic == null)
+            {
+                return;
+            }
+            for (int i = 0; i < selectUnit.Magic.Skills.Length; i++)
             {
                 var temp = Instantiate(uiSkill, skillsScrollView.content.transform);
-                temp.Init(sKill);
+                temp.Init(selectUnit.Magic.Skills[i], selectUnit, i);
             }
         }
     }

@@ -105,13 +105,13 @@ namespace Game.Test
                 getRandomTargetSkillAction.Target = target;
 
                 AtkRandomTarget.SkillActions = new SkillAction[] { getRandomTargetSkillAction, clculateDamageSkillAction, aplyDamageSkillAction };
-                AtkRandomTarget.Executor = executor;
+
+                executor.Value = unit;
+
+                //Skill fly = new Skill();
 
 
-                Skill fly = new Skill();
-
-
-                unit.Skills = new Skill[] { AtkRandomTarget };
+                unit.Magic.Skills = new Skill[] { AtkRandomTarget };
             }
 
             unit.Init(Vector3.zero, Quaternion.identity);
@@ -200,7 +200,7 @@ namespace Game.Test
 
                 unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 8);
 
-                unit.Skills = new Skill[] { };
+                unit.Magic.Skills = new Skill[] { };
 
                 unit.FSM = new FiniteStateMachine();
 

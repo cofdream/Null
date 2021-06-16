@@ -10,8 +10,8 @@ namespace Game
         public string Name;
 
         public UnitAttribute UnitAttribute;
-        [HideInInspector] public Skill[] Skills;
 
+        public Magic Magic = new Magic();
 
         public string PrefabPath;
         [SerializeReference] public GameObject GameObject;
@@ -30,9 +30,6 @@ namespace Game
         public void Init(Vector3 bornPosition, Quaternion rotation)
         {
             CreatGameObject(bornPosition, rotation);
-
-            foreach (var skill in Skills)
-                skill.Init(this);
         }
 
         private void CreatGameObject(Vector3 bornPosition, Quaternion rotation)
@@ -61,10 +58,7 @@ namespace Game
 
             FSM.Update();
 
-            foreach (var sKill in Skills)
-            {
-                sKill.UpdateSkill(Time.deltaTime);
-            }
+            Magic.Update();
         }
 
         public void FixedUpdate()
