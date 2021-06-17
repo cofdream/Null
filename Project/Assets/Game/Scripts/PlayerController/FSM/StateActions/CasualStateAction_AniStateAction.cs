@@ -1,7 +1,4 @@
 ﻿using Game.FSM;
-using Game.Variable;
-using Game.Variables;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game

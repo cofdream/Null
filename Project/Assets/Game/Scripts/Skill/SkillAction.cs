@@ -12,12 +12,11 @@ namespace Game
         public string Name = "SkillAction";
         public string Introduction = "Null...";
 
-        private bool isCastEnd;
 
 
         public virtual void CastSkill()
         {
-            isCastEnd = false;
+            
         }
 
         public virtual void UpdateAction(float delta)
@@ -27,7 +26,7 @@ namespace Game
 
         public virtual void CastEnd()
         {
-            isCastEnd = true;
+            
         }
     }
 }

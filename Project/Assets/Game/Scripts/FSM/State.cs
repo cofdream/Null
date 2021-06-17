@@ -1,27 +1,13 @@
-﻿
-
+﻿using System;
 using UnityEngine;
 
 namespace Game.FSM
 {
-    [System.Serializable]
+    [Serializable]
     public class State
     {
         [SerializeReference] public StateAction[] StateAction;
-
         [SerializeReference] public Transition[] Transitions;
-
-        public Transition GetTransitions(int index)
-        {
-            foreach (var transition in Transitions)
-            {
-                if (transition.id == index)
-                {
-                    return transition;
-                }
-            }
-            return null;
-        }
 
         public void OnEnter()
         {

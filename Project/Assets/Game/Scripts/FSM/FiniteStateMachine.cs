@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace Game.FSM
 {
-    [System.Serializable]
+    [Serializable]
     public class FiniteStateMachine
     {
         [SerializeReference] public State[] AllStates;
-
         [SerializeReference] public State CurrentState;
 
         public void Update()

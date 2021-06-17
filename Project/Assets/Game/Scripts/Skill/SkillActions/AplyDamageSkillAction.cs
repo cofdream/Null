@@ -1,5 +1,4 @@
-﻿using Game.Variable;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game
 {

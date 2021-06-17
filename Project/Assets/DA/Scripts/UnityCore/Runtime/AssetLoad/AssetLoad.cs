@@ -71,14 +71,15 @@ namespace DA.AssetLoad
 
                     LoadState = AssetLoadState.Loading;
 
-                    var assetBundle = AssetBundle.LoadFromFile(ABManifest.GetAssetBundleByAssetPath(assetPath));
+                    string abName = ABManifest.GetAssetBundleByAssetPath(assetPath);
+                    var assetBundle = AssetBundle.LoadFromFile(abName);
 
                     if (loadType.Equals(typeAB) == false)
                     {
                         asset = assetBundle.LoadAsset(ABManifest.GetAssetNameByAssetPath(this.assetPath), loadType);
                     }
 
-                    var directDependencies = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(assetPath));
+                    var directDependencies = ABManifest.AssetBundleManifest.GetDirectDependencies(System.IO.Path.GetFileName(abName));
                     totalDirectDependecntCount = directDependencies.Length;
                     foreach (var directDependent in directDependencies)
                     {

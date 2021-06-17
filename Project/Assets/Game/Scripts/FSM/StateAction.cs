@@ -1,11 +1,17 @@
 ﻿
+using System;
 
 namespace Game.FSM
 {
-    [System.Serializable]
+    [Serializable]
     public class StateAction
     {
         public bool Active = true;
+
+        public virtual void Init()
+        {
+
+        }
 
         public virtual void OnEnter()
         {

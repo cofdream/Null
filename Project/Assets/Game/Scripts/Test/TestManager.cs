@@ -2,7 +2,6 @@
 using UnityEngine;
 using Game.FSM;
 using DA.AssetLoad;
-using Game.Variable;
 
 namespace Game.Test
 {
@@ -131,35 +130,55 @@ namespace Game.Test
 
             TestUIManager.Instance.HeroCamera = cameraHangPoint.Camera;
 
-
+            //state
             State idleState = new State();
             State LocomotionState = new State();
+            State InAirState = new State();
 
+            //stateAction
             var InputStateAction = new InputStateAction();
             var RotateStateAction = new RotateStateAction();
             var MovementForwardStateAction = new MovementForwardStateAction();
             var MovementForward_AniStateAction = new MovementForward_AniStateAction();
             var RotationBaseOnCameraOrientationStateAction = new RotationBaseOnCameraOrientationStateAction();
+            var jumpStateAction = new AddVelocityStateAction();
 
+            //transition
+            // idle
             var ToLocamotionState = new Transition();
             var MoveCondition = new MoveCondition();
+            var ToInAirState = new Transition();
+            var isJumpCondition = new BoolCondition();
 
+            //locamator
             var ToIdleState = new Transition();
             var StopCondition = new IdleCondition();
 
-            var MovementVariables = new MovementVariables();
+            //in Air
+            var JumpDownToIdleState = new Transition();
+            var InGroundCondition = new BoolCondition();
 
-            unit.FSM.AllStates = new State[] { idleState, LocomotionState };
+
+            //variables
+            var MovementVariables = new MovementVariables();
+            var jump = new BoolVariable();
+
+            //赋值
+            unit.FSM.AllStates = new State[] { idleState, LocomotionState, InAirState };
             unit.FSM.CurrentState = idleState;
 
             idleState.StateAction = new StateAction[] { InputStateAction, RotateStateAction };
-            idleState.Transitions = new Transition[] { ToLocamotionState };
+            idleState.Transitions = new Transition[] { ToLocamotionState, ToInAirState };
 
             LocomotionState.StateAction = new StateAction[] { InputStateAction, RotateStateAction, MovementForwardStateAction, RotationBaseOnCameraOrientationStateAction, MovementForward_AniStateAction };
             LocomotionState.Transitions = new Transition[] { ToIdleState };
 
+            InAirState.StateAction = new StateAction[] { jumpStateAction };
+            InAirState.Transitions = new Transition[] { ToIdleState };
+
             InputStateAction.MovementVariables = MovementVariables;
             InputStateAction.UnitVariable = new UnitVariable() { Value = unit };
+            InputStateAction.JumpVariable = jump;
 
             RotateStateAction.target = unit.GameObject.transform;
 
@@ -175,14 +194,26 @@ namespace Game.Test
             RotationBaseOnCameraOrientationStateAction.MovementVariables = MovementVariables;
             RotationBaseOnCameraOrientationStateAction.CameraTransform = cameraHangPoint.Camera.transform;
 
+            jumpStateAction.Rigidbody = unit.Rigidbody;
+            jumpStateAction.Direction = Vector3.up;
+            jumpStateAction.Speed = 4;
+
             MoveCondition.MovementVariable = MovementVariables;
             StopCondition.MovementVarible = MovementVariables;
+            isJumpCondition.LeftBoolVariable = jump;
+            isJumpCondition.RightBoolVariable = new BoolVariable() { Value = true };
+
 
             ToLocamotionState.Condition = MoveCondition;
             ToLocamotionState.TargetState = LocomotionState;
 
+            ToInAirState.Condition = isJumpCondition;
+            ToInAirState.TargetState = InAirState;
+
             ToIdleState.Condition = StopCondition;
             ToIdleState.TargetState = idleState;
+
+            //JumpDownToIdleState.Condition
         }
 
         private void CreateEnemys()

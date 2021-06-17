@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game.FSM
 {
-    [System.Serializable]
+    [Serializable]
     public class Transition
     {
-        public int id;
+        public int Id;
         public bool Active = true;
         [SerializeReference] public Condition Condition;
         [HideInInspector] public State TargetState;

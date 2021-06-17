@@ -1,6 +1,4 @@
 ﻿using Game.FSM;
-using Game.Variable;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -11,9 +9,12 @@ namespace Game
         [HideInInspector] public UnitVariable UnitVariable;
         public MovementVariables MovementVariables;
         public bool RunButtonState;
+        public BoolVariable JumpVariable;
         public override void OnUpdate()
         {
             RunButtonState = Input.GetAxis("Fire3") == 1;
+
+            JumpVariable.Value = Input.GetAxis("Jump") == 1;
 
             MovementVariables.Horizontal = Input.GetAxis("Horizontal");
             MovementVariables.Vertical = Input.GetAxis("Vertical");

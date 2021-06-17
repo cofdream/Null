@@ -8,5 +8,8 @@ namespace Game
         public readonly int MoveVertical = Animator.StringToHash("moveVertical");
         public readonly int Stance = Animator.StringToHash("stance");
         public readonly int LeftFootForward = Animator.StringToHash("leftFootForward");
+        public readonly int Jump = Animator.StringToHash("Jump");
+
+
     }
 }
