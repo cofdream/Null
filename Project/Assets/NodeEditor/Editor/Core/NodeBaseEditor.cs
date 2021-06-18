@@ -11,14 +11,18 @@ namespace DA.Node
         private static void OpemWindow()
         {
             var window = GetWindow<NodeBaseEditor>();
-            window.titleContent = new GUIContent("Node Based Editor", AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png"));
+            window.titleContent = new GUIContent("Node Based Editor"/*, AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png")*/);
             window.Show();
         }
+
         public void AddItemsToMenu(GenericMenu menu)
         {
-            menu.AddItem(new GUIContent("Reset", EditorGUIUtility.FindTexture("Refresh")), false, Refresh_Menu);
+            menu.AddItem(new GUIContent("Reset"), false, MenuItem_Refresh);
+
+
+            menu.AddItem(new GUIContent("Add Node"), false, ProcessContextMenu);
         }
-        private void Refresh_Menu()
+        private void MenuItem_Refresh()
         {
             if (nodeList != null) nodeList.Clear();
             else nodeList = new List<Node>();
@@ -26,9 +30,8 @@ namespace DA.Node
             if (connectionList != null) connectionList.Clear();
             else connectionList = new List<Connection>();
 
-            OnEnable();
+            InitStyles();
         }
-
 
         private List<Node> nodeList;
         private List<Connection> connectionList;
@@ -36,6 +39,7 @@ namespace DA.Node
         private GUIStyle nodeStyle;
         private GUIStyle inPointStyle;
         private GUIStyle outPointStyle;
+        private Texture2D gridBackgroundTexture;
 
         private ConnectionPoint selectedInPoint;
         private ConnectionPoint selectedOutPoint;
@@ -43,15 +47,42 @@ namespace DA.Node
         private Vector2 offset;
         private Vector2 drag;
 
-        private float grdidSpacing = 2;
+        private float gridSpacing = 15f;
+
+        private const float minGridSpacing = 9f;
+        private const float maxGridSpacing = 30f;
+        private readonly Color smallLineColor = new Color(34f / 255, 34f / 255, 34f / 255, 255);
+        private readonly Color bigLineColor = new Color(24f / 255, 24f / 255, 24f / 255, 255);
 
         private void Awake()
         {
-            nodeList = new List<Node>();
-            connectionList = new List<Connection>();
+            InitStyles();
+            LoadData();
         }
 
-        private void OnEnable()
+        private void OnGUI()
+        {
+            if (nodeList == null || connectionList == null) LoadData();
+
+            var _event = UnityEngine.Event.current;
+
+            GUI.DrawTexture(new Rect(0, 0, position.width, position.height), gridBackgroundTexture, ScaleMode.StretchToFill);
+
+            DrawGrids();
+
+            DrawNodes();
+            DrawConnections();
+
+            DrawConnectionLine(_event);
+
+            ProcessNodeEvent(_event);
+            ProcessEvents(_event);
+
+            if (GUI.changed)
+                base.Repaint();
+        }
+
+        private void InitStyles()
         {
             nodeStyle = new GUIStyle();
             nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
@@ -66,31 +97,64 @@ namespace DA.Node
             outPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
             outPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
             outPointStyle.border = new RectOffset(4, 4, 12, 12);
+
+            gridBackgroundTexture = new Texture2D(1, 1);
+            gridBackgroundTexture.SetPixel(0, 0, new Color(42f / 255, 42f / 255, 42f / 255, 255));
+            gridBackgroundTexture.Apply();
         }
 
-        private void OnGUI()
+        private void LoadData()
         {
-            if (nodeList == null || connectionList == null) return;
+            if (nodeList == null)
+                nodeList = new List<Node>();
+            if (connectionList == null)
+                connectionList = new List<Connection>();
+        }
 
-            var _event = UnityEngine.Event.current;
+        private void DrawGrids()
+        {
+            Handles.BeginGUI();
+            Color oldColor = Handles.color;
 
-            DrawGrid(5 * grdidSpacing, 0.35f, Color.black);
-            DrawGrid(50 * grdidSpacing, 0.8f, Color.black);
+            offset += drag;
+            Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
 
-            DrawNodes();
-            DrawConnections();
+            Handles.color = smallLineColor;
+            DrawGrid(gridSpacing, newOffset);
 
-            DrawConnectionLine(_event);
+            Handles.color = bigLineColor;
+            DrawGrid(gridSpacing * 10, newOffset);
 
-            ProcessNodeEvent(_event);
-            ProcessEvents(_event);
+            Handles.color = oldColor;
+            Handles.EndGUI();
+        }
+        private void DrawGrid(float gridSpacing, Vector3 newOffset)
+        {
+            int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
+            int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
 
-            if (GUI.changed)
+            for (int i = 0; i < widthDivs; i++)
             {
-                base.Repaint();
+                var p1 = new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset;
+                var p2 = new Vector3(p1.x, position.height, 0) + newOffset;
+                p1.x = (int)p1.x + 0.2f;
+                p2.x = p1.x;
+
+                Handles.DrawLine(p1, p2);
+            }
+
+            for (int j = 0; j < heightDivs; j++)
+            {
+                var p1 = new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset;
+                var p2 = new Vector3(position.width, p1.y, 0) + newOffset;
+                p1.y = (int)p1.y + 0.2f;
+                p2.y = p1.y;
+
+                Handles.DrawLine(p1, p2);
             }
         }
 
+        [System.Obsolete]
         private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
         {
             int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
@@ -184,7 +248,7 @@ namespace DA.Node
                     }
                     break;
                 case EventType.ScrollWheel:
-                    OnGridSizeChange(_event);
+                    OnGridZoom(_event);
                     break;
                 default:
                     break;
@@ -198,25 +262,31 @@ namespace DA.Node
                 bool guiChange = nodeList[i].ProcessEvents(_event);
                 if (guiChange)
                 {
-                    if (!GUI.changed) GUI.changed = true;
+                    GUI.changed = true;
                 }
             }
         }
 
+        private void ProcessContextMenu()
+        {
+            Node node = new Node(new Vector2(100, 100), nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            node.Person = new Person();
+            nodeList.Add(node);
+        }
         private void ProcessContextMenu(Vector2 mousPosition)
         {
             GenericMenu genericMenu = new GenericMenu();
-            nodeCreatePostion = mousPosition;
-            genericMenu.AddItem(new GUIContent("Add Node"), false, OnClickAddNode);
+
+            genericMenu.AddItem(new GUIContent("Add Person Node"), false, () =>
+            {
+                Node node = new Node(mousPosition, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+                node.Person = new Person();
+                nodeList.Add(node);
+            });
+
             genericMenu.ShowAsContext();
         }
-        private static Vector2 nodeCreatePostion;
-        private void OnClickAddNode()
-        {
-            nodeList.Add(new Node(nodeCreatePostion, 200, 50, nodeStyle,
-                inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint,
-                OnClickRemoveNode));
-        }
+
         private void OnDrag(Vector2 delta)
         {
             drag = delta;
@@ -224,13 +294,15 @@ namespace DA.Node
             {
                 node.Drag(delta);
             }
-            if (!GUI.changed) GUI.changed = true;
+            GUI.changed = true;
         }
-        private void OnGridSizeChange(UnityEngine.Event _event)
-        {
-            grdidSpacing = Mathf.Clamp(grdidSpacing + (_event.delta.y * 0.1f), 1f, 6f);
 
-            if (!GUI.changed) GUI.changed = true;
+
+        private void OnGridZoom(UnityEngine.Event _event)
+        {
+            gridSpacing = Mathf.Clamp(gridSpacing - (_event.delta.y * 0.1f), minGridSpacing, maxGridSpacing);
+
+            GUI.changed = true;
         }
 
 

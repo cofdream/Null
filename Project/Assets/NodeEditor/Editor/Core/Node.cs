@@ -6,7 +6,7 @@ namespace DA.Node
 {
     public class Node
     {
-        public Rect Rect;
+        public Rect NodeRect;
         public string Title;
         public bool IsDragged;
 
@@ -17,20 +17,32 @@ namespace DA.Node
 
         public Action<Node> OnRemoveNode;
 
-        public Node(Vector2 position, float width, float height, GUIStyle nodeStyle,
+        public Person Person;
+
+
+        public GUISkin NodeSkin;
+
+        public Node(Vector2 position, GUIStyle nodeStyle,
             GUIStyle inPointStyle, GUIStyle outPointStyle, Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
         {
-            Rect = new Rect(position.x, position.y, width, height);
+            NodeRect = new Rect(position.x, position.y, 250, 150);
             NodeGUIStyle = nodeStyle;
 
-            InPoint = new ConnectionPoint(this,ConnectionPointType.In,inPointStyle, onClickInPoint);
-            OutPoint = new ConnectionPoint(this,ConnectionPointType.Out, outPointStyle, onClickOutPoint);
+            InPoint = new ConnectionPoint(this, ConnectionPointType.In, inPointStyle, onClickInPoint);
+            OutPoint = new ConnectionPoint(this, ConnectionPointType.Out, outPointStyle, onClickOutPoint);
             OnRemoveNode = onRemoveNode;
+
+            NodeSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/NodeEditor/PersonGUISkin.guiskin");
+
+            Person = new Person();
+            Person.Name = "dasda";
+            Person.Age = 123;
+            Person.Friend = null;
         }
 
         public void Drag(Vector2 delta)
         {
-            Rect.position += delta;
+            NodeRect.position += delta;
         }
 
         public void Draw()
@@ -38,7 +50,37 @@ namespace DA.Node
             InPoint.Draw();
             OutPoint.Draw();
 
-            GUI.Box(Rect, Title, NodeGUIStyle);
+            var rect = NodeRect;
+            //GUI.Box(rect, "Person", NodeSkin.box);
+
+            if (Person == null)
+            {
+                Person = new Person();
+                Person.Name = "dasda";
+                Person.Age = 123;
+                Person.Friend = null;
+            }
+
+            GUILayout.BeginArea(rect, NodeSkin.box);
+            {
+                //GUILayout.BeginHorizontal();
+                //GUILayout.FlexibleSpace();
+                GUILayout.Label(typeof(Person).Name,NodeSkin.label);
+                //GUILayout.FlexibleSpace();
+                //GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Name");
+                Person.Name = GUILayout.TextField(Person.Name);
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndArea();
+
+
+            //serializedObject.dwr
+
+            //var PersonRect = new Rect(rect.x + 10, rect.y + 18, rect.width - 20, 18 * 5);
+            //Person.Name = GUI.TextField(PersonRect, Person.Name, NodeSkin.textField);
         }
         public bool ProcessEvents(UnityEngine.Event _event)
         {
@@ -47,18 +89,18 @@ namespace DA.Node
                 case EventType.MouseDown:
                     if (_event.button == 0)
                     {
-                        if (Rect.Contains(_event.mousePosition))
+                        if (NodeRect.Contains(_event.mousePosition))
                         {
                             IsDragged = true;
                         }
                         else
                         {
                         }
-                        if (!GUI.changed) GUI.changed = true;
+                        GUI.changed = true;
 
                     }
 
-                    if (_event.button == 1 && Rect.Contains(_event.mousePosition))
+                    if (_event.button == 1 && NodeRect.Contains(_event.mousePosition))
                     {
                         ProcessContextMenu();
                         _event.Use();

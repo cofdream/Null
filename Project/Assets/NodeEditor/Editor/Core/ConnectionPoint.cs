@@ -29,17 +29,17 @@ namespace DA.Node
 
         public void Draw()
         {
-            Rect.y = Node.Rect.y + (Node.Rect.height * 0.5f) - Rect.height * 0.5f;
+            Rect.y = Node.NodeRect.y + (Node.NodeRect.height * 0.5f) - Rect.height * 0.5f;
 
 
             switch (ConnectionPointType)
             {
                 case ConnectionPointType.In:
-                    Rect.x = Node.Rect.x - Rect.width + 8f;
+                    Rect.x = Node.NodeRect.x - Rect.width + 8f;
                     break;
 
                 case ConnectionPointType.Out:
-                    Rect.x = Node.Rect.x + Node.Rect.width - 8f;
+                    Rect.x = Node.NodeRect.x + Node.NodeRect.width - 8f;
                     break;
             }
 
