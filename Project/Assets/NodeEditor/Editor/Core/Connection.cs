@@ -30,7 +30,7 @@ namespace DA.Node
             );
             
 
-            if (Handles.Button((InPoint.Rect.center + OutPoint.Rect.center) * 0.5f, Quaternion.identity, 4, 8, Handles.SphereHandleCap))
+            if (Handles.Button((InPoint.Rect.center + OutPoint.Rect.center) * 0.5f, Quaternion.identity, 8, 16, Handles.SphereHandleCap))
             {
                 OnClickRemoveConnection?.Invoke(this);
             }

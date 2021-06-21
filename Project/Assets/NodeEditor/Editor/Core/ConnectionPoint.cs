@@ -14,14 +14,14 @@ namespace DA.Node
     {
         public Rect Rect;
         public ConnectionPointType ConnectionPointType;
-        public Node Node;
+        public NodeReferencePoint NodeReferencePoint;
         public GUIStyle ConnectPointStyle;
         public Action<ConnectionPoint> OnClickConnectionPoint;
 
-        public ConnectionPoint(Node node, ConnectionPointType connectionPointType, GUIStyle style, Action<ConnectionPoint> onClickConnectionPoint)
+        public ConnectionPoint(NodeReferencePoint nodeReferencePoint, ConnectionPointType connectionPointType, GUIStyle style, Action<ConnectionPoint> onClickConnectionPoint)
         {
-            Rect = new Rect(0, 0, 10f, 20f);
-            Node = node;
+            Rect = new Rect(0, 0, 18f, 18f);
+            NodeReferencePoint = nodeReferencePoint;
             ConnectionPointType = connectionPointType;
             ConnectPointStyle = style;
             OnClickConnectionPoint = onClickConnectionPoint;
@@ -29,21 +29,21 @@ namespace DA.Node
 
         public void Draw()
         {
-            Rect.y = Node.NodeRect.y + (Node.NodeRect.height * 0.5f) - Rect.height * 0.5f;
+            Rect.y = NodeReferencePoint.PointRect.y + (NodeReferencePoint.PointRect.height * 0.5f) - Rect.height * 0.5f;
 
 
             switch (ConnectionPointType)
             {
                 case ConnectionPointType.In:
-                    Rect.x = Node.NodeRect.x - Rect.width + 8f;
+                    Rect.x = NodeReferencePoint.PointRect.x;
                     break;
 
                 case ConnectionPointType.Out:
-                    Rect.x = Node.NodeRect.x + Node.NodeRect.width - 8f;
+                    Rect.x = NodeReferencePoint.PointRect.x;
                     break;
             }
 
-            if (GUI.Button(Rect, "", ConnectPointStyle))
+            if (GUI.Button(Rect, ""/*, ConnectPointStyle*/))
             {
                 OnClickConnectionPoint?.Invoke(this);
             }

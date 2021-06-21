@@ -6,21 +6,26 @@ namespace DA.Node
 {
     public class NodeBaseEditor : EditorWindow, IHasCustomMenu
     {
+        //[MenuItem("NodeTool/OpenWindow")]
+        //private static void OpemWindow()
+        //{
+        //    var window = GetWindow<NodeBaseEditor>();
+        //    window.titleContent = new GUIContent("Node Based Editor"/*, AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png")*/);
+        //    window.Show();
+        //}
 
-        [MenuItem("NodeTool/OpenWindow")]
-        private static void OpemWindow()
+        public static void OpenNode(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
         {
             var window = GetWindow<NodeBaseEditor>();
             window.titleContent = new GUIContent("Node Based Editor"/*, AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png")*/);
             window.Show();
+
+            window.InitGraph(finiteStateMachineDataGraph);
         }
 
         public void AddItemsToMenu(GenericMenu menu)
         {
             menu.AddItem(new GUIContent("Reset"), false, MenuItem_Refresh);
-
-
-            menu.AddItem(new GUIContent("Add Node"), false, ProcessContextMenu);
         }
         private void MenuItem_Refresh()
         {
@@ -70,18 +75,24 @@ namespace DA.Node
 
             DrawGrids();
 
+            DrawConnectionLine(_event.mousePosition);
+
             DrawNodes();
             DrawConnections();
 
-            DrawConnectionLine(_event);
-
             ProcessNodeEvent(_event);
+
             ProcessEvents(_event);
 
             if (GUI.changed)
                 base.Repaint();
         }
 
+        private void InitGraph(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
+        {
+            Node node = new Node(finiteStateMachineDataGraph.NodeRect.position, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            nodeList.Add(node);
+        }
         private void InitStyles()
         {
             nodeStyle = new GUIStyle();
@@ -187,24 +198,29 @@ namespace DA.Node
             {
                 node.Draw();
             }
+
         }
         private void DrawConnections()
         {
-            foreach (var connection in connectionList)
+            //foreach (var connection in connectionList)
+            //{
+            //    connection.Draw();
+            //}
+            for (int i = connectionList.Count - 1; i > -1; i--)
             {
-                connection.Draw();
+                connectionList[i].Draw();
             }
         }
 
-        private void DrawConnectionLine(UnityEngine.Event _event)
+        private void DrawConnectionLine(Vector2 endPosition)
         {
             if (selectedInPoint != null && selectedOutPoint == null)
             {
                 Handles.DrawBezier(
                     selectedInPoint.Rect.center,
-                    _event.mousePosition,
+                    endPosition,
                     selectedInPoint.Rect.center + Vector2.left * 50f,
-                    _event.mousePosition - Vector2.left * 50f,
+                    endPosition - Vector2.left * 50f,
                     Color.white,
                     null,
                     2f
@@ -217,9 +233,9 @@ namespace DA.Node
             {
                 Handles.DrawBezier(
                     selectedOutPoint.Rect.center,
-                    _event.mousePosition,
+                    endPosition,
                     selectedOutPoint.Rect.center - Vector2.left * 50f,
-                    _event.mousePosition + Vector2.left * 50f,
+                    endPosition + Vector2.left * 50f,
                     Color.white,
                     null,
                     2f
@@ -250,8 +266,6 @@ namespace DA.Node
                 case EventType.ScrollWheel:
                     OnGridZoom(_event);
                     break;
-                default:
-                    break;
             }
         }
 
@@ -267,12 +281,7 @@ namespace DA.Node
             }
         }
 
-        private void ProcessContextMenu()
-        {
-            Node node = new Node(new Vector2(100, 100), nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
-            node.Person = new Person();
-            nodeList.Add(node);
-        }
+
         private void ProcessContextMenu(Vector2 mousPosition)
         {
             GenericMenu genericMenu = new GenericMenu();
@@ -280,7 +289,6 @@ namespace DA.Node
             genericMenu.AddItem(new GUIContent("Add Person Node"), false, () =>
             {
                 Node node = new Node(mousPosition, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
-                node.Person = new Person();
                 nodeList.Add(node);
             });
 
@@ -312,7 +320,7 @@ namespace DA.Node
 
             if (selectedOutPoint != null)
             {
-                if (selectedOutPoint.Node != selectedInPoint.Node)
+                if (selectedOutPoint.NodeReferencePoint != selectedInPoint.NodeReferencePoint)
                 {
                     CreateConnection();
                     ClearConnectionSelection();
@@ -330,7 +338,7 @@ namespace DA.Node
 
             if (selectedInPoint != null)
             {
-                if (selectedOutPoint.Node != selectedInPoint.Node)
+                if (selectedOutPoint.NodeReferencePoint != selectedInPoint.NodeReferencePoint)
                 {
                     CreateConnection();
                     ClearConnectionSelection();

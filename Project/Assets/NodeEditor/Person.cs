@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [Serializable]
-public class Person : UnityEngine.Object
+public class Person : DASerializable
 {
     public string Name;
     public int Age;
