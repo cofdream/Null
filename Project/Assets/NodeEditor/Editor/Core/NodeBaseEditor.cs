@@ -14,7 +14,7 @@ namespace DA.Node
         //    window.Show();
         //}
 
-        public static void OpenNode(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
+        public static void OpenNode(NullNamespace.NodeDataGraph finiteStateMachineDataGraph)
         {
             var window = GetWindow<NodeBaseEditor>();
             window.titleContent = new GUIContent("Node Based Editor"/*, AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png")*/);
@@ -67,7 +67,7 @@ namespace DA.Node
 
         private void OnGUI()
         {
-            if (nodeList == null || connectionList == null) LoadData();
+            if (nodeList == null || connectionList == null) Close();
 
             var _event = UnityEngine.Event.current;
 
@@ -88,9 +88,9 @@ namespace DA.Node
                 base.Repaint();
         }
 
-        private void InitGraph(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
+        private void InitGraph(NullNamespace.NodeDataGraph finiteStateMachineDataGraph)
         {
-            Node node = new Node(finiteStateMachineDataGraph.NodeRect.position, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+            Node node = new FSMNode(finiteStateMachineDataGraph, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
             nodeList.Add(node);
         }
         private void InitStyles()

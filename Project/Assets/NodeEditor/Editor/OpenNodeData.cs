@@ -17,7 +17,7 @@ namespace NullNamespace
             //    return true;
             //}
 
-            var FiniteStateMachineDataGraph = EditorUtility.InstanceIDToObject(instanceID) as FiniteStateMachineDataGraph;
+            var FiniteStateMachineDataGraph = EditorUtility.InstanceIDToObject(instanceID) as NodeDataGraph;
             if (FiniteStateMachineDataGraph != null)
             {
                 NodeBaseEditor.OpenNode(FiniteStateMachineDataGraph);

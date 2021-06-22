@@ -7,5 +7,7 @@ namespace NullNamespace
 	{
 		public string StateActionType;
 		public int InstanceId;
+
+		public Rect NodeRect;
 	}
 }

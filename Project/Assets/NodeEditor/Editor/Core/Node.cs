@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Game.FSM;
+using NullNamespace;
+using System;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,23 +29,15 @@ namespace DA.Node
 
         public Action<Node> OnRemoveNode;
 
-        public Person Person;
-
         protected static GUISkin NodeSkin;
         static Node()
         {
             NodeSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/NodeEditor/PersonGUISkin.guiskin");
         }
 
-        public Node(Vector2 position, GUIStyle nodeStyle,
-            GUIStyle inPointStyle, GUIStyle outPointStyle, Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
+        public Node(Vector2 position, GUIStyle nodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
+            Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
         {
-            Person = new Person();
-            Person.Name = "dasda";
-            Person.Age = 123;
-            Person.Friend = null;
-
-
             NodeRect = new Rect(position.x, position.y, 250, 150);
             NodeGUIStyle = nodeStyle;
 
@@ -53,7 +48,6 @@ namespace DA.Node
             SelfPoint.PointRect.width = 18;
             SelfPoint.PointRect.height = 18;
 
-            //FriendPoint.ReferenceId = Person.Friend.InstanceID;
 
             InPoint = new ConnectionPoint(SelfPoint, ConnectionPointType.In, inPointStyle, onClickInPoint);
             OutPoint = new ConnectionPoint(FriendPoint, ConnectionPointType.Out, outPointStyle, onClickOutPoint);
@@ -66,26 +60,9 @@ namespace DA.Node
             SelfPoint.PointRect.position += delta;
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
-            var rect = NodeRect;
 
-            GUI.Box(rect, GUIContent.none, NodeSkin.box);
-
-            var rectTitle = new Rect(rect.x, rect.y, rect.width, 20);
-            GUI.Label(rectTitle, typeof(Person).Name, NodeSkin.customStyles[3]);
-
-            var nameRect = new Rect(rect.x + 2f, rect.y + rectTitle.height + 5, rect.width - 4f, 18f);
-            Person.Name = DrawVariable(nameRect, "Name", Person.Name);
-
-            var ageRect = new Rect(rect.x + 2f, nameRect.y + nameRect.height, rect.width - 4f, 18f);
-            Person.Age = DrawVariable(ageRect, "Age", Person.Age);
-
-            var friendRect = new Rect(rect.x + 2f, ageRect.y + ageRect.height, rect.width - 4f, 18f);
-            Person.Friend = DrawVariable(friendRect, "Friend", Person.Friend);
-
-            InPoint.Draw();
-            OutPoint.Draw();
         }
 
         public bool ProcessEvents(UnityEngine.Event _event)
@@ -139,7 +116,7 @@ namespace DA.Node
         }
 
 
-        private string DrawVariable(Rect rect, string name, string value)
+        protected string DrawVariable(Rect rect, string name, string value)
         {
             float width = rect.width * 0.5f;
             Rect leftRect = new Rect(rect.x, rect.y, width, rect.height);
@@ -151,7 +128,7 @@ namespace DA.Node
 
             return outValue;
         }
-        private int DrawVariable(Rect rect, string name, int value)
+        protected int DrawVariable(Rect rect, string name, int value)
         {
             float width = rect.width * 0.5f;
             Rect leftRect = new Rect(rect.x, rect.y, width, rect.height);
@@ -166,7 +143,7 @@ namespace DA.Node
             return value;
         }
 
-        private Person DrawVariable(Rect rect, string name, Person value)
+        protected Person DrawVariable(Rect rect, string name, Person value)
         {
             float width = rect.width * 0.5f;
             Rect leftRect = new Rect(rect.x, rect.y, width, rect.height);
@@ -179,5 +156,104 @@ namespace DA.Node
 
             return value;
         }
+
+        protected void DrawVariable(ref Rect rect, ref bool toogleValue, FieldInfo fieldInfo, FiniteStateMachineData data)
+        {
+
+            if (fieldInfo.FieldType.IsArray)
+            {
+                int length;
+                if (!(fieldInfo.GetValue(data) is Array value)) return;
+
+                length = value.Length;
+
+                toogleValue = GUI.Toggle(rect, toogleValue, fieldInfo.Name, EditorStyles.foldout);
+
+                Rect lengthRect = rect;
+                lengthRect.x = lengthRect.x + rect.width - 40;
+                lengthRect.width = 40;
+                string strLength = GUI.TextField(lengthRect, length.ToString());
+
+                if (!int.TryParse(strLength, out int strLengthParse)) return;
+
+                if (strLengthParse > length)
+                {
+
+                }
+                else if (strLengthParse < length)
+                {
+
+                }
+                if (toogleValue)
+                {
+                    // 显示元素
+                    rect.x += 18;
+                    rect.width -= 18f;
+
+                    rect.y += 18;
+                    GUI.Box(rect, "", "GroupBox");
+                }
+
+            }
+            else
+            {
+                float width = rect.width * 0.5f;
+                Rect leftRect = new Rect(rect.x, rect.y, width, rect.height);
+                Rect rightRect = new Rect(rect.x + width, rect.y, width, rect.height);
+
+                GUI.Label(leftRect, fieldInfo.Name);
+
+                var outValue = GUI.TextField(rightRect, fieldInfo.GetValue(data).ToString());
+
+                fieldInfo.SetValue(data, outValue);
+            }
+        }
     }
+
+    public class FSMNode : Node
+    {
+        private readonly NodeDataGraph graphData;
+
+        public FSMNode(NodeDataGraph graphData, GUIStyle nodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
+            Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
+              : base(graphData.NodeRect.position, nodeStyle, inPointStyle, outPointStyle, onClickInPoint, onClickOutPoint, onRemoveNode)
+        {
+            this.graphData = graphData; 
+        }
+
+        public override void Draw()
+        {
+            var rect = NodeRect;
+
+            GUI.Box(rect, GUIContent.none, NodeSkin.box);
+
+            rect = new Rect(rect.x, rect.y, rect.width, 20);
+            GUI.Label(rect, graphData.Type.Name, NodeSkin.customStyles[3]);
+
+
+
+            rect = new Rect(rect.x + 2f, rect.y + rect.height + 5f, rect.width - 4f, 18f);
+
+            for (int i = 0; i < graphData.FieldInfos.Length; i++)
+            {
+                DrawVariable(ref rect, ref graphData.Toogles[i], graphData.FieldInfos[i], graphData.FiniteStateMachineData);
+
+                rect.y += 18f;
+            }
+
+
+            //graphData.FiniteStateMachineData.Name = DrawVariable(nameRect, "Name", graphData.FiniteStateMachineData.Name);
+
+            //var ageRect = new Rect(rect.x + 2f, nameRect.y + nameRect.height, rect.width - 4f, 18f);
+            //graphData.FiniteStateMachineData.AllStates = DrawVariable(ageRect, graphData., "AllStates", graphData.FiniteStateMachineData.AllStates);
+
+            //var friendRect = new Rect(rect.x + 2f, ageRect.y + ageRect.height, rect.width - 4f, 18f);
+            //Person.Friend = DrawVariable(friendRect, "Friend", Person.Friend);
+
+
+            InPoint.Draw();
+            OutPoint.Draw();
+        }
+    }
+
 }
