@@ -90,8 +90,11 @@ namespace DA.Node
 
         private void InitGraph(NullNamespace.NodeDataGraph finiteStateMachineDataGraph)
         {
-            Node node = new FSMNode(finiteStateMachineDataGraph, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
-            nodeList.Add(node);
+            if (nodeList.Count == 0)
+            {
+                Node node = new FSMNode(finiteStateMachineDataGraph, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+                nodeList.Add(node);
+            }
         }
         private void InitStyles()
         {
@@ -273,11 +276,7 @@ namespace DA.Node
         {
             for (int i = nodeList.Count - 1; i > -1; i--)
             {
-                bool guiChange = nodeList[i].ProcessEvents(_event);
-                if (guiChange)
-                {
-                    GUI.changed = true;
-                }
+                nodeList[i].ProcessEvents(_event);
             }
         }
 
@@ -320,7 +319,7 @@ namespace DA.Node
 
             if (selectedOutPoint != null)
             {
-                if (selectedOutPoint.NodeReferencePoint != selectedInPoint.NodeReferencePoint)
+                if (selectedOutPoint.Node != selectedInPoint.Node)
                 {
                     CreateConnection();
                     ClearConnectionSelection();
@@ -338,7 +337,7 @@ namespace DA.Node
 
             if (selectedInPoint != null)
             {
-                if (selectedOutPoint.NodeReferencePoint != selectedInPoint.NodeReferencePoint)
+                if (selectedOutPoint.Node != selectedInPoint.Node)
                 {
                     CreateConnection();
                     ClearConnectionSelection();

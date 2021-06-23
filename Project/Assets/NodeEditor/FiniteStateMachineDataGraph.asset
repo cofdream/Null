@@ -14,17 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FiniteStateMachineData: {fileID: 11400000, guid: d8f02d6de826cea44b501767486af3b2,
     type: 2}
-  Name: PlayerControllerFSM
-  AllStates:
-  - StateName: Ilde
-    InstanceId: 0
-    StateAction:
-    - StateActionType: MovementForwordStateAction
-      InstanceId: 0
-    Transitions: []
+  Toogle: 1
   NodeRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 0
     height: 0
+  Toogles: 0000

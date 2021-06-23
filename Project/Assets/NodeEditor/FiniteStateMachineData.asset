@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e18c2a4710d28468961d730ceaefce, type: 3}
   m_Name: FiniteStateMachineData
   m_EditorClassIdentifier: 
-  Name: PlayerControllerFSM
+  Name: PlayerControlleMachineData
   AllStates:
   - StateName: Ilde
     InstanceId: 0
     StateAction:
+    - StateActionType: MovementForwordStateAction
+      InstanceId: 0
+    - StateActionType: MovementForwordStateAction
+      InstanceId: 0
+    Transitions: []
+  - StateName: Locoment
+    InstanceId: 0
+    StateAction:
+    - StateActionType: MovementForwordStateAction
+      InstanceId: 0
     - StateActionType: MovementForwordStateAction
       InstanceId: 0
     Transitions: []
