@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "com.devilangel.daprototool": "https://github.com/cofdream/DAProtoBufer.git#upm",
     "com.devilangel.datools": "https://github.com/cofdream/DATools.git#upm",
     "com.devilangel.iconkit": "https://github.com/cofdream/IconKit.git#upm",

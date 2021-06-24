@@ -7,8 +7,8 @@ namespace Game.FSM
     [Serializable]
     public class FiniteStateMachine
     {
-        [SerializeReference] public State[] AllStates;
-        [SerializeReference] public State CurrentState;
+         public State[] AllStates;
+         public State CurrentState;
 
         public void Update()
         {

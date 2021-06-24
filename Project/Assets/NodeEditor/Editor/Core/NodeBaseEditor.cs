@@ -14,7 +14,7 @@ namespace DA.Node
         //    window.Show();
         //}
 
-        public static void OpenNode(NullNamespace.NodeDataGraph finiteStateMachineDataGraph)
+        public static void OpenNode(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
         {
             var window = GetWindow<NodeBaseEditor>();
             window.titleContent = new GUIContent("Node Based Editor"/*, AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.devilangel.iconkit/head/editor_head.png")*/);
@@ -88,12 +88,20 @@ namespace DA.Node
                 base.Repaint();
         }
 
-        private void InitGraph(NullNamespace.NodeDataGraph finiteStateMachineDataGraph)
+        private void InitGraph(NullNamespace.FiniteStateMachineDataGraph finiteStateMachineDataGraph)
         {
             if (nodeList.Count == 0)
             {
-                Node node = new FSMNode(finiteStateMachineDataGraph, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+                Node node = new FSMNode(finiteStateMachineDataGraph, OnClickInPoint, OnAddNode, OnClickRemoveNode);
                 nodeList.Add(node);
+
+                finiteStateMachineDataGraph.LoadData();
+
+                foreach (var item in finiteStateMachineDataGraph.stateDataGraphs)
+                {
+                    Node nodeState = new StateNode(item, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+                    nodeList.Add(nodeState);
+                }
             }
         }
         private void InitStyles()
@@ -220,9 +228,9 @@ namespace DA.Node
             if (selectedInPoint != null && selectedOutPoint == null)
             {
                 Handles.DrawBezier(
-                    selectedInPoint.Rect.center,
+                    selectedInPoint.PointRect.center,
                     endPosition,
-                    selectedInPoint.Rect.center + Vector2.left * 50f,
+                    selectedInPoint.PointRect.center + Vector2.left * 50f,
                     endPosition - Vector2.left * 50f,
                     Color.white,
                     null,
@@ -235,9 +243,9 @@ namespace DA.Node
             if (selectedOutPoint != null && selectedInPoint == null)
             {
                 Handles.DrawBezier(
-                    selectedOutPoint.Rect.center,
+                    selectedOutPoint.PointRect.center,
                     endPosition,
-                    selectedOutPoint.Rect.center - Vector2.left * 50f,
+                    selectedOutPoint.PointRect.center - Vector2.left * 50f,
                     endPosition + Vector2.left * 50f,
                     Color.white,
                     null,
@@ -285,10 +293,13 @@ namespace DA.Node
         {
             GenericMenu genericMenu = new GenericMenu();
 
-            genericMenu.AddItem(new GUIContent("Add Person Node"), false, () =>
+            genericMenu.AddItem(new GUIContent("Add State Node"), false, () =>
             {
-                Node node = new Node(mousPosition, nodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
-                nodeList.Add(node);
+                var graph = new NullNamespace.StateDataGraph();
+                graph.NodeRect = new Rect(mousPosition.x, mousPosition.y, 250, 150);
+
+                Node nodeState = new StateNode(graph, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
+                nodeList.Add(nodeState);
             });
 
             genericMenu.ShowAsContext();
@@ -371,13 +382,13 @@ namespace DA.Node
             {
                 List<Connection> connectionsToRemove = new List<Connection>();
 
-                for (int i = 0; i < connectionList.Count; i++)
-                {
-                    if (connectionList[i].InPoint == node.InPoint || connectionList[i].OutPoint == node.OutPoint)
-                    {
-                        connectionsToRemove.Add(connectionList[i]);
-                    }
-                }
+                //for (int i = 0; i < connectionList.Count; i++)
+                //{
+                //    if (connectionList[i].InPoint == node.InPoint || connectionList[i].OutPoint == node.OutPoint)
+                //    {
+                //        connectionsToRemove.Add(connectionList[i]);
+                //    }
+                //}
 
                 for (int i = 0; i < connectionsToRemove.Count; i++)
                 {
@@ -386,6 +397,10 @@ namespace DA.Node
             }
 
             nodeList.Remove(node);
+        }
+        private void OnAddNode(Node node)
+        {
+            nodeList.Add(node);
         }
     }
 }

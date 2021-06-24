@@ -20,17 +20,17 @@ namespace DA.Node
         public void Draw()
         {
             Handles.DrawBezier(
-                InPoint.Rect.center,
-                OutPoint.Rect.center,
-                InPoint.Rect.center + Vector2.left * 50f,
-                OutPoint.Rect.center - Vector2.left * 50f,
+                InPoint.PointRect.center,
+                OutPoint.PointRect.center,
+                InPoint.PointRect.center + Vector2.left * 50f,
+                OutPoint.PointRect.center - Vector2.left * 50f,
                 Color.white,
                 null,
                 2f
             );
             
 
-            if (Handles.Button((InPoint.Rect.center + OutPoint.Rect.center) * 0.5f, Quaternion.identity, 8, 16, Handles.SphereHandleCap))
+            if (Handles.Button((InPoint.PointRect.center + OutPoint.PointRect.center) * 0.5f, Quaternion.identity, 8, 16, Handles.SphereHandleCap))
             {
                 OnClickRemoveConnection?.Invoke(this);
             }

@@ -9,17 +9,11 @@ using UnityEngine;
 
 namespace DA.Node
 {
-    public class Node
+    public abstract class Node
     {
-        public Rect NodeRect;
         public bool IsDragged;
         private bool isResizeHorizontal;
         private bool isResizeVertical;
-
-        public GUIStyle NodeGUIStyle;
-
-        public ConnectionPoint InPoint;
-        public ConnectionPoint OutPoint;
 
         public Action<Node> OnRemoveNode;
 
@@ -29,42 +23,47 @@ namespace DA.Node
             NodeSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/NodeEditor/PersonGUISkin.guiskin");
         }
 
-        public Node(Vector2 position, GUIStyle nodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
-            Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
+        public Node(Action<Node> onRemoveNode)
         {
-            NodeRect = new Rect(position.x, position.y, 250, 150);
-            NodeGUIStyle = nodeStyle;
-
             OnRemoveNode = onRemoveNode;
         }
 
-        public void Drag(Vector2 delta)
+        public virtual Rect GetRect()
         {
-            NodeRect.position += delta;
+            return Rect.zero;
+        }
+        public virtual void Drag(Vector2 delta)
+        {
+
+        }
+        public virtual void Resize(Vector2 size)
+        {
+
         }
 
         public virtual void Draw()
         {
-            GUI.Box(NodeRect, "");
+            GUI.Box(GetRect(), "Node");
         }
 
-        public void ProcessEvents(UnityEngine.Event _event)
+        public virtual void ProcessEvents(UnityEngine.Event _event)
         {
-            var mousePosition = _event.mousePosition;
+            var rect = GetRect();
 
+            var mousePosition = _event.mousePosition;
 
             float angleSize = 4;
             float frameSize = 2;
 
-            //Rect leftFrameRect = new Rect(NodeRect.x, NodeRect.y - angleSize, 1, NodeRect.height - angleSize * 2);
-            Rect rightFrameRect = new Rect(NodeRect.x + NodeRect.width - frameSize, NodeRect.y - angleSize, frameSize * 2, NodeRect.height - angleSize * 2);
-            //Rect upFrameRect = new Rect(NodeRect.x - angleSize, NodeRect.y, NodeRect.width - angleSize * 2, 1);
-            Rect downFrameRect = new Rect(NodeRect.x - angleSize, NodeRect.y + NodeRect.height - frameSize, NodeRect.width - angleSize * 2, frameSize * 2);
+            //Rect leftFrameRect = new Rect(rect.x, rect.y - angleSize, 1, rect.height - angleSize * 2);
+            Rect rightFrameRect = new Rect(rect.x + rect.width - frameSize, rect.y - angleSize, frameSize * 2, rect.height - angleSize * 2);
+            //Rect upFrameRect = new Rect(rect.x - angleSize, rect.y, rect.width - angleSize * 2, 1);
+            Rect downFrameRect = new Rect(rect.x - angleSize, rect.y + rect.height - frameSize, rect.width - angleSize * 2, frameSize * 2);
 
-            //Rect leftUpAngleRect = new Rect(NodeRect.x, NodeRect.y, angleSize, angleSize);
-            //Rect rightUpAngleRect = new Rect(NodeRect.x + NodeRect.width - angleSize, NodeRect.y, angleSize, angleSize);
-            //Rect leftDownAngleRect = new Rect(NodeRect.x, NodeRect.y - NodeRect.height - angleSize, angleSize, angleSize);
-            Rect rightDownAngleRect = new Rect(NodeRect.x + NodeRect.width - angleSize, NodeRect.y + NodeRect.height - angleSize, angleSize * 2, angleSize * 2);
+            //Rect leftUpAngleRect = new Rect(rect.x, rect.y, angleSize, angleSize);
+            //Rect rightUpAngleRect = new Rect(rect.x + rect.width - angleSize, rect.y, angleSize, angleSize);
+            //Rect leftDownAngleRect = new Rect(rect.x, rect.y - rect.height - angleSize, angleSize, angleSize);
+            Rect rightDownAngleRect = new Rect(rect.x + rect.width - angleSize, rect.y + rect.height - angleSize, angleSize * 2, angleSize * 2);
 
 
             //EditorGUIUtility.AddCursorRect(leftFrameRect, MouseCursor.ResizeHorizontal);
@@ -98,14 +97,14 @@ namespace DA.Node
                         }
                         else
                         {
-                            if (NodeRect.Contains(mousePosition))
+                            if (rect.Contains(mousePosition))
                             {
                                 IsDragged = true;
                             }
                         }
                     }
 
-                    if (_event.button == 1 && NodeRect.Contains(mousePosition))
+                    if (_event.button == 1 && rect.Contains(mousePosition))
                     {
                         ProcessContextMenu();
                         _event.Use();
@@ -123,13 +122,14 @@ namespace DA.Node
                 case EventType.MouseDrag:
                     if (_event.button == 0)
                     {
+
                         if (isResizeHorizontal)
                         {
-                            NodeRect.width += _event.delta.x;
+                            Resize(new Vector2(_event.delta.x, 0));
                         }
                         if (isResizeVertical)
                         {
-                            NodeRect.height += _event.delta.y;
+                            Resize(new Vector2(0, _event.delta.y));
                         }
 
                         if (isResizeHorizontal || isResizeVertical)
@@ -152,10 +152,14 @@ namespace DA.Node
         {
             GenericMenu genericMenu = new GenericMenu();
             genericMenu.AddItem(new GUIContent("Remove node"), false, OnClickRemoveNode);
+            AddMenu(genericMenu);
             genericMenu.ShowAsContext();
         }
+        protected virtual void AddMenu(GenericMenu menu)
+        {
 
-        private void OnClickRemoveNode()
+        }
+        protected virtual void OnClickRemoveNode()
         {
             OnRemoveNode?.Invoke(this);
         }
@@ -269,7 +273,7 @@ namespace DA.Node
 
     public class FSMNode : Node
     {
-        private readonly NodeDataGraph graphData;
+        private readonly FiniteStateMachineDataGraph graph;
 
         public ConnectionPoint[] InConnectionPoints;
         public ConnectionPoint[] OutConnectionPoints;
@@ -285,11 +289,12 @@ namespace DA.Node
         //public readonly GUIStyle preButton = "RL FooterButton";
         //public readonly GUIStyle elementBackground = "RL Element";
 
-        public FSMNode(NodeDataGraph graphData, GUIStyle nodeStyle, GUIStyle inPointStyle, GUIStyle outPointStyle,
-            Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode)
-              : base(graphData.NodeRect.position, nodeStyle, inPointStyle, outPointStyle, onClickInPoint, onClickOutPoint, onRemoveNode)
+        private Action<Node> onAddNode;
+        public FSMNode(FiniteStateMachineDataGraph graphData, Action<ConnectionPoint> onClickInPoint, Action<Node> onAddNode, Action<Node> onRemoveNode) : base(onRemoveNode)
         {
-            this.graphData = graphData;
+            this.graph = graphData;
+
+            this.onAddNode = onAddNode;
 
             InConnectionPoints = new ConnectionPoint[]
             {
@@ -297,35 +302,38 @@ namespace DA.Node
                  new ConnectionPoint(this,ConnectionPointType.In,NodeSkin.toggle,onClickInPoint),
                  new ConnectionPoint(this,ConnectionPointType.In,NodeSkin.toggle,onClickInPoint),
             };
-
-            OutConnectionPoints = new ConnectionPoint[]
-            {
-                 new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
-                 new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
-                 new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
-            };
         }
 
+        public override Rect GetRect()
+        {
+            return graph.NodeRect;
+        }
+        public override void Drag(Vector2 delta)
+        {
+            graph.NodeRect.position += delta;
+        }
+        public override void Resize(Vector2 size)
+        {
+            graph.NodeRect.size += size;
+        }
 
-        int index;
         public override void Draw()
         {
-
-            var rect = NodeRect;
+            var rect = graph.NodeRect;
 
             GUI.Box(rect, GUIContent.none, NodeSkin.box);
 
             rect = new Rect(rect.x, rect.y, rect.width, 20);
-            GUI.Label(rect, graphData.DataType.Name, NodeSkin.customStyles[3]);
+            GUI.Label(rect, graph.GetType().Name, NodeSkin.customStyles[3]);
 
 
             rect = new Rect(rect.x + 2f, rect.y + rect.height + 5f, rect.width - 4f, 18f);
-            graphData.FiniteStateMachineData.Name = DrawVariable(rect, "Name", graphData.FiniteStateMachineData.Name);
+            graph.FiniteStateMachineData.Name = DrawVariable(rect, "Name", graph.FiniteStateMachineData.Name);
             rect.y += 18f;
 
-            graphData.Toogle = GUI.Toggle(rect, graphData.Toogle, "AllState", EditorStyles.foldout);
+            graph.Toogle = GUI.Toggle(rect, graph.Toogle, "AllState", EditorStyles.foldout);
 
-            int length = graphData.FiniteStateMachineData.AllStates.Length;
+            int length = graph.FiniteStateMachineData.StateDatas.Length;
 
             Rect lengthRect = rect;
             lengthRect.x = lengthRect.x + rect.width - 40;
@@ -344,7 +352,7 @@ namespace DA.Node
                 }
             }
 
-            if (graphData.Toogle)
+            if (graph.Toogle)
             {
                 // 显示元素
                 rect.x += 18;
@@ -353,12 +361,12 @@ namespace DA.Node
                 rect.y += 18;
                 for (int i = 0; i < length; i++)
                 {
-                    var stateData = graphData.FiniteStateMachineData.AllStates[i];
+                    var stateData = graph.FiniteStateMachineData.StateDatas[i];
 
                     DrawVariable(rect, stateData.StateName, stateData);
 
                     var pointRect = new Rect(rect.x + rect.width - 18, rect.y, 18, 18);
-                    InConnectionPoints[i].Rect = pointRect;
+                    InConnectionPoints[i].PointRect = pointRect;
                     InConnectionPoints[i].Draw();
 
                     rect.y += 18;
@@ -368,9 +376,67 @@ namespace DA.Node
             {
                 for (int i = 0; i < length; i++)
                 {
-                    InConnectionPoints[i].Rect = lengthRect;
+                    InConnectionPoints[i].PointRect = lengthRect;
                 }
             }
+        }
+
+        protected override void AddMenu(GenericMenu menu)
+        {
+            menu.AddItem(new GUIContent("Add State"), false, graph.AddState);
+        }
+    }
+
+    public class StateNode : Node
+    {
+        public StateDataGraph graph;
+
+        public ConnectionPoint OutConnectionPoint;
+
+        public StateNode(StateDataGraph stateGraph, Action<ConnectionPoint> onClickInPoint, Action<ConnectionPoint> onClickOutPoint, Action<Node> onRemoveNode) : base(onRemoveNode)
+        {
+            graph = stateGraph;
+
+            OutConnectionPoint = new ConnectionPoint(this, ConnectionPointType.Out, NodeSkin.toggle, onClickOutPoint);
+            //OutConnectionPoint.Rect.position = NodeRect.position;
+            //OutConnectionPoint.Rect.size = new Vector2(NodeRect.width - 4, NodeRect.height - 4);
+
+            //InConnectionPoints = new ConnectionPoint[]
+            //{
+            //     new ConnectionPoint(this,ConnectionPointType.In,NodeSkin.toggle,onClickInPoint),
+            //     new ConnectionPoint(this,ConnectionPointType.In,NodeSkin.toggle,onClickInPoint),
+            //     new ConnectionPoint(this,ConnectionPointType.In,NodeSkin.toggle,onClickInPoint),
+            //};
+
+            //OutConnectionPoints = new ConnectionPoint[]
+            //{
+            //     new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
+            //     new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
+            //     new ConnectionPoint(this,ConnectionPointType.Out,NodeSkin.toggle,onClickOutPoint),
+            //};
+        }
+
+        public override Rect GetRect()
+        {
+            return graph.NodeRect;
+        }
+        public override void Drag(Vector2 delta)
+        {
+            graph.NodeRect.position += delta;
+        }
+        public override void Resize(Vector2 size)
+        {
+            graph.NodeRect.size += size;
+        }
+
+        public override void Draw()
+        {
+            var rect = graph.NodeRect;
+
+            GUI.Box(rect, GUIContent.none, NodeSkin.box);
+
+            rect = new Rect(rect.x, rect.y, rect.width, 20);
+            GUI.Label(rect, graph.GetType().Name, NodeSkin.customStyles[3]);
         }
     }
 }

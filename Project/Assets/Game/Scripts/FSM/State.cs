@@ -6,6 +6,7 @@ namespace Game.FSM
     [Serializable]
     public class State
     {
+        public string StateName;
         [SerializeReference] public StateAction[] StateAction;
         [SerializeReference] public Transition[] Transitions;
 

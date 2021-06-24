@@ -6,6 +6,5 @@ namespace NullNamespace
 	public class StateActionData
 	{
 		public string StateActionType;
-		public int InstanceId;
 	}
 }

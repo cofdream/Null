@@ -10,15 +10,55 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02becb91b0400ae4193e4eb656e3bdbc, type: 3}
-  m_Name: FiniteStateMachineDataGraph
+  m_Name: 
   m_EditorClassIdentifier: 
-  FiniteStateMachineData: {fileID: 11400000, guid: d8f02d6de826cea44b501767486af3b2,
-    type: 2}
-  Toogle: 1
+  FiniteStateMachineData:
+    Name: 
+    StateDatas:
+    - StateName: State
+      StateAction: []
+      Transitions: []
+    - StateName: State
+      StateAction: []
+      Transitions: []
+    - StateName: State
+      StateAction: []
+      Transitions: []
   NodeRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  Toogles: 0000
+    x: 55
+    y: 122
+    width: 250
+    height: 150
+  Toogle: 1
+  stateDataGraphs:
+  - StateData:
+      StateName: State
+      StateAction: []
+      Transitions: []
+    NodeRect:
+      serializedVersion: 2
+      x: 444
+      y: 68
+      width: 250
+      height: 150
+  - StateData:
+      StateName: State
+      StateAction: []
+      Transitions: []
+    NodeRect:
+      serializedVersion: 2
+      x: 701
+      y: 220
+      width: 250
+      height: 150
+  - StateData:
+      StateName: State
+      StateAction: []
+      Transitions: []
+    NodeRect:
+      serializedVersion: 2
+      x: 428
+      y: 351
+      width: 250
+      height: 150
