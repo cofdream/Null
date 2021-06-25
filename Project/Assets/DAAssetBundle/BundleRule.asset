@@ -16,10 +16,7 @@ MonoBehaviour:
   - AssetPath: Assets/Game/Art/Prefabs/HeroModel.prefab
   - AssetPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
   - AssetPath: Assets/Game/Art/Prefabs/UI/UIHealth.prefab
-  - AssetPath: Assets/TestDepen/MyFSM.asset
-  - AssetPath: Assets/TestDepen/MyState.asset
-  - AssetPath: Assets/TestDepen/Bind.prefab
-  - AssetPath: Assets/TestDepen/Other
+  - AssetPath: Assets/XNode Examples/FSM Graph.asset
   BuildAseet:
   - AssetBundleName: project_prefabs_heromodel.ab
     AssetNames:
@@ -36,27 +33,8 @@ MonoBehaviour:
     - Assets/Game/Art/Prefabs/UI/UIHealth.prefab
     AssetLoadPaths:
     - Game/Art/Prefabs/UI/UIHealth
-  - AssetBundleName: project_testdepen_myfsm.ab
+  - AssetBundleName: project_xnode examples_fsm graph.ab
     AssetNames:
-    - Assets/TestDepen/MyFSM.asset
+    - Assets/XNode Examples/FSM Graph.asset
     AssetLoadPaths:
-    - TestDepen/MyFSM
-  - AssetBundleName: project_testdepen_mystate.ab
-    AssetNames:
-    - Assets/TestDepen/MyState.asset
-    AssetLoadPaths:
-    - TestDepen/MyState
-  - AssetBundleName: project_testdepen_bind.ab
-    AssetNames:
-    - Assets/TestDepen/Bind.prefab
-    AssetLoadPaths:
-    - TestDepen/Bind
-  - AssetBundleName: project_testdepen_other.ab
-    AssetNames:
-    - Assets/TestDepen/Other/16516.png
-    - Assets/TestDepen/Other/fall to roll.anim
-    - Assets/TestDepen/Other/New Material.mat
-    AssetLoadPaths:
-    - TestDepen/Other/16516
-    - TestDepen/Other/fall to roll
-    - TestDepen/Other/New Material
+    - XNode Examples/FSM Graph
