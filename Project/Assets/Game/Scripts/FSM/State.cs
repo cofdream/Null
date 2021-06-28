@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game.FSM
 {
     [Serializable]
-    public class State
+    public class State : DAScriptableObject
     {
         public string StateName;
         [SerializeReference] public StateAction[] StateAction;

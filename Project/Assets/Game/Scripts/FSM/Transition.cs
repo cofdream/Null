@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game.FSM
 {
     [Serializable]
-    public class Transition
+    public class Transition : DAScriptableObject
     {
         public int Id;
         public bool Active = true;

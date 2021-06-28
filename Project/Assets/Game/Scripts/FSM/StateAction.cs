@@ -4,7 +4,7 @@ using System;
 namespace Game.FSM
 {
     [Serializable]
-    public class StateAction
+    public class StateAction : DAScriptableObject
     {
         public bool Active = true;
 

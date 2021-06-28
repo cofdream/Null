@@ -5,10 +5,10 @@ using System.Collections.Generic;
 namespace Game.FSM
 {
     [Serializable]
-    public class FiniteStateMachine
+    public class FiniteStateMachine : DAScriptableObject
     {
-         public State[] AllStates;
-         public State CurrentState;
+        public State[] AllStates;
+        public State CurrentState;
 
         public void Update()
         {
