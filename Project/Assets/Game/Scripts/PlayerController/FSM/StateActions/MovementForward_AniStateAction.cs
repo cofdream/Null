@@ -7,35 +7,34 @@ namespace Game
     [System.Serializable]
     public class MovementForward_AniStateAction : StateAction
     {
-        [SerializeReference] public MovementVariables MovementVariables;
-        [SerializeReference] public Transform Transform;
-        [SerializeReference] public Animator Animator;
-        [SerializeReference] public AnimatorHashes AnimatorHashes;
-        [SerializeReference] public AnimatorData AnimatorData;
+        [SerializeReference] public MovementVariable MovementVariables;
+        [SerializeReference] public TransformVariable Transform;
+        [SerializeReference] public AnimatorVariable Animator;
+        [SerializeReference] private AnimatorData AnimatorData;
 
         public override void OnEnter()
         {
-            AnimatorData = new AnimatorData(Animator);
-            AnimatorHashes = new AnimatorHashes();
+            //if (AnimatorData == null)
+                AnimatorData = new AnimatorData(Animator.Value);
         }
         public override void OnUpdate()
         {
-            Animator.SetFloat(AnimatorHashes.MoveVertical, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
+            Animator.Value.SetFloat(AnimatorHashes.MoveVertical, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
         }
         public override void OnExit()
         {
-            Animator.SetFloat(AnimatorHashes.MoveVertical, 0);
+            Animator.Value.SetFloat(AnimatorHashes.MoveVertical, 0);
 
 
-            Vector3 lf_relative = Transform.InverseTransformPoint(AnimatorData.leftFoot.position);
-            Vector3 rf_relative = Transform.InverseTransformPoint(AnimatorData.rightFoot.position);
+            Vector3 lf_relative = Transform.Value.InverseTransformPoint(AnimatorData.leftFoot.position);
+            Vector3 rf_relative = Transform.Value.InverseTransformPoint(AnimatorData.rightFoot.position);
 
             bool leftForward = false;
             if (lf_relative.z > rf_relative.z)
             {
                 leftForward = true;
             }
-            Animator.SetBool(AnimatorHashes.LeftFootForward, !leftForward);
+            Animator.Value.SetBool(AnimatorHashes.LeftFootForward, !leftForward);
         }
     }
 }

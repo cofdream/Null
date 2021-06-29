@@ -1,15 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game
 {
-    [System.Serializable]
-    public class AnimatorHashes
+    public static class AnimatorHashes
     {
-        public readonly int MoveVertical = Animator.StringToHash("moveVertical");
-        public readonly int Stance = Animator.StringToHash("stance");
-        public readonly int LeftFootForward = Animator.StringToHash("leftFootForward");
-        public readonly int Jump = Animator.StringToHash("Jump");
-
-
+        public static int MoveVertical = Animator.StringToHash("moveVertical");
+        public static int Stance = Animator.StringToHash("stance");
+        public static int LeftFootForward = Animator.StringToHash("leftFootForward");
+        public static int Jump = Animator.StringToHash("Jump");
     }
 }

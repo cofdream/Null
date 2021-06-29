@@ -3,9 +3,8 @@
 namespace Game
 {
     [Serializable]
-    public class IntVariable 
+    public class IntVariable : DAScriptableObject
     {
-        public string Name;
         public int Value;
     }
 }

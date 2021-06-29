@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class MovementVariables
+    public class MovementVariable : DAScriptableObject
     {
         public float Horizontal;
         public float Vertical;

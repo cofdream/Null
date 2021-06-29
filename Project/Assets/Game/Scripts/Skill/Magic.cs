@@ -9,7 +9,7 @@ namespace Game
     {
         public UnitAttribute UnitAttribute;
 
-        public Skill[] Skills;
+        public Skill[] Skills = new Skill[0];
 
         public List<Skill> CastSkill;
 

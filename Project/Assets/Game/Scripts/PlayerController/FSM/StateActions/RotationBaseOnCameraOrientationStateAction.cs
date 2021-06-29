@@ -7,7 +7,7 @@ namespace Game
     [System.Serializable]
     public class RotationBaseOnCameraOrientationStateAction : StateAction
     {
-        [SerializeReference] public MovementVariables MovementVariables;
+        [SerializeReference] public MovementVariable MovementVariables;
         [SerializeReference] public Transform Transform;
         [SerializeReference] public Transform CameraTransform;
 

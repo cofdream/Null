@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Game
 {
-    [System.Serializable]
-	public class AnimatorData
-	{
+    [Serializable]
+    public class AnimatorData
+    {
         public Transform leftFoot;
         public Transform rightFoot;
         public AnimatorData(Animator animator)

@@ -421,29 +421,20 @@ MonoBehaviour:
           dirty: 0
           baseValue: 0
       Skills: []
+      CastSkill: []
     PrefabPath: 
     GameObject: {fileID: 0}
     Rigidbody: {fileID: 0}
     Animator: {fileID: 0}
     ControllerHangPoint: {fileID: 0}
-    FSM:
-      id: 0
-    AnimatorData:
-      leftFoot: {fileID: 0}
-      rightFoot: {fileID: 0}
-    MovementVariables:
-      id: 0
+    FSM: {fileID: 0}
   CameraHangPoint: {fileID: 0}
   AllUnit: []
   unitEnemys: []
   unitFriends: []
   unitOthers: []
   IsLog: 0
-  IsCreateEnemys: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: , ns: , asm: }
+  IsCreateEnemys: 0
 --- !u!4 &456368486
 Transform:
   m_ObjectHideFlags: 0
@@ -841,7 +832,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0e455ea48616d9244a44f9e8bd7bed4e, type: 2}
+  - {fileID: 2100000, guid: 03e9244bb92989d4c86386af7f6c22c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1596,7 +1587,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1112144564}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1997,27 +1988,18 @@ MonoBehaviour:
           dirty: 0
           baseValue: 0
       Skills: []
+      CastSkill: []
     PrefabPath: 
     GameObject: {fileID: 0}
     Rigidbody: {fileID: 0}
     Animator: {fileID: 0}
     ControllerHangPoint: {fileID: 0}
-    FSM:
-      id: 0
-    AnimatorData:
-      leftFoot: {fileID: 0}
-      rightFoot: {fileID: 0}
-    MovementVariables:
-      id: 0
+    FSM: {fileID: 0}
   helath: {fileID: 1104893337}
   maxhelath: {fileID: 511177983}
   atk: {fileID: 56468741}
   def: {fileID: 1070969409}
   moveSpeed: {fileID: 1781637171}
-  references:
-    version: 1
-    00000000:
-      type: {class: , ns: , asm: }
 --- !u!114 &1674607377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2484,8 +2466,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1427291064}
   m_HandleRect: {fileID: 1427291063}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

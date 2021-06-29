@@ -3,9 +3,8 @@
 namespace Game
 {
     [Serializable]
-    public class BoolVariable
+    public class BoolVariable : DAScriptableObject
     {
-        public string Name;
         public bool Value;
     }
 }

@@ -4,9 +4,8 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class GameobjectVariable
+    public class GameobjectVariable : DAScriptableObject
     {
-        public string Name;
         public GameObject Value;
     }
 }

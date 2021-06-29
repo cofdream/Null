@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907bfd1e366a6f644b2ae64232ab72df, type: 3}
+  m_Name: PlayFSM
+  m_EditorClassIdentifier: 
+  AllStates:
+  - {fileID: 11400000, guid: 8729f3087c49e4a4f9244d38ad2d0b72, type: 2}
+  - {fileID: 11400000, guid: 789164b97cf07574aa29416fb5b3c54e, type: 2}
+  - {fileID: 11400000, guid: 5913d0d3f5531d04bb90ca683281df71, type: 2}
+  CurrentState: {fileID: 11400000, guid: 8729f3087c49e4a4f9244d38ad2d0b72, type: 2}
+  PlayerTransform: {fileID: 11400000, guid: 83b66a778c49f8947aaa39345b6e4782, type: 2}
+  AnimatorVariable: {fileID: 11400000, guid: 263850c8d81d395449a7b5fd8aed6af5, type: 2}
+  RigebodyVariable: {fileID: 11400000, guid: 4cd628fdc9aed824a9ef216bdf31334d, type: 2}

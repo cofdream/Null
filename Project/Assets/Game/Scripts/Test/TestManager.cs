@@ -70,59 +70,60 @@ namespace Game.Test
 
         private void CreateHeroUnit()
         {
-            Unit unit = new Unit();
+            Unit unit = unitHeroClone = new Unit();
 
             unit.Name = "Hero";
             unit.PrefabPath = "Assets/Game/Art/Prefabs/HeroModel.prefab";
 
             unit.UnitAttribute = new UnitAttribute(100, 100, 10, 10, 8);
 
-            unit.FSM = new FiniteStateMachine();
-
             //Skill
-            {
-                Skill AtkRandomTarget = new Skill();
+            //{
+            //    Skill AtkRandomTarget = new Skill();
 
-                AplyDamageSkillAction aplyDamageSkillAction = new AplyDamageSkillAction();
-                ClculateDamageSkillAction clculateDamageSkillAction = new ClculateDamageSkillAction();
-                GetRandomTargetSkillAction getRandomTargetSkillAction = new GetRandomTargetSkillAction();
+            //    AplyDamageSkillAction aplyDamageSkillAction = new AplyDamageSkillAction();
+            //    ClculateDamageSkillAction clculateDamageSkillAction = new ClculateDamageSkillAction();
+            //    GetRandomTargetSkillAction getRandomTargetSkillAction = new GetRandomTargetSkillAction();
 
-                UnitVariable executor = new UnitVariable();
-                UnitVariable target = new UnitVariable();
-                IntVariable intVariable = new IntVariable();
+            //    UnitVariable executor = new UnitVariable();
+            //    UnitVariable target = new UnitVariable();
+            //    IntVariable intVariable = new IntVariable();
 
-                aplyDamageSkillAction.Executor = executor;
-                aplyDamageSkillAction.Target = target;
-                aplyDamageSkillAction.DamageVariable = intVariable;
+            //    aplyDamageSkillAction.Executor = executor;
+            //    aplyDamageSkillAction.Target = target;
+            //    aplyDamageSkillAction.DamageVariable = intVariable;
 
-                clculateDamageSkillAction.Executor = executor;
-                clculateDamageSkillAction.Target = target;
-                clculateDamageSkillAction.DamageVariable = intVariable;
-                clculateDamageSkillAction.BaseDamage = 10;
+            //    clculateDamageSkillAction.Executor = executor;
+            //    clculateDamageSkillAction.Target = target;
+            //    clculateDamageSkillAction.DamageVariable = intVariable;
+            //    clculateDamageSkillAction.BaseDamage = 10;
 
-                getRandomTargetSkillAction.Executor = executor;
-                getRandomTargetSkillAction.Target = target;
+            //    getRandomTargetSkillAction.Executor = executor;
+            //    getRandomTargetSkillAction.Target = target;
 
-                AtkRandomTarget.SkillActions = new SkillAction[] { getRandomTargetSkillAction, clculateDamageSkillAction, aplyDamageSkillAction };
+            //    AtkRandomTarget.SkillActions = new SkillAction[] { getRandomTargetSkillAction, clculateDamageSkillAction, aplyDamageSkillAction };
 
-                executor.Value = unit;
+            //    executor.Value = unit;
 
-                //Skill fly = new Skill();
+            //    //Skill fly = new Skill();
 
 
-                unit.Magic.Skills = new Skill[] { AtkRandomTarget };
-            }
+            //    unit.Magic.Skills = new Skill[] { AtkRandomTarget };
+            //}
+
+            var loader = AssetLoader.GetAssetLoader();
 
             unit.Init(Vector3.zero, Quaternion.identity);
-
-
-            unitHeroClone = unit;
-
+            string fsmPath = "Assets/Game/PlayController/PlayFSM.asset";
+            unit.FSM = loader.LoadAsset<PlayFiniteStateMachine>(fsmPath);
+            unit.FSM.Initialize(unit);
 
             string path = "Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab";
-            var loader = AssetLoader.GetAssetLoader();
             CameraHangPoint cameraHangPoint = loader.LoadAsset<CameraHangPoint>(path);
+
             loader.Unload(path);
+            loader.Unload(fsmPath);
+            loader.UnloadAll();
 
             cameraHangPoint = GameObject.Instantiate(cameraHangPoint);
             Transform followTransform = unit.ControllerHangPoint.FollowTarget;
@@ -130,88 +131,88 @@ namespace Game.Test
 
             TestUIManager.Instance.HeroCamera = cameraHangPoint.Camera;
 
-            //state
-            State idleState = new State();
-            State LocomotionState = new State();
-            State InAirState = new State();
+            ////state
+            //State idleState = new State();
+            //State LocomotionState = new State();
+            //State InAirState = new State();
 
-            //stateAction
-            var InputStateAction = new InputStateAction();
-            var RotateStateAction = new RotateStateAction();
-            var MovementForwardStateAction = new MovementForwardStateAction();
-            var MovementForward_AniStateAction = new MovementForward_AniStateAction();
-            var RotationBaseOnCameraOrientationStateAction = new RotationBaseOnCameraOrientationStateAction();
-            var jumpStateAction = new AddVelocityStateAction();
+            ////stateAction
+            //var InputStateAction = new InputStateAction();
+            //var RotateStateAction = new RotateStateAction();
+            //var MovementForwardStateAction = new MovementForwardStateAction();
+            //var MovementForward_AniStateAction = new MovementForward_AniStateAction();
+            //var RotationBaseOnCameraOrientationStateAction = new RotationBaseOnCameraOrientationStateAction();
+            //var jumpStateAction = new AddVelocityStateAction();
 
-            //transition
-            // idle
-            var ToLocamotionState = new Transition();
-            var MoveCondition = new MoveCondition();
-            var ToInAirState = new Transition();
-            var isJumpCondition = new BoolCondition();
+            ////transition
+            //// idle
+            //var ToLocamotionState = new Transition();
+            //var MoveCondition = new MoveCondition();
+            //var ToInAirState = new Transition();
+            //var isJumpCondition = new BoolCondition();
 
-            //locamator
-            var ToIdleState = new Transition();
-            var StopCondition = new IdleCondition();
+            ////locamator
+            //var ToIdleState = new Transition();
+            //var StopCondition = new IdleCondition();
 
-            //in Air
-            var JumpDownToIdleState = new Transition();
-            var InGroundCondition = new BoolCondition();
-
-
-            //variables
-            var MovementVariables = new MovementVariables();
-            var jump = new BoolVariable();
-
-            //赋值
-            unit.FSM.AllStates = new State[] { idleState, LocomotionState, InAirState };
-            unit.FSM.CurrentState = idleState;
-
-            idleState.StateAction = new StateAction[] { InputStateAction, RotateStateAction };
-            idleState.Transitions = new Transition[] { ToLocamotionState, ToInAirState };
-
-            LocomotionState.StateAction = new StateAction[] { InputStateAction, RotateStateAction, MovementForwardStateAction, RotationBaseOnCameraOrientationStateAction, MovementForward_AniStateAction };
-            LocomotionState.Transitions = new Transition[] { ToIdleState };
-
-            InAirState.StateAction = new StateAction[] { jumpStateAction };
-            InAirState.Transitions = new Transition[] { ToIdleState };
-
-            InputStateAction.MovementVariables = MovementVariables;
-            InputStateAction.UnitVariable = new UnitVariable() { Value = unit };
-            InputStateAction.JumpVariable = jump;
-
-            RotateStateAction.target = unit.GameObject.transform;
-
-            MovementForwardStateAction.MovementVariables = MovementVariables;
-            MovementForwardStateAction.transform = unit.GameObject.transform;
-            MovementForwardStateAction.rigidbody = unit.Rigidbody;
-
-            MovementForward_AniStateAction.Animator = unit.Animator;
-            MovementForward_AniStateAction.MovementVariables = MovementVariables;
-            MovementForward_AniStateAction.Transform = unit.GameObject.transform;
-
-            RotationBaseOnCameraOrientationStateAction.Transform = unit.GameObject.transform;
-            RotationBaseOnCameraOrientationStateAction.MovementVariables = MovementVariables;
-            RotationBaseOnCameraOrientationStateAction.CameraTransform = cameraHangPoint.Camera.transform;
-
-            jumpStateAction.Rigidbody = unit.Rigidbody;
-            jumpStateAction.Direction = Vector3.up;
-            jumpStateAction.Speed = 4;
-
-            MoveCondition.MovementVariable = MovementVariables;
-            StopCondition.MovementVarible = MovementVariables;
-            isJumpCondition.LeftBoolVariable = jump;
-            isJumpCondition.RightBoolVariable = new BoolVariable() { Value = true };
+            ////in Air
+            //var JumpDownToIdleState = new Transition();
+            //var InGroundCondition = new BoolCondition();
 
 
-            ToLocamotionState.Condition = MoveCondition;
-            ToLocamotionState.TargetState = LocomotionState;
+            ////variables
+            //var MovementVariables = new MovementVariable();
+            //var jump = new BoolVariable();
 
-            ToInAirState.Condition = isJumpCondition;
-            ToInAirState.TargetState = InAirState;
+            ////赋值
+            //unit.FSM.AllStates = new State[] { idleState, LocomotionState, InAirState };
+            //unit.FSM.CurrentState = idleState;
 
-            ToIdleState.Condition = StopCondition;
-            ToIdleState.TargetState = idleState;
+            //idleState.StateAction = new StateAction[] { InputStateAction, RotateStateAction };
+            //idleState.Transitions = new Transition[] { ToLocamotionState, ToInAirState };
+
+            //LocomotionState.StateAction = new StateAction[] { InputStateAction, RotateStateAction, MovementForwardStateAction, RotationBaseOnCameraOrientationStateAction, MovementForward_AniStateAction };
+            //LocomotionState.Transitions = new Transition[] { ToIdleState };
+
+            //InAirState.StateAction = new StateAction[] { jumpStateAction };
+            //InAirState.Transitions = new Transition[] { ToIdleState };
+
+            //InputStateAction.MovementVariables = MovementVariables;
+            ////InputStateAction.UnitVariable = new UnitVariable() { Value = unit };
+            //InputStateAction.JumpVariable = jump;
+
+            //RotateStateAction.target = unit.GameObject.transform;
+
+            //MovementForwardStateAction.MovementVariables = MovementVariables;
+            ////MovementForwardStateAction.Transform = unit.GameObject.transform;
+            ////MovementForwardStateAction.Rigidbody = unit.Rigidbody;
+
+            ////MovementForward_AniStateAction.Animator = unit.Animator;
+            //MovementForward_AniStateAction.MovementVariables = MovementVariables;
+            ////MovementForward_AniStateAction.Transform = unit.GameObject.transform;
+
+            //RotationBaseOnCameraOrientationStateAction.Transform = unit.GameObject.transform;
+            //RotationBaseOnCameraOrientationStateAction.MovementVariables = MovementVariables;
+            //RotationBaseOnCameraOrientationStateAction.CameraTransform = cameraHangPoint.Camera.transform;
+
+            //jumpStateAction.Rigidbody = unit.Rigidbody;
+            //jumpStateAction.Direction = Vector3.up;
+            //jumpStateAction.Speed = 4;
+
+            //MoveCondition.MovementVariable = MovementVariables;
+            //StopCondition.MovementVarible = MovementVariables;
+            ////isJumpCondition.LeftBoolVariable = jump;
+            ////isJumpCondition.RightBoolVariable = new BoolVariable() { Value = true };
+
+
+            //ToLocamotionState.Condition = MoveCondition;
+            //ToLocamotionState.TargetState = LocomotionState;
+
+            //ToInAirState.Condition = isJumpCondition;
+            //ToInAirState.TargetState = InAirState;
+
+            //ToIdleState.Condition = StopCondition;
+            //ToIdleState.TargetState = idleState;
 
             //JumpDownToIdleState.Condition
         }
@@ -233,7 +234,7 @@ namespace Game.Test
 
                 unit.Magic.Skills = new Skill[] { };
 
-                unit.FSM = new FiniteStateMachine();
+                unit.FSM = new PlayFiniteStateMachine();
 
                 unit.Init(new Vector3(1, 0, 1), Quaternion.identity);
 

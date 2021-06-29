@@ -7,7 +7,6 @@ namespace Game
     public class CasualStateAction_AniStateAction : StateAction
     {
         [SerializeReference] public Animator Animator;
-        [SerializeReference] public AnimatorHashes AnimatorHashes;
 
         public float WaitTime;
         private float curWaitTime;
@@ -21,8 +20,6 @@ namespace Game
             casulaTime = 2.5f;
             curWaitTime = 0f;
             curCasualTime = 0f;
-
-            AnimatorHashes = new AnimatorHashes();
         }
 
 

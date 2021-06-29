@@ -21,10 +21,7 @@ namespace Game
         public ControllerHangPoint ControllerHangPoint;
 
 
-        [SerializeReference] public FiniteStateMachine FSM;
-        public AnimatorHashes AnimatorHashes;
-        public AnimatorData AnimatorData;
-        [SerializeReference] public MovementVariables MovementVariables;
+        [SerializeReference] public PlayFiniteStateMachine FSM;
 
 
         public void Init(Vector3 bornPosition, Quaternion rotation)
@@ -45,17 +42,10 @@ namespace Game
             Rigidbody = GameObject.GetComponent<Rigidbody>();
             Animator = GameObject.GetComponent<Animator>();
             ControllerHangPoint = GameObject.GetComponent<ControllerHangPoint>();
-
-            AnimatorHashes = new AnimatorHashes();
-            AnimatorData = new AnimatorData(Animator);
-
-            MovementVariables = new MovementVariables();
         }
 
         public void Update()
         {
-            MovementVariables.MoveSpeed = UnitAttribute.MoveSpeed;
-
             FSM.Update();
 
             Magic.Update();

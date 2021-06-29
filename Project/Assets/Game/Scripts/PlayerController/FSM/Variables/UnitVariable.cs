@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class UnitVariable
+    public class UnitVariable : DAScriptableObject
     {
         public Unit Value;
     }

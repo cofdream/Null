@@ -17,7 +17,7 @@ namespace Game
         [MenuItem("Assets/Create/Controller/FSM")]
         private static void CreateFSM()
         {
-            var fsm = ScriptableObject.CreateInstance<FiniteStateMachine>();
+            var fsm = ScriptableObject.CreateInstance<PlayFiniteStateMachine>();
             string path = AssetDatabase.GenerateUniqueAssetPath(Utils.GetSelectionFoldePath() + "/FSM.asset");
             AssetDatabase.CreateAsset(fsm, path);
             EditorUtility.SetDirty(fsm);
@@ -27,7 +27,7 @@ namespace Game
         [MenuItem("Assets/Create/Controller/State")]
         private static void CreateState()
         {
-            var selectionFSM = Selection.activeObject as FiniteStateMachine;
+            var selectionFSM = Selection.activeObject as PlayFiniteStateMachine;
             var state = ScriptableObject.CreateInstance<State>();
             state.name = "State";
             AssetDatabase.AddObjectToAsset(state, selectionFSM);
@@ -40,7 +40,7 @@ namespace Game
         [MenuItem("Assets/Create/Controller/State Action")]
         public static void CreateStateAction()
         {
-            var selectionFSM = Selection.activeObject as FiniteStateMachine;
+            var selectionFSM = Selection.activeObject as PlayFiniteStateMachine;
             var state = ScriptableObject.CreateInstance<State>();
             state.name = "State";
             AssetDatabase.AddObjectToAsset(state, selectionFSM);
@@ -54,7 +54,7 @@ namespace Game
         [MenuItem("Assets/Create/Controller/State Action", true)]
         public static bool IsSelectFSM()
         {
-            return Selection.activeObject as FiniteStateMachine;
+            return Selection.activeObject as PlayFiniteStateMachine;
         }
 
 

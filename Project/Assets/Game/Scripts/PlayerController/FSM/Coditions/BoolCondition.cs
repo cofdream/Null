@@ -3,15 +3,30 @@ using System;
 
 namespace Game
 {
+
     [Serializable]
     public class BoolCondition : Condition
     {
-        public BoolVariable LeftBoolVariable;
-        public BoolVariable RightBoolVariable;
+        [Serializable]
+        public enum BooleanType : byte
+        {
+            True = 0,
+            False,
+        }
+
+        public BooleanType BoolType;
+        public BoolVariable BoolVariable;
 
         public override bool CheckStateChange()
         {
-            return LeftBoolVariable.Value == RightBoolVariable.Value;
+            switch (BoolType)
+            {
+                default:
+                case BooleanType.True:
+                    return BoolVariable.Value;
+                case BooleanType.False:
+                    return !BoolVariable.Value;
+            }
         }
     }
 }

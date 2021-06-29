@@ -6,13 +6,13 @@ namespace Game
     [System.Serializable]
     public class InputStateAction : StateAction
     {
-        [HideInInspector] public UnitVariable UnitVariable;
-        public MovementVariables MovementVariables;
-        public bool RunButtonState;
+        public MovementVariable MovementVariables;
         public BoolVariable JumpVariable;
+        public BoolVariable IsMovement;
+        public BoolVariable IsRun;
         public override void OnUpdate()
         {
-            RunButtonState = Input.GetAxis("Fire3") == 1;
+            IsRun.Value = Input.GetAxis("Fire3") == 1;
 
             JumpVariable.Value = Input.GetAxis("Jump") == 1;
 
@@ -20,15 +20,15 @@ namespace Game
             MovementVariables.Vertical = Input.GetAxis("Vertical");
 
             float maxValue;
-            if (RunButtonState)
+            if (IsRun.Value)
                 maxValue = 1;
             else
                 maxValue = 0.25f;
 
-            MovementVariables.MoveAmount = Mathf.Clamp(Mathf.Abs(MovementVariables.Horizontal) + Mathf.Abs(MovementVariables.Vertical), 0, maxValue);
+            var moveAmount = Mathf.Clamp(Mathf.Abs(MovementVariables.Horizontal) + Mathf.Abs(MovementVariables.Vertical), 0, maxValue);
+            MovementVariables.MoveAmount = moveAmount;
 
-
-            MovementVariables.MoveSpeed = UnitVariable.Value.UnitAttribute.MoveSpeed;
+            IsMovement.Value = moveAmount > 0.1f;
         }
     }
 }

@@ -5,10 +5,14 @@ using System.Collections.Generic;
 namespace Game.FSM
 {
     [Serializable]
-    public class FiniteStateMachine : DAScriptableObject
+    public class PlayFiniteStateMachine : DAScriptableObject
     {
         public State[] AllStates;
         public State CurrentState;
+
+        public TransformVariable PlayerTransform;
+        public AnimatorVariable AnimatorVariable;
+        public RigidbodyVariable RigebodyVariable;
 
         public void Update()
         {
@@ -38,6 +42,13 @@ namespace Game.FSM
             CurrentState.OnExit();
             targetState.OnEnter();
             CurrentState = targetState;
+        }
+
+        public void Initialize(Unit unit)
+        {
+            PlayerTransform.Value = unit.GameObject.transform;
+            AnimatorVariable.Value = unit.Animator;
+            RigebodyVariable.Value = unit.Rigidbody;
         }
     }
 }

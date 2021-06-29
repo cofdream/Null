@@ -6,7 +6,7 @@ namespace Game
     [System.Serializable]
     public class IdleCondition : Condition
     {
-        [SerializeReference] public MovementVariables MovementVarible;
+        [SerializeReference] public MovementVariable MovementVarible;
         public override bool CheckStateChange()
         {
             return MovementVarible.MoveAmount == 0;

@@ -6,7 +6,7 @@ namespace Game
     [System.Serializable]
     public class MoveCondition : Condition
     {
-        [SerializeReference] public MovementVariables MovementVariable;
+        [SerializeReference] public MovementVariable MovementVariable;
         public override bool CheckStateChange()
         {
             return MovementVariable.MoveAmount > 0;

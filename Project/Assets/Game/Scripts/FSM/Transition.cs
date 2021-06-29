@@ -9,6 +9,6 @@ namespace Game.FSM
         public int Id;
         public bool Active = true;
         [SerializeReference] public Condition Condition;
-        [HideInInspector] public State TargetState;
+        [SerializeReference] public State TargetState;
     }
 }

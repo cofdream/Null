@@ -3,9 +3,8 @@
 namespace Game
 {
     [Serializable]
-    public class FloatVariable
+    public class FloatVariable : DAScriptableObject
     {
-        public string Name;
         public float Value;
     }
 }

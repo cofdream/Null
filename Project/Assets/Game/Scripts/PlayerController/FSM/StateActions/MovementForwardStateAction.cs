@@ -1,27 +1,28 @@
 ﻿using Game.FSM;
+using System;
 using UnityEngine;
 
 namespace Game
 {
-    [System.Serializable]
+    [Serializable]
     public class MovementForwardStateAction : StateAction
     {
-        [SerializeReference] public MovementVariables MovementVariables;
-        [SerializeReference] public Rigidbody rigidbody;
-        [SerializeReference] public Transform transform;
+        [SerializeReference] public MovementVariable MovementVariables;
+        [SerializeReference] public RigidbodyVariable Rigidbody;
+        [SerializeReference] public TransformVariable Transform;
 
-        public override void OnUpdate()
+        public override void OnFixedUpdate()
         {
             if (MovementVariables.MoveAmount > 0.1f)
             {
-                rigidbody.drag = 0;
+                Rigidbody.Value.drag = 0;
             }
             else
             {
-                rigidbody.drag = 4;
+                Rigidbody.Value.drag = 4;
             }
 
-            Vector3 targetVelocity =  MovementVariables.MoveAmount * MovementVariables.MoveSpeed * transform.forward;
+            Vector3 targetVelocity = MovementVariables.MoveAmount * MovementVariables.MoveSpeed * Transform.Value.forward;
 
             //if (states.isGrounded)
             //{
@@ -32,7 +33,7 @@ namespace Game
             //    targetVelocity.y = states.rigidbody.velocity.y;
             //}
 
-            rigidbody.velocity = targetVelocity;
+            Rigidbody.Value.velocity = targetVelocity;
         }
     }
 }
