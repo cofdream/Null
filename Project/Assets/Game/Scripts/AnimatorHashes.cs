@@ -5,9 +5,11 @@ namespace Game
 {
     public static class AnimatorHashes
     {
-        public static int MoveVertical = Animator.StringToHash("moveVertical");
-        public static int Stance = Animator.StringToHash("stance");
-        public static int LeftFootForward = Animator.StringToHash("leftFootForward");
-        public static int Jump = Animator.StringToHash("Jump");
+        public static int MoveVerticalParameter = Animator.StringToHash("moveVertical");
+        public static int StanceParameter = Animator.StringToHash("stance");
+        public static int LeftFootForwardParameter = Animator.StringToHash("leftFootForward");
+
+        public static int JumpIdleState = Animator.StringToHash("JumpIdle");
+        public static int JumpRunState = Animator.StringToHash("JumpRun");
     }
 }

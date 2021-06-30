@@ -14,51 +14,6 @@ namespace Game
     /// </summary>
     internal static class SubAssetDragAndDrop
     {
-        [MenuItem("Assets/Create/Controller/FSM")]
-        private static void CreateFSM()
-        {
-            var fsm = ScriptableObject.CreateInstance<PlayFiniteStateMachine>();
-            string path = AssetDatabase.GenerateUniqueAssetPath(Utils.GetSelectionFoldePath() + "/FSM.asset");
-            AssetDatabase.CreateAsset(fsm, path);
-            EditorUtility.SetDirty(fsm);
-            AssetDatabase.ImportAsset(path);
-        }
-
-        [MenuItem("Assets/Create/Controller/State")]
-        private static void CreateState()
-        {
-            var selectionFSM = Selection.activeObject as PlayFiniteStateMachine;
-            var state = ScriptableObject.CreateInstance<State>();
-            state.name = "State";
-            AssetDatabase.AddObjectToAsset(state, selectionFSM);
-
-            EditorUtility.SetDirty(state);
-            //AssetDatabase.SaveAssets();
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(selectionFSM));
-        }
-
-        [MenuItem("Assets/Create/Controller/State Action")]
-        public static void CreateStateAction()
-        {
-            var selectionFSM = Selection.activeObject as PlayFiniteStateMachine;
-            var state = ScriptableObject.CreateInstance<State>();
-            state.name = "State";
-            AssetDatabase.AddObjectToAsset(state, selectionFSM);
-
-            EditorUtility.SetDirty(state);
-            //AssetDatabase.SaveAssets();
-            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(selectionFSM));
-        }
-
-        [MenuItem("Assets/Create/Controller/State", true)]
-        [MenuItem("Assets/Create/Controller/State Action", true)]
-        public static bool IsSelectFSM()
-        {
-            return Selection.activeObject as PlayFiniteStateMachine;
-        }
-
-
-
         static SubAssetDragAndDrop()
         {
             EditorApplication.projectWindowItemOnGUI -= OnProjectWindowItemOnGUI;

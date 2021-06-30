@@ -5,7 +5,7 @@ namespace Game
 {
 
     [Serializable]
-    public class BoolCondition : Condition
+    public class BoolCondition : ConditionOld
     {
         [Serializable]
         public enum BooleanType : byte

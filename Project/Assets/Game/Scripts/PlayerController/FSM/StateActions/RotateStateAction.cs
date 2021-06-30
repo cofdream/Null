@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class RotateStateAction : StateAction
+    public class RotateStateAction : StateActionOld
     {
         [SerializeReference] public Transform target;
 

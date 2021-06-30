@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class RotationBaseOnCameraOrientationStateAction : StateAction
+    public class RotationBaseOnCameraOrientationStateAction : StateActionOld
     {
         [SerializeReference] public MovementVariable MovementVariables;
         [SerializeReference] public Transform Transform;

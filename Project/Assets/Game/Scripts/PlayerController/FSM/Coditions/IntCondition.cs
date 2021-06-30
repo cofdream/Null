@@ -15,7 +15,7 @@ namespace Game
     }
 
     [Serializable]
-    public class IntCondition : Condition
+    public class IntCondition : ConditionOld
     {
         public IntCompareType CompareType;
         public IntVariable LeftVariable;

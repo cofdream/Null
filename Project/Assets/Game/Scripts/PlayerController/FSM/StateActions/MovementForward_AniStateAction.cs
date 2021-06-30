@@ -1,29 +1,30 @@
 ﻿using Game.FSM;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
-    [System.Serializable]
-    public class MovementForward_AniStateAction : StateAction
+    [Serializable]
+    public class MovementForward_AniStateAction : StateActionOld
     {
         [SerializeReference] public MovementVariable MovementVariables;
         [SerializeReference] public TransformVariable Transform;
         [SerializeReference] public AnimatorVariable Animator;
-        [SerializeReference] private AnimatorData AnimatorData;
+        [NonSerialized] private AnimatorData AnimatorData;
 
         public override void OnEnter()
         {
-            //if (AnimatorData == null)
+            if (AnimatorData == null)
                 AnimatorData = new AnimatorData(Animator.Value);
         }
         public override void OnUpdate()
         {
-            Animator.Value.SetFloat(AnimatorHashes.MoveVertical, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
+            Animator.Value.SetFloat(AnimatorHashes.MoveVerticalParameter, MovementVariables.MoveAmount, 0.2f, Time.deltaTime);
         }
         public override void OnExit()
         {
-            Animator.Value.SetFloat(AnimatorHashes.MoveVertical, 0);
+            Animator.Value.SetFloat(AnimatorHashes.MoveVerticalParameter, 0);
 
 
             Vector3 lf_relative = Transform.Value.InverseTransformPoint(AnimatorData.leftFoot.position);
@@ -34,7 +35,7 @@ namespace Game
             {
                 leftForward = true;
             }
-            Animator.Value.SetBool(AnimatorHashes.LeftFootForward, !leftForward);
+            Animator.Value.SetBool(AnimatorHashes.LeftFootForwardParameter, !leftForward);
         }
     }
 }

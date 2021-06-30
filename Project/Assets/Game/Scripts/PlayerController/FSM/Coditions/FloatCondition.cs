@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-	public class FloatCondition : Condition
+	public class FloatCondition : ConditionOld
 	{
         public bool IsGreater;
         public FloatVariable LeftVariable;

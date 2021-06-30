@@ -4,17 +4,19 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class InputStateAction : StateAction
+    public class InputStateAction : StateActionOld
     {
         public MovementVariable MovementVariables;
         public BoolVariable JumpVariable;
         public BoolVariable IsMovement;
         public BoolVariable IsRun;
+
         public override void OnUpdate()
         {
             IsRun.Value = Input.GetAxis("Fire3") == 1;
 
-            JumpVariable.Value = Input.GetAxis("Jump") == 1;
+            JumpVariable.Value = Input.GetButtonDown("Jump");
+
 
             MovementVariables.Horizontal = Input.GetAxis("Horizontal");
             MovementVariables.Vertical = Input.GetAxis("Vertical");

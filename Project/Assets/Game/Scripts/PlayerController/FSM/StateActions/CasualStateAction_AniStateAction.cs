@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class CasualStateAction_AniStateAction : StateAction
+    public class CasualStateAction_AniStateAction : StateActionOld
     {
         [SerializeReference] public Animator Animator;
 

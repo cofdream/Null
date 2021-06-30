@@ -5,16 +5,15 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class JumpStateAction : StateAction
+    public class JumpStateAction : StateActionOld
     {
         [SerializeReference] public RigidbodyVariable Rigidbody;
         [SerializeReference] public BoolVariable IsJump;
-        [SerializeReference] public BoolVariable IsRun;
         [SerializeReference] public BoolVariable IsGround;
-        public Vector3 Direction;
+        [SerializeReference] public AnimatorVariable Animator;
+        public bool isIdle;
+        public float Speed;
 
-        public float WalkSpeed;
-        public float RunSpeed;
         public override void OnEnter()
         {
             if (IsGround.Value == false)
@@ -23,12 +22,23 @@ namespace Game
             }
             IsGround.Value = true;
         }
-        public override void OnFixedUpdate()
+
+        public override void OnUpdate()
         {
-            if (IsJump.Value == true && IsGround.Value == true)
+            if (IsJump.Value)
             {
-                Rigidbody.Value.velocity += Direction * (IsRun ? RunSpeed : WalkSpeed);
+                IsJump.Value = false;
                 IsGround.Value = false;
+                Rigidbody.Value.velocity += Speed * Vector3.up;
+
+                if (isIdle)
+                {
+                    Animator.Value.CrossFade(AnimatorHashes.JumpIdleState, 0.37f);
+                }
+                else
+                {
+                    Animator.Value.CrossFade(AnimatorHashes.JumpRunState, 0.2f);
+                }
             }
         }
     }

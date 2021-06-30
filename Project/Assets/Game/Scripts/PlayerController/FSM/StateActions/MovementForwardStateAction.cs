@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class MovementForwardStateAction : StateAction
+    public class MovementForwardStateAction : StateActionOld
     {
         [SerializeReference] public MovementVariable MovementVariables;
         [SerializeReference] public RigidbodyVariable Rigidbody;

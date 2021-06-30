@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game
 {
     [Serializable]
-    public class IsGroundedStateAction : StateAction
+    public class IsGroundedStateAction : StateActionOld
     {
         [SerializeReference] public RigidbodyVariable Rigidbody;
         [SerializeReference] public TransformVariable Transform;

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [System.Serializable]
-    public class MoveCondition : Condition
+    public class MoveCondition : ConditionOld
     {
         [SerializeReference] public MovementVariable MovementVariable;
         public override bool CheckStateChange()
