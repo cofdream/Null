@@ -24,6 +24,8 @@ namespace Game.FSM
             if (!State) return;
 
             CurrentState.OnUpdate(PlayerController);
+
+            //CurrentState.CheckTransition(PlayerController);
         }
 
         public void FixedUpdate(PlayerController playerController)
