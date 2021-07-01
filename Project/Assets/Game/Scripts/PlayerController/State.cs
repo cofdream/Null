@@ -23,5 +23,10 @@ namespace Game
         {
 
         }
+        public virtual bool CheckTransition(PlayerController playerController,out State targetState)
+        {
+            targetState = null;
+            return false;
+        }
     }
 }

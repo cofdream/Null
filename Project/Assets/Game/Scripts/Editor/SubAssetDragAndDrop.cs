@@ -12,6 +12,7 @@ namespace Game
     /// <summary>
     /// This extension allow to drag&drop subassets while pressing 'Alt'
     /// </summary>
+    [InitializeOnLoad]
     internal static class SubAssetDragAndDrop
     {
         static SubAssetDragAndDrop()

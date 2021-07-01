@@ -5,30 +5,34 @@ using System.Collections.Generic;
 namespace Game.FSM
 {
     [Serializable]
-    public class PlayFiniteStateMachine
+    public class PlayFiniteStateMachine : ScriptableObject
     {
         public bool State = false;
 
         [SerializeField] public State[] AllStates;
         [SerializeReference] public State CurrentState;
 
-       
-        public void Start(PlayerController PlayerController)
+        public void OnStart(PlayerController PlayerController)
         {
+            CurrentState = AllStates[0];
             CurrentState.OnEnter(PlayerController);
             State = true;
         }
 
-        public void Update(PlayerController PlayerController)
+        public void OnUpdate(PlayerController PlayerController)
         {
             if (!State) return;
 
             CurrentState.OnUpdate(PlayerController);
-
-            //CurrentState.CheckTransition(PlayerController);
+            if (CurrentState.CheckTransition(PlayerController, out State targetState))
+            {
+                CurrentState.OnExit(PlayerController);
+                CurrentState = targetState;
+                CurrentState.OnEnter(PlayerController);
+            }
         }
 
-        public void FixedUpdate(PlayerController playerController)
+        public void OnFixedUpdate(PlayerController playerController)
         {
             if (!State) return;
 

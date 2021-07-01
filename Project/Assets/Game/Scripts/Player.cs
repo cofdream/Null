@@ -1,4 +1,5 @@
 using DA.AssetLoad;
+using Game.FSM;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ namespace Game
 {
     public class Player : MonoBehaviour
     {
-        public PlayerController PlayerController;
+        public PlayFiniteStateMachine PlayFiniteStateMachine;
+
         public string HeroModePath;
         public string CameraPath;
 
@@ -18,20 +20,21 @@ namespace Game
         {
             loader = AssetLoader.GetAssetLoader();
 
-
             var go = loader.LoadAsset<GameObject>(HeroModePath);
-            go = Instantiate(go, transform);
+            go = Instantiate(go);
 
-            PlayerController.Animator = go.GetComponent<Animator>();
-            PlayerController.Rigidbody = go.GetComponent<Rigidbody>();
-            PlayerController.ControllerHangPoint = go.GetComponent<ControllerHangPoint>();
-            PlayerController.ModeTransform = go.transform;
+            var playerController = go.AddComponent<PlayerController>();
+            playerController.PlayFiniteStateMachine = PlayFiniteStateMachine;
+            playerController.Animator = go.GetComponent<Animator>();
+            playerController.Rigidbody = go.GetComponent<Rigidbody>();
+            playerController.ControllerHangPoint = go.GetComponent<ControllerHangPoint>();
+            playerController.ModeTransform = go.transform;
 
 
-            CameraHangPoint cameraHangPoint = loader.LoadAsset<CameraHangPoint>(CameraPath);
+            var cameraHangPoint = playerController.CameraHangPoint = loader.LoadAsset<CameraHangPoint>(CameraPath);
 
             cameraHangPoint = Instantiate(cameraHangPoint);
-            Transform followTransform = PlayerController.ControllerHangPoint.FollowTarget;
+            Transform followTransform = playerController.ControllerHangPoint.FollowTarget;
             cameraHangPoint.CM_VCamera.Follow = followTransform;
         }
 

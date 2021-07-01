@@ -2346,7 +2346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1824913644}
   - component: {fileID: 1824913643}
-  - component: {fileID: 1824913645}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2366,7 +2365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ae0e91e37b21d42b63b38c58c16e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerController: {fileID: 1824913645}
+  PlayFiniteStateMachine: {fileID: 11400000, guid: 6021070e92c283e449ea59907d10e810,
+    type: 2}
   HeroModePath: Assets/Game/Art/Prefabs/HeroModel.prefab
   CameraPath: Assets/Game/Art/Prefabs/ThirdPersonCamera.prefab
 --- !u!4 &1824913644
@@ -2383,27 +2383,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1824913645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1824913642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bccf973d0dfe2814db7952b075a0f0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 0}
-  Rigidbody: {fileID: 0}
-  ControllerHangPoint: {fileID: 0}
-  PlayFiniteStateMachine:
-    State: 0
-    AllStates:
-    - {fileID: 11400000, guid: 725a2f7867bca0e499100511a4f84f1d, type: 2}
-    CurrentState: {fileID: 0}
-  IsJump: 0
 --- !u!1 &2071270328
 GameObject:
   m_ObjectHideFlags: 0

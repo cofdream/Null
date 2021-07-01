@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7986634625571299367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b77e2e5b3b604b140b61f0b8fcec02e5, type: 3}
+  m_Name: IdleState
+  m_EditorClassIdentifier: 
+  JumpSpeed: 4.5
+  LocomotionState: {fileID: -3266511658918828202}
+  isTransitionLocomotionState: 0
+  JumpState: {fileID: 1007408456843135969}
+  isTransitionJumpState: 0
+  waitState: {fileID: 2524196840423864737}
+  isTransitionWaitState: 0
+  WaitTime: 0.67
+  startJump: 0
+--- !u!114 &-3266511658918828202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ac4c98db5c67d4084a2593bac4370a, type: 3}
+  m_Name: LocomotionState
+  m_EditorClassIdentifier: 
+  JumpSpeed: 8
+  WalkSpeed: 4
+  RunSpeed: 8
+  RotateSpeed: 8
+  isTransitionIdleState: 0
+  IdleState: {fileID: -7986634625571299367}
+  isTransfitionQuickTurnRotateBack: 0
+  RotateBack: {fileID: 8996370567978306767}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907bfd1e366a6f644b2ae64232ab72df, type: 3}
+  m_Name: HeroControllerFSM
+  m_EditorClassIdentifier: 
+  State: 1
+  AllStates:
+  - {fileID: -7986634625571299367}
+  - {fileID: 1007408456843135969}
+  - {fileID: -3266511658918828202}
+  - {fileID: 2524196840423864737}
+  - {fileID: 8996370567978306767}
+  CurrentState: {fileID: -7986634625571299367}
+--- !u!114 &1007408456843135969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428f50814713cb54f97fa087b1ee1dc7, type: 3}
+  m_Name: JumpState
+  m_EditorClassIdentifier: 
+  IdleState: {fileID: -7986634625571299367}
+  isTrainsitionIdleState: 0
+  Wait: 0
+--- !u!114 &2524196840423864737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efdcdaf4050f80d46872a1bc23bf48cf, type: 3}
+  m_Name: WaitState
+  m_EditorClassIdentifier: 
+  WaitTime: 0
+  TargetState: {fileID: 0}
+  curWaitTime: 0
+--- !u!114 &8996370567978306767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7442171c61cf37c41991a9e7bb432936, type: 3}
+  m_Name: RotateBack
+  m_EditorClassIdentifier: 
+  turnSpeed: 2
+  LocomotionState: {fileID: -3266511658918828202}
+  t: 0

@@ -7,52 +7,68 @@ namespace Game
 {
     public class PlayerController : MonoBehaviour
     {
-        public Animator Animator;
-        public Rigidbody Rigidbody;
-        public ControllerHangPoint ControllerHangPoint;
-
+        [SerializeReference]
         public PlayFiniteStateMachine PlayFiniteStateMachine;
 
         public bool IsJump;
         public bool IsRun;
         public Movement Movement;
         public Transform ModeTransform;
+        public float DeltaTime;
+        public Vector3 TargetDirection;
+
+        public Animator Animator;
+        public Rigidbody Rigidbody;
+        public ControllerHangPoint ControllerHangPoint;
+        public CameraHangPoint CameraHangPoint;
+
+
+        private float maxValue;
+
+        public float scale = 1;
 
         public void Start()
         {
-            PlayFiniteStateMachine.CurrentState = PlayFiniteStateMachine.AllStates[0];
-            PlayFiniteStateMachine.Start(this);
+            Movement = new Movement();
+            PlayFiniteStateMachine.OnStart(this);
+
+           
         }
 
         public void Update()
         {
+            DeltaTime = Time.deltaTime;
             GetInputValues();
 
-            PlayFiniteStateMachine.Update(this);
+            PlayFiniteStateMachine.OnUpdate(this);
         }
         public void FixedUpdate()
         {
-            PlayFiniteStateMachine.FixedUpdate(this);
+            PlayFiniteStateMachine.OnFixedUpdate(this);
         }
+
+
 
         private void GetInputValues()
         {
+            Time.timeScale = scale;
+
             IsRun = Input.GetAxis("Fire3") == 1;
             IsJump = Input.GetButtonDown("Jump");
 
             Movement.Horizontal = Input.GetAxis("Horizontal");
             Movement.Vertical = Input.GetAxis("Vertical");
 
-            float maxValue;
+            // ¹ý¶É
             if (IsRun)
-                maxValue = 1;
+                maxValue = Mathf.Lerp(maxValue, 1f, Time.deltaTime * 6);
             else
-                maxValue = 0.25f;
+                maxValue = 0.25f;//Mathf.Lerp(maxValue, 0.25f, Time.deltaTime * 6);
 
+            //maxValue = 1;
+            //v +1 -1
             var moveAmount = Mathf.Clamp(Mathf.Abs(Movement.Horizontal) + Mathf.Abs(Movement.Vertical), 0, maxValue);
             Movement.MoveAmount = moveAmount;
-
-            //IsMovement.Value = moveAmount > 0.1f;
         }
     }
 }
