@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpSpeed: 4.5
   LocomotionState: {fileID: -3266511658918828202}
-  jumpWaitTime: 2.33
+  jumpWaitTime: 1.6331
 --- !u!114 &-3266511658918828202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,11 +27,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ac4c98db5c67d4084a2593bac4370a, type: 3}
   m_Name: LocomotionState
   m_EditorClassIdentifier: 
+  RunSpeed: 8
   JumpSpeed: 8
-  WalkSpeed: 4
-  RunSpeed: 4
   RotateSpeed: 8
-  isTransitionIdleState: 0
   IdleState: {fileID: -7986634625571299367}
   RotateBack: {fileID: 8996370567978306767}
 --- !u!114 &11400000
@@ -82,7 +80,7 @@ MonoBehaviour:
   m_Name: WaitState
   m_EditorClassIdentifier: 
   WaitTime: 0
-  TargetState: {fileID: 0}
+  TargetState: {fileID: -7986634625571299367}
   curWaitTime: 0
 --- !u!114 &8996370567978306767
 MonoBehaviour:
@@ -99,4 +97,4 @@ MonoBehaviour:
   turnSpeed: 3
   LocomotionState: {fileID: -3266511658918828202}
   t: 0
-  lastRotation: {x: 0, y: 0.9999192, z: 0, w: 0.01271536}
+  lastRotation: {x: 0, y: 1, z: 0, w: 0}
