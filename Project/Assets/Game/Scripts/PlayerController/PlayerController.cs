@@ -15,6 +15,7 @@ namespace Game
         public Transform ModeTransform;
         public float DeltaTime;
         public Vector3 TargetDirection;
+        public bool IsGround;
 
         public Animator Animator;
         public Rigidbody Rigidbody;
@@ -23,6 +24,7 @@ namespace Game
 
 
         public float scale = 1;
+
 
         public void Start()
         {
