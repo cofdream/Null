@@ -9,28 +9,35 @@ namespace Game
     {
         public float turnSpeed;
 
-        private bool isTransitionLocomotionState;
         public State LocomotionState;
 
         public float t;
-
+        public Quaternion lastRotation;
         public override void OnEnter(PlayerController playerController)
         {
             Debug.Log("Enter RotaeBack");
+
+            lastRotation = playerController.transform.rotation;
+
+            // z 前后，x左右
+            playerController.Animator.SetBool(AnimatorHashes.QuickTurnLeft,
+                playerController.TargetDirection.z != 0
+                ? playerController.TargetDirection.z < 0
+                : playerController.TargetDirection.x < 0);
         }
         public override void OnUpdate(PlayerController playerController)
         {
-            playerController.Animator.SetFloat(AnimatorHashes.MoveVerticalParameter, playerController.Movement.MoveAmount, 0.2f, playerController.DeltaTime);
+            t += playerController.DeltaTime * turnSpeed;
 
             Quaternion tragetRotation = Quaternion.LookRotation(playerController.TargetDirection);
 
-            t += playerController.DeltaTime * turnSpeed;
-            playerController.transform.rotation = Quaternion.Lerp(playerController.transform.rotation, tragetRotation, t);
+            playerController.transform.rotation = Quaternion.Lerp(lastRotation, tragetRotation, t);
 
             if (t >= 1f)
             {
                 t = 0;
-                isTransitionLocomotionState = true;
+                playerController.TransitionState(LocomotionState);
+                return;
             }
         }
         public override void OnFixedUpdate(PlayerController playerController)
@@ -39,18 +46,8 @@ namespace Game
         }
         public override void OnExit(PlayerController playerController)
         {
-            Debug.Log("Exit RotaeBack");
+
         }
-        public override bool CheckTransition(PlayerController playerController, out State targetState)
-        {
-            if (isTransitionLocomotionState)
-            {
-                isTransitionLocomotionState = false;
-                targetState = LocomotionState;
-                return true;
-            }
-            targetState = null;
-            return false;
-        }
+
     }
 }

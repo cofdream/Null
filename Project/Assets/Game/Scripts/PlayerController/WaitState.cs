@@ -11,19 +11,15 @@ namespace Game
         public State TargetState;
 
         [SerializeField] private float curWaitTime;
-        public override bool CheckTransition(PlayerController playerController, out State targetState)
+        public override void OnUpdate(PlayerController playerController)
         {
             curWaitTime += playerController.DeltaTime;
             if (curWaitTime >= WaitTime)
             {
-                targetState = TargetState;
                 WaitTime = 0;
                 curWaitTime = 0;
-                TargetState = null;
-                return true;
+                playerController.TransitionState(TargetState);
             }
-            targetState = null;
-            return false;
         }
     }
 }

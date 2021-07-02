@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpSpeed: 4.5
   LocomotionState: {fileID: -3266511658918828202}
-  isTransitionLocomotionState: 0
-  JumpState: {fileID: 1007408456843135969}
-  isTransitionJumpState: 0
-  waitState: {fileID: 2524196840423864737}
-  isTransitionWaitState: 0
-  WaitTime: 0.67
-  startJump: 0
+  jumpWaitTime: 2.33
 --- !u!114 &-3266511658918828202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,11 +29,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpSpeed: 8
   WalkSpeed: 4
-  RunSpeed: 8
+  RunSpeed: 4
   RotateSpeed: 8
   isTransitionIdleState: 0
   IdleState: {fileID: -7986634625571299367}
-  isTransfitionQuickTurnRotateBack: 0
   RotateBack: {fileID: 8996370567978306767}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -53,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907bfd1e366a6f644b2ae64232ab72df, type: 3}
   m_Name: HeroControllerFSM
   m_EditorClassIdentifier: 
-  State: 1
   AllStates:
   - {fileID: -7986634625571299367}
   - {fileID: 1007408456843135969}
@@ -61,6 +53,7 @@ MonoBehaviour:
   - {fileID: 2524196840423864737}
   - {fileID: 8996370567978306767}
   CurrentState: {fileID: -7986634625571299367}
+  WaitState: {fileID: 2524196840423864737}
 --- !u!114 &1007408456843135969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7442171c61cf37c41991a9e7bb432936, type: 3}
   m_Name: RotateBack
   m_EditorClassIdentifier: 
-  turnSpeed: 2
+  turnSpeed: 3
   LocomotionState: {fileID: -3266511658918828202}
   t: 0
+  lastRotation: {x: 0, y: 0.9999192, z: 0, w: 0.01271536}

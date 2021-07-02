@@ -7,8 +7,7 @@ namespace Game
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeReference]
-        public PlayFiniteStateMachine PlayFiniteStateMachine;
+        [SerializeReference] public PlayFiniteStateMachine PlayFiniteStateMachine;
 
         public bool IsJump;
         public bool IsRun;
@@ -23,21 +22,21 @@ namespace Game
         public CameraHangPoint CameraHangPoint;
 
 
-        private float maxValue;
-
         public float scale = 1;
 
         public void Start()
         {
             Movement = new Movement();
-            PlayFiniteStateMachine.OnStart(this);
+            TargetDirection = transform.forward;
 
-           
+            PlayFiniteStateMachine.OnStart(this);
         }
 
         public void Update()
         {
             DeltaTime = Time.deltaTime;
+            Time.timeScale = scale;
+
             GetInputValues();
 
             PlayFiniteStateMachine.OnUpdate(this);
@@ -51,24 +50,23 @@ namespace Game
 
         private void GetInputValues()
         {
-            Time.timeScale = scale;
-
             IsRun = Input.GetAxis("Fire3") == 1;
             IsJump = Input.GetButtonDown("Jump");
 
             Movement.Horizontal = Input.GetAxis("Horizontal");
             Movement.Vertical = Input.GetAxis("Vertical");
 
-            // ¹ý¶É
-            if (IsRun)
-                maxValue = Mathf.Lerp(maxValue, 1f, Time.deltaTime * 6);
-            else
-                maxValue = 0.25f;//Mathf.Lerp(maxValue, 0.25f, Time.deltaTime * 6);
+            Movement.MoveAmount = Mathf.Clamp(Mathf.Abs(Movement.Horizontal) + Mathf.Abs(Movement.Vertical), 0, IsRun ? 1f : 0.1f);
+        }
 
-            //maxValue = 1;
-            //v +1 -1
-            var moveAmount = Mathf.Clamp(Mathf.Abs(Movement.Horizontal) + Mathf.Abs(Movement.Vertical), 0, maxValue);
-            Movement.MoveAmount = moveAmount;
+        public void TransitionState(State targetState, bool isUpdate = false)
+        {
+            PlayFiniteStateMachine.TransitionState(this, targetState, isUpdate);
+        }
+
+        public void EntWaitState(float waitTime, State endState, bool isUpdate = false)
+        {
+            PlayFiniteStateMachine.Wait(this, waitTime, endState, isUpdate);
         }
     }
 }

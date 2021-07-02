@@ -10,36 +10,25 @@ namespace Game
         public float JumpSpeed;
 
         public State LocomotionState;
-        [SerializeReference] public bool isTransitionLocomotionState;
 
-        public State JumpState;
-        [SerializeReference] public bool isTransitionJumpState;
+        public float jumpWaitTime;
 
-        public WaitState waitState;
-        [SerializeReference] public bool isTransitionWaitState;
-        public float WaitTime;
-        [SerializeReference] public bool startJump;
+        [NonSerialized] private AnimatorData animatorData;
 
 
         public override void OnEnter(PlayerController playerController)
         {
-            Debug.Log("Enter Idle");
+            if (animatorData == null) animatorData = new AnimatorData(playerController.Animator);
 
-            playerController.Animator.SetBool(AnimatorHashes.stop, true);
+            SetFootForword(playerController);
         }
         public override void OnUpdate(PlayerController playerController)
         {
-            if (startJump)
+            if (playerController.Movement.MoveAmount > 0.001f)
             {
-                startJump = false;
-                playerController.Rigidbody.velocity += JumpSpeed * Vector3.up;
-
-                isTransitionJumpState = true;
-                Debug.Log("Jump up");
+                playerController.TransitionState(LocomotionState);
                 return;
             }
-
-            isTransitionLocomotionState = playerController.Movement.MoveAmount > 0.01f;
 
             if (playerController.IsJump)
             {
@@ -47,12 +36,8 @@ namespace Game
 
                 playerController.Animator.CrossFade(AnimatorHashes.JumpIdleState, 0.2f);
 
-                startJump = true;
-
-                isTransitionWaitState = true;
-                waitState.WaitTime = WaitTime;
-                waitState.TargetState = this;
-                Debug.Log("Jump Ani-");
+                playerController.EntWaitState(jumpWaitTime, this);
+                return;
             }
         }
         public override void OnFixedUpdate(PlayerController playerController)
@@ -63,32 +48,21 @@ namespace Game
         {
 
         }
-        public override bool CheckTransition(PlayerController playerController, out State targetState)
+
+
+        private void SetFootForword(PlayerController playerController)
         {
-            targetState = null;
+            playerController.Animator.SetFloat(AnimatorHashes.MoveVerticalParameter, 0);
 
-            if (isTransitionJumpState)
+            Vector3 lf_relative = playerController.ModeTransform.InverseTransformPoint(animatorData.leftFoot.position);
+            Vector3 rf_relative = playerController.ModeTransform.InverseTransformPoint(animatorData.rightFoot.position);
+
+            bool leftForward = false;
+            if (lf_relative.z > rf_relative.z)
             {
-                isTransitionJumpState = false;
-                targetState = JumpState;
-                return true;
+                leftForward = true;
             }
-
-            if (isTransitionWaitState)
-            {
-                isTransitionWaitState = false;
-                targetState = waitState;
-                return true;
-            }
-
-            if (isTransitionLocomotionState)
-            {
-                isTransitionLocomotionState = false;
-                targetState = LocomotionState;
-                return true;
-            }
-
-            return false;
+            playerController.Animator.SetBool(AnimatorHashes.LeftFootForwardParameter, !leftForward);
         }
     }
 }

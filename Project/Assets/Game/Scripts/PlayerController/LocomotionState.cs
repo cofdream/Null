@@ -7,68 +7,36 @@ namespace Game
     [Serializable]
     public class LocomotionState : State
     {
-        public float JumpSpeed;
-        public float WalkSpeed;
+        //public float WalkSpeed;
         public float RunSpeed;
-
+        public float JumpSpeed;
         public float RotateSpeed;
 
-        public bool isTransitionIdleState;
         public State IdleState;
 
-        [NonSerialized] private AnimatorData animatorData;
 
         private Transform cameraTransform;
 
-        private Vector3 lastTargetDirection;
-        public bool isTransfitionQuickTurnRotateBack;
         public State RotateBack;
 
         public override void OnEnter(PlayerController playerController)
         {
-
-            Debug.Log("Enter Locomotion");
             cameraTransform = playerController.CameraHangPoint.Camera.transform;
 
-            if (animatorData == null)
-            {
-                animatorData = new AnimatorData(playerController.Animator);
-            }
-
-
-            playerController.Animator.SetBool(AnimatorHashes.stop, false);
+            //原地跳以后 发现跳转移动会顿一下， 猜测是过渡到locomation异常，进入以后设置一下这个状态值
+            playerController.Animator.CrossFade(AnimatorHashes.LocomotionState, 0);
         }
         public override void OnUpdate(PlayerController playerController)
         {
-
-            Movement(playerController);
-            RotationBaseOnCameraOrientaion(playerController);
-
-            if (playerController.IsRun)
-                playerController.Movement.MoveSpeed = RunSpeed;
-            else
-                playerController.Movement.MoveSpeed = WalkSpeed;
-
-
-            playerController.Animator.SetFloat(AnimatorHashes.MoveVerticalParameter, playerController.Movement.MoveAmount, 0.2f, playerController.DeltaTime);
-
-            isTransitionIdleState = playerController.Movement.MoveAmount < 0.01f;
-
-            if (isTransitionIdleState)
+            if (playerController.Movement.MoveAmount < 0.01f)
             {
-                playerController.Animator.SetFloat(AnimatorHashes.MoveVerticalParameter, 0);
-
-                Vector3 lf_relative = playerController.ModeTransform.InverseTransformPoint(animatorData.leftFoot.position);
-                Vector3 rf_relative = playerController.ModeTransform.InverseTransformPoint(animatorData.rightFoot.position);
-
-                bool leftForward = false;
-                if (lf_relative.z > rf_relative.z)
-                {
-                    leftForward = true;
-                }
-                playerController.Animator.SetBool(AnimatorHashes.LeftFootForwardParameter, !leftForward);
+                playerController.TransitionState(IdleState, false);
+                return;
             }
 
+            RotationBaseOnCameraOrientaion(playerController);
+
+            Movement(playerController);
         }
         public override void OnFixedUpdate(PlayerController playerController)
         {
@@ -76,40 +44,26 @@ namespace Game
         }
         public override void OnExit(PlayerController playerController)
         {
-
-        }
-        public override bool CheckTransition(PlayerController playerController, out State targetState)
-        {
-            if (isTransfitionQuickTurnRotateBack)
-            {
-                isTransfitionQuickTurnRotateBack = false;
-                targetState = RotateBack;
-                return true;
-            }
-
-            if (isTransitionIdleState)
-            {
-                isTransitionIdleState = false;
-                targetState = IdleState;
-                return true;
-            }
-
-            targetState = null;
-            return false;
+            playerController.Rigidbody.drag = 0;
         }
 
         private void Movement(PlayerController playerController)
         {
-            if (playerController.Movement.MoveAmount > 0.1f)
+
+            if (playerController.IsRun)
             {
-                playerController.Rigidbody.drag = 0;
+                playerController.Movement.MoveSpeed = RunSpeed;
             }
             else
             {
-                playerController.Rigidbody.drag = 4;
+                playerController.Movement.MoveSpeed = RunSpeed * 2;
             }
 
+            playerController.Rigidbody.drag = 4;
+
             Vector3 targetVelocity = playerController.Movement.MoveAmount * playerController.Movement.MoveSpeed * playerController.transform.forward;
+
+            #region  jump
 
             //if (states.isGrounded)
             //{
@@ -120,7 +74,12 @@ namespace Game
             //    targetVelocity.y = states.rigidbody.velocity.y;
             //}
 
+            #endregion
+
             playerController.Rigidbody.velocity = targetVelocity;
+
+            //Ani
+            playerController.Animator.SetFloat(AnimatorHashes.MoveVerticalParameter, playerController.Movement.MoveAmount, 0.2f, playerController.DeltaTime);
         }
 
         private void RotationBaseOnCameraOrientaion(PlayerController playerController)
@@ -137,21 +96,17 @@ namespace Game
                 targetDirection = playerController.transform.forward;
             }
 
-            playerController.TargetDirection = targetDirection;
-
             //QuickTurnLeft
-            if (Math.Abs(Vector3.Angle(lastTargetDirection, targetDirection)) > 179f)
+            if (Vector3.Angle(playerController.TargetDirection, targetDirection) > 179f)
             {
-                isTransfitionQuickTurnRotateBack = true;
-                lastTargetDirection = targetDirection;
-
-                //playerController.Animator.applyRootMotion = true;
+                playerController.TargetDirection = targetDirection;
                 playerController.Animator.CrossFade(AnimatorHashes.QuickTurnLeftState, 0.2f);
-                Debug.Log("TurnLeft");
+
+                playerController.TransitionState(RotateBack);
                 return;
             }
 
-            lastTargetDirection = targetDirection;
+            playerController.TargetDirection = targetDirection;
 
             Quaternion tragetRotation = Quaternion.LookRotation(targetDirection);
             playerController.transform.rotation = Quaternion.Slerp(playerController.transform.rotation, tragetRotation, playerController.DeltaTime * playerController.Movement.MoveAmount * RotateSpeed);
