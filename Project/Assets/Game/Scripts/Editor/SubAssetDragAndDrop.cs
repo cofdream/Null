@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Game
 {
-
+    /// Thanks to Maligan (https://github.com/Maligan/unity-subassets-drag-and-drop)
     /// <summary>
     /// This extension allow to drag&drop subassets while pressing 'Alt'
     /// </summary>
