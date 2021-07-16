@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.coffee.sub-asset-editor": "https://github.com/mob-sakai/SubAssetEditor.git",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "com.devilangel.daprototool": "https://github.com/cofdream/DAProtoBufer.git#upm",
     "com.devilangel.datools": "https://github.com/cofdream/DATools.git#upm",
