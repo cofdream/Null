@@ -114,7 +114,7 @@ namespace DA.Event
 
         private void Send(Dictionary<short, List<Delegate>> dic, short type)
         {
-            if (dic.TryGetValue(type, out List<Delegate> delegates))
+             if (dic.TryGetValue(type, out List<Delegate> delegates))
             {
                 int length = delegates.Count;
                 for (int i = 0; i < length; i++)
