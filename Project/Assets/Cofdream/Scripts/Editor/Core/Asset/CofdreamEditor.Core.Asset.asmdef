@@ -1,0 +1,19 @@
+{
+    "name": "CofdreamEditor.Core.Asset",
+    "rootNamespace": "CofdreamEditor.Core.Asset",
+    "references": [
+        "GUID:79ddf1f2d7018ab478da69032d1ee076",
+        "GUID:30acd5d1039bb8944a2e58b3135d38ed"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,6 +1,6 @@
 {
     "name": "Cofdream.Core.Asset",
-    "rootNamespace": "",
+    "rootNamespace": "Cofdream.Core.Asset",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

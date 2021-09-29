@@ -15,3 +15,5 @@ MonoBehaviour:
   Builds:
   - Name: Assets_Cofdream_Resource_Prefabs
     Path: Assets/Cofdream/Resource/Prefabs
+  - Name: Assets_Cofdream_Resource_Sprites
+    Path: Assets/Cofdream/Resource/Sprites
