@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff987d5421212f46af669e43915e0a3, type: 3}
+  m_Name: Todo
+  m_EditorClassIdentifier: 
+  Todos:
+  - StateType: 0
+    Content: "2021/9/30 15:11:43\nBug\nSubAssetDragAndDrop \u7C7B\uFF0C\u79FB\u52A8\u6587\u4EF6\u5939\u4F1A\u51FA\u73B0\u5947\u602A\u8868\u73B0\uFF0C\u9700\u8981\u4FEE\u590D\u4E0B\u3002"
+  - StateType: 0
+    Content: "2021/9/30 15:24:51\nSubAssetDragAndDrop \u7C7B\uFF0C\u52A0\u4E2A\u4FEE\u6539\u5B50\u7269\u4F53\u540D\u5B57\u7684\u529F\u80FD\n\u83B7\u53D6\u5B50\u7269\u4F53\u5F15\u7528\uFF0C\u4FEE\u6539name\u3002"
