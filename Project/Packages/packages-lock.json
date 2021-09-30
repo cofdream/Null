@@ -23,13 +23,6 @@
       "dependencies": {},
       "hash": "e2686263b5af5414efdb26d7f71249895ec459a4"
     },
-    "com.devilangel.datools": {
-      "version": "https://github.com/cofdream/DATools.git#upm",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "83ba4324f225280486a3f222c090464fe162cc6d"
-    },
     "com.devilangel.iconkit": {
       "version": "https://github.com/cofdream/IconKit.git#upm",
       "depth": 0,
