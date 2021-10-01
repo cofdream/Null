@@ -8,8 +8,8 @@ namespace CofdreamEditor.Core.Asset
     public static class BuildRuleUtil
     {
         private const string spacing = "_";
-        private static Regex regex = new Regex("\\\\");
-        private static Regex regex2 = new Regex("/");
+        private static readonly Regex regex = new Regex("\\\\");
+        private static readonly Regex regex2 = new Regex("/");
 
         public static string PathToAssetBundleName(string path)
         {

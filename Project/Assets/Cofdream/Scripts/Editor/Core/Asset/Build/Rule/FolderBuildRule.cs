@@ -9,20 +9,27 @@ namespace CofdreamEditor.Core.Asset
     {
         public Object AssetFolder;
 
-        private string path;
-        public int GetAssetBundleBuildCount()
-        {
-            path = AssetDatabase.GetAssetPath(AssetFolder);
-            return string.IsNullOrEmpty(path) ? 0 : 1;
-        }
-
         public void CreateAssetBundleBuild(CreateCallback createCallback)
         {
+            string path = AssetDatabase.GetAssetPath(AssetFolder);
+
             createCallback(new AssetBundleBuild()
             {
                 assetBundleName = BuildRuleUtil.PathToAssetBundleName(path),
                 assetNames = new string[] { path },
             });
+        }
+
+        private void OnValidate()
+        {
+            if (AssetFolder != null)
+            {
+                string path = AssetDatabase.GetAssetPath(AssetFolder);
+                if (AssetDatabase.IsValidFolder(path) == false)
+                {
+                    EditorUtility.DisplayDialog("警告", "不是文件夹路径", "确认");
+                }
+            }
         }
     }
 }
