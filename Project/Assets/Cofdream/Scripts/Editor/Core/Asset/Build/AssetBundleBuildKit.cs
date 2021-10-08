@@ -17,7 +17,7 @@ namespace CofdreamEditor.Core.Asset
             outputPath += @"BuildAssetBundle\Windows\";
 
 
-            var buildRuleFolders = AssetDatabase.FindAssets(string.Empty, new string[] { "Assets/Cofdream/AssetBundleBuildRule" });
+            var buildRuleFolders = AssetDatabase.FindAssets(string.Empty, new string[] { "Assets/Cofdream/AssetBundleBuild/Rules" });
 
             List<IBuildRule> buildRules = new List<IBuildRule>(buildRuleFolders.Length);
             for (int i = 0; i < buildRuleFolders.Length; i++)
@@ -44,7 +44,42 @@ namespace CofdreamEditor.Core.Asset
                 BuildAssetBundleOptions.ChunkBasedCompression |
                 BuildAssetBundleOptions.DeterministicAssetBundle |
                 BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
+
+
+            var assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.Editor));
+            var type = assembly.GetType("UnityEditor.LogEntries");
+            var method = type.GetMethod("Clear");
+            method.Invoke(new object(), null);
+            //Debug.ClearDeveloperConsole();
+
+            var allABName = assetBundleManifest.GetAllAssetBundles();
+
+            Cofdream.Core.Asset.AssetBundleManifest[] assetBundleManifests  = new Cofdream.Core.Asset.AssetBundleManifest[allABName.Length];
+
+
+            for (int i = 0; i < allABName.Length; i++)
+            {
+                var bundleManifest = assetBundleManifests[i] = new Cofdream.Core.Asset.AssetBundleManifest();
+                bundleManifest.AssetBundleName = allABName[i];
+
+                bundleManifest.Hash = assetBundleManifest.GetAssetBundleHash(bundleManifest.AssetBundleName);
+                bundleManifest.Size = new FileInfo($"{outputPath}/{bundleManifest.AssetBundleName}").Length;
+
+                Debug.Log(allABName[i] + "__" + bundleManifest.Hash + "__" + bundleManifest.Size);
+            }
+
+            AssetBundleManifestArray assetBundleManifestArray = new AssetBundleManifestArray();
+            assetBundleManifestArray.AssetBundleManifests = assetBundleManifests;
+
+            var json = JsonUtility.ToJson(assetBundleManifestArray);
+            File.WriteAllText(outputPath + "/AssetBundleManifest.json", json);
+
+            // todo hotUpdate
+            // 下载服务器 ab目录 比较本地 ab目录
+            // 不再使用的ab文件删除？
         }
+
+
 
         private static List<AssetBundleBuild> assetBundleBuilds;
         private static void AssetBundleBuildCallBack(AssetBundleBuild assetBundleBuild)
