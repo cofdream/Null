@@ -45,6 +45,7 @@ namespace CofdreamEditor.Core.Asset
                 BuildAssetBundleOptions.DeterministicAssetBundle |
                 BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
 
+            
 
             var assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.Editor));
             var type = assembly.GetType("UnityEditor.LogEntries");
