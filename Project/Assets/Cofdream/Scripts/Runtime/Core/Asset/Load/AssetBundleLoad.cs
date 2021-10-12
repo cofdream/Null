@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace Cofdream.Core.Asset
         public AssetBundle assetBundle;
         private AssetBundleLoad[] assetBundleLoadDependencies;
 
-        private Dictionary<string, object> allAsset;
+        private Dictionary<string, Object> allAsset;
 
 
         private static Dictionary<string, AssetBundleLoad> allAssetBundleDic = new Dictionary<string, AssetBundleLoad>();
@@ -32,7 +31,7 @@ namespace Cofdream.Core.Asset
                 assetBundleLoad.referenceCount = 0;
                 assetBundleLoad.loadState = LoadState.NotLoad;
                 assetBundleLoad.assetBundleName = assetBundleName;
-                assetBundleLoad.allAsset = new Dictionary<string, object>();
+                assetBundleLoad.allAsset = new Dictionary<string, Object>();
 
                 assetBundleLoad.referenceCount++;
                 return assetBundleLoad;
@@ -160,11 +159,11 @@ namespace Cofdream.Core.Asset
         }
 
 
-        public object LoadAsset(string assetName, Type type)
+        public Object LoadAsset(string assetName, System.Type type)
         {
             Load();
 
-            object asset;
+            Object asset;
             if (allAsset.TryGetValue(assetName, out asset) == false)
             {
                 asset = assetBundle.LoadAsset(assetName, type);

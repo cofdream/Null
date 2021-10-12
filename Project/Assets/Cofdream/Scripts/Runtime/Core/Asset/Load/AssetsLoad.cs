@@ -7,22 +7,44 @@ namespace Cofdream.Core.Asset
     public class AssetsLoad
     {
         private AssetBundleLoad assetBundleLoad;
-
+        private EditorAssetLoad editorAssetLoad;
         public AssetsLoad(string assetBundleName)
         {
-            assetBundleLoad = AssetBundleLoad.Take(assetBundleName);
+            if (EditorAssetLoad.LocalLoadModel)
+            {
+                editorAssetLoad = EditorAssetLoad.Take(assetBundleName);
+            }
+            else
+            {
+                assetBundleLoad = AssetBundleLoad.Take(assetBundleName);
+            }
         }
 
         // ?? change two func?
-        public object Load(string assetName, System.Type type)
+        public Object Load(string assetName, System.Type type)
         {
-            return assetBundleLoad.LoadAsset(assetName, type);
+            if (EditorAssetLoad.LocalLoadModel)
+            {
+                return editorAssetLoad.LoadAsset(assetName, type);
+            }
+            else
+            {
+                return assetBundleLoad.LoadAsset(assetName, type);
+            }
         }
 
         public void UnLoad()
         {
-            AssetBundleLoad.Put(assetBundleLoad);
-            assetBundleLoad = null;
+            if (EditorAssetLoad.LocalLoadModel)
+            {
+                EditorAssetLoad.Put(editorAssetLoad);
+                editorAssetLoad = null;
+            }
+            else
+            {
+                AssetBundleLoad.Put(assetBundleLoad);
+                assetBundleLoad = null;
+            }
         }
     }
 }
