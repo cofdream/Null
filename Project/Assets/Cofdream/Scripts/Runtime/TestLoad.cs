@@ -2,19 +2,35 @@ using Cofdream.Core.Asset;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestLoad : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public string[] Paths;
+
+    public Image image;
+
+    private AssetsLoad assetsLoad;
+
+    public List<Object> allAssets;
+
     void Start()
     {
-        var load = new AssetBundleLoad();
-        //load.Load2<GameObject>("Assets/Cofdream/Resource/BattleMap/10001/Prefabs/Map_10001.prefab");
+        allAssets = new List<Object>();
+
+        assetsLoad = new AssetsLoad("assets_cofdream_resource_battlemap_10001");
+        allAssets.Add(assetsLoad.Load("Map_10001.prefab", typeof(GameObject)) as GameObject);
+
+        //loader.Load<GameObject>("assets_cofdream_resource_battlemap_10001", "Map_10003.prefab");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
+    }
+
+    private void OnDestroy()
+    {
+        assetsLoad.UnLoad();
     }
 }
